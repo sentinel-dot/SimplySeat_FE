@@ -166,9 +166,9 @@ export default async function VenuePage({ params, searchParams }: Props) {
             <ReviewsList venueId={venue.id} />
           </div>
 
-          <div className="lg:col-span-1">
+          <div className="min-w-0 lg:col-span-1">
             <aside
-              className="sticky top-20 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)]"
+              className="sticky top-20 min-w-0 overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)]"
               aria-label="Termin buchen"
             >
               <div className="border-b border-[var(--color-border)] px-4 py-3">

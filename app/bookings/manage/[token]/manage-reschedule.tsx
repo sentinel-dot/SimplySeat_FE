@@ -170,7 +170,7 @@ export function ManageRescheduleModal({
               </div>
 
               {/* Datum wählen */}
-              <div>
+              <div className="min-w-0 overflow-hidden">
                 <label
                   htmlFor="reschedule-date"
                   className="mb-1.5 block text-sm font-medium text-[var(--color-text)]"
@@ -184,7 +184,7 @@ export function ManageRescheduleModal({
                   max={maxDate}
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                  className="min-w-0 max-w-full w-full box-border rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
                 />
               </div>
 

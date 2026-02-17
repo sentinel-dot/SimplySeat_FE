@@ -86,7 +86,7 @@ export function HeroSearch() {
             ))}
           </select>
         </div>
-        <div>
+        <div className="min-w-0">
           <label htmlFor="hero-date" className="mb-1 block text-xs font-medium text-[var(--color-muted)]">
             Datum
           </label>
@@ -96,10 +96,10 @@ export function HeroSearch() {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             min={getDefaultDate()}
-            className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0"
+            className="min-w-0 max-w-full w-full box-border rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0"
           />
         </div>
-        <div>
+        <div className="min-w-0">
           <label htmlFor="hero-time" className="mb-1 block text-xs font-medium text-[var(--color-muted)]">
             Uhrzeit
           </label>
@@ -109,7 +109,7 @@ export function HeroSearch() {
             value={time}
             onChange={(e) => setTime(e.target.value)}
             step={900}
-            className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0"
+            className="min-w-0 max-w-full w-full box-border rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0"
           />
         </div>
         {showPartySize && (

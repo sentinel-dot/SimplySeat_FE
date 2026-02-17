@@ -110,7 +110,6 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
     setLoadingSlots(true);
     setSlots([]);
     setSelectedSlot(null);
-    setStep("time");
     try {
       const slotOptions: { partySize?: number; timeWindowStart?: string; timeWindowEnd?: string } = {};
       if (showPartySize) slotOptions.partySize = partySize;
@@ -126,8 +125,10 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
       const data = await getAvailableSlots(venue.id, service.id, dateValue, slotOptions);
       const available = (data.time_slots ?? []).filter((s) => s.available);
       setSlots(available);
+      setStep("time");
     } catch (e) {
       toast.error((e as Error).message);
+      setStep("time");
     } finally {
       setLoadingSlots(false);
     }
@@ -300,7 +301,7 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
           <p className="text-sm text-[var(--color-muted)]">
             Wählen Sie ein Datum für <strong className="text-[var(--color-text)]">{service.name}</strong> – die verfügbaren Zeiten erscheinen automatisch.
           </p>
-          <div>
+          <div className="min-w-0 overflow-hidden">
             <label className="sr-only" htmlFor="booking-date">Datum</label>
             <input
               id="booking-date"
@@ -313,7 +314,7 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
                 setDate(newDate);
                 if (newDate) loadSlotsForDate(newDate);
               }}
-              className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0"
+              className="min-w-0 max-w-full w-full box-border rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0 [&::-webkit-date-and-time-value]:min-h-[1.5rem]"
             />
           </div>
           <Button
