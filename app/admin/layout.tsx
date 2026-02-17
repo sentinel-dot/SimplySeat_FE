@@ -41,25 +41,29 @@ export default function AdminLayout({
     setMounted(true);
   }, []);
 
+  // Auth nur einmal beim Mount prüfen – nicht bei jedem pathname-Wechsel,
+  // sonst wird bei Navigation (z. B. zu /admin/customers) erneut getCurrentUser
+  // aufgerufen und ggf. fälschlich zum Login weitergeleitet.
   useEffect(() => {
     if (!mounted) return;
+    const currentPath = pathname;
     getCurrentUser()
       .then((res) => {
         if (res.success && res.data) {
           setUser(res.data);
           if (res.data.role !== "admin") {
-            router.replace(pathname.replace(/^\/admin/, "/owner") || "/owner");
+            router.replace(currentPath.replace(/^\/admin/, "/owner") || "/owner");
             return;
           }
         } else {
-          router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
+          router.replace(`/login?redirect=${encodeURIComponent(currentPath)}`);
         }
       })
       .catch(() => {
-        router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
+        router.replace(`/login?redirect=${encodeURIComponent(currentPath)}`);
       })
       .finally(() => setAuthChecked(true));
-  }, [mounted, pathname, router]);
+  }, [mounted]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
