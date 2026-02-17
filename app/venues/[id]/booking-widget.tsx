@@ -100,11 +100,6 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
     }
   }, [initialTime, slots]);
 
-  useEffect(() => {
-    if (step !== "date" || !date || !service) return;
-    loadSlotsForDate(date);
-  }, [step, date, service]);
-
   const loadSlotsForDate = async (dateValue: string) => {
     if (!service || !dateValue) return;
     setLoadingSlots(true);
@@ -309,26 +304,34 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
               min={minDate}
               max={maxDate}
               value={date}
-              onChange={(e) => {
-                const newDate = e.target.value;
-                setDate(newDate);
-                if (newDate) loadSlotsForDate(newDate);
-              }}
+              onChange={(e) => setDate(e.target.value)}
               className="min-w-0 max-w-full w-full box-border rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0 [&::-webkit-date-and-time-value]:min-h-[1.5rem]"
             />
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setService(null);
-              setDate("");
-              setStep("service");
-            }}
-            className="w-full sm:w-auto"
-          >
-            ← Andere Leistung wählen
-          </Button>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            {date && (
+              <Button
+                type="button"
+                onClick={() => loadSlotsForDate(date)}
+                isLoading={loadingSlots}
+                className="w-full sm:w-auto"
+              >
+                Zeiten anzeigen
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setService(null);
+                setDate("");
+                setStep("service");
+              }}
+              className="w-full sm:w-auto"
+            >
+              ← Andere Leistung wählen
+            </Button>
+          </div>
         </div>
       )}
 
