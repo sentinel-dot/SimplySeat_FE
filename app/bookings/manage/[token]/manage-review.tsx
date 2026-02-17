@@ -16,8 +16,8 @@ export function ManageBookingReview({ venueId, venueName, status }: Props) {
   if (status !== "completed") return null;
 
   return (
-    <div className="mt-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)]">
-      <h2 className="text-lg font-semibold text-[var(--color-text)]">
+    <div className="mt-6 rounded-xl border border-border bg-card p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-foreground">
         Bewertung
       </h2>
       {auth?.isAuthenticated ? (
@@ -26,13 +26,13 @@ export function ManageBookingReview({ venueId, venueName, status }: Props) {
         </div>
       ) : (
         <>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Diese Buchung ist abgeschlossen. Melden Sie sich an, um eine
             Bewertung zu schreiben, oder besuchen Sie die Seite des Ortes.
           </p>
         <Link
           href={`/venues/${venueId}`}
-          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-hover)]"
+          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/90"
         >
           {venueName ?? "Ort"} besuchen und bewerten
           <svg

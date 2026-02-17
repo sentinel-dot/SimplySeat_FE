@@ -18,7 +18,7 @@ export function MyBookingsWrapper() {
   if (auth?.isLoading) {
     return (
       <div className="mt-6 flex justify-center py-12">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-accent)] border-t-transparent" aria-hidden />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" aria-hidden />
       </div>
     );
   }
@@ -26,7 +26,7 @@ export function MyBookingsWrapper() {
   if (auth?.isAuthenticated) {
     return (
       <div className="mt-6 flex justify-center py-12">
-        <p className="text-[var(--color-muted)]">Weiterleitung zu Ihren Buchungen …</p>
+        <p className="text-muted-foreground">Weiterleitung zu Ihren Buchungen …</p>
       </div>
     );
   }

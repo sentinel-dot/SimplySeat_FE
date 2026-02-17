@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { updateBookingStatus } from "@/lib/api/owner";
 import type { BookingWithDetails } from "@/lib/types";
 import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const STATUS_OPTIONS = [
   { value: "pending", label: "Ausstehend" },
@@ -122,17 +122,17 @@ export function BookingDetailModal({
       onClick={handleBackdrop}
     >
       <div
-        className="w-full max-w-lg rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-lg)] max-h-[90vh] overflow-hidden flex flex-col"
+        className="w-full max-w-lg rounded-xl border border-border bg-card shadow-lg max-h-[90vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-[var(--color-border)] px-6 py-4">
-          <h2 className="font-display text-xl font-semibold text-[var(--color-text)]">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
+          <h2 className="font-display text-xl font-semibold text-foreground">
             Buchungsdetails
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-1 text-[var(--color-muted)] hover:bg-[var(--color-page)] hover:text-[var(--color-text)]"
+            className="rounded-lg p-1 text-muted-foreground hover:bg-background hover:text-foreground"
             aria-label="Schließen"
           >
             <span className="text-xl leading-none">×</span>
@@ -141,43 +141,43 @@ export function BookingDetailModal({
 
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           {!booking ? (
-            <p className="text-[var(--color-muted)]">Keine Buchung ausgewählt.</p>
+            <p className="text-muted-foreground">Keine Buchung ausgewählt.</p>
           ) : (
             <>
               <div>
-                <p className="font-medium text-[var(--color-text)]">
+                <p className="font-medium text-foreground">
                   {booking.customer_name}
                 </p>
-                <p className="text-sm text-[var(--color-muted)]">
+                <p className="text-sm text-muted-foreground">
                   {booking.customer_email}
                   {booking.customer_phone && ` · ${booking.customer_phone}`}
                 </p>
               </div>
 
               <div className="text-sm">
-                <p className="text-[var(--color-text)]">
+                <p className="text-foreground">
                   {booking.service_name}
                   {booking.staff_member_name && ` · ${booking.staff_member_name}`}
                 </p>
-                <p className="text-[var(--color-muted)]">
+                <p className="text-muted-foreground">
                   {formatDate(booking.booking_date)} · {booking.start_time}–
                   {booking.end_time}
                   {booking.party_size > 0 && ` · ${booking.party_size} Pers.`}
                 </p>
                 {booking.special_requests && (
-                  <p className="mt-1 text-[var(--color-muted)]">
+                  <p className="mt-1 text-muted-foreground">
                     Anmerkung: {booking.special_requests}
                   </p>
                 )}
                 {booking.total_amount != null && Number(booking.total_amount) > 0 && (
-                  <p className="mt-1 text-[var(--color-text)]">
+                  <p className="mt-1 text-foreground">
                     Betrag: {Number(booking.total_amount).toFixed(2)} €
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Status
                 </label>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
@@ -192,7 +192,7 @@ export function BookingDetailModal({
                           : ""
                       );
                     }}
-                    className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] sm:flex-1"
+                    className="w-full rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring sm:flex-1"
                   >
                     {STATUS_OPTIONS.map((o) => (
                       <option
@@ -223,7 +223,7 @@ export function BookingDetailModal({
               </div>
 
               {booking?.status === "cancelled" && status !== "cancelled" && (
-                <p className="text-sm text-[var(--color-accent)] bg-[var(--color-accent)]/10 rounded-lg px-3 py-2">
+                <p className="text-sm text-primary bg-primary/10 rounded-lg px-3 py-2">
                   Stornierung aufheben – die Buchung wird reaktiviert. Bitte Grund angeben (z. B. Kunde kommt doch).
                 </p>
               )}
@@ -250,7 +250,7 @@ export function BookingDetailModal({
               )}
 
               {booking.status !== status && (
-                <p className="text-sm text-[var(--color-muted)]">
+                <p className="text-sm text-muted-foreground">
                   Aktuell:{" "}
                   <span className={getStatusColor(booking.status)}>
                     {getStatusLabel(booking.status)}
@@ -265,7 +265,7 @@ export function BookingDetailModal({
               <Link
                 href={`${bookingsBasePath}/${booking.id}`}
                 onClick={onClose}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent)] hover:underline mt-2"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline mt-2"
               >
                 Verlauf anzeigen
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -276,7 +276,7 @@ export function BookingDetailModal({
           )}
         </div>
 
-        <div className="flex gap-3 border-t border-[var(--color-border)] px-6 py-4">
+        <div className="flex gap-3 border-t border-border px-6 py-4">
           <Button
             variant="outline"
             onClick={onClose}

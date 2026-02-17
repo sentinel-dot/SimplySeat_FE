@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateBooking } from "@/lib/api/bookings";
 import { getAvailableSlots } from "@/lib/api/availability";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 import {
   today,
   addDays,
@@ -141,16 +141,16 @@ export function ManageRescheduleModal({
           onClick={(e) => e.target === e.currentTarget && handleClose()}
         >
           <div
-            className="w-full max-w-lg rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-lg)]"
+            className="w-full max-w-lg rounded-xl border border-border bg-card shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="border-b border-[var(--color-border)] px-6 py-4">
-              <h2 className="text-lg font-semibold text-[var(--color-text)]">
+            <div className="border-b border-border px-6 py-4">
+              <h2 className="text-lg font-semibold text-foreground">
                 Termin verschieben
               </h2>
               {venueName && serviceName && (
-                <p className="mt-1 text-sm text-[var(--color-muted)]">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {serviceName} · {venueName}
                 </p>
               )}
@@ -159,11 +159,11 @@ export function ManageRescheduleModal({
             {/* Body */}
             <div className="space-y-4 px-6 py-5">
               {/* Aktueller Termin */}
-              <div className="rounded-lg bg-[var(--color-page)] p-3 text-sm">
-                <p className="font-medium text-[var(--color-muted)]">
+              <div className="rounded-lg bg-background p-3 text-sm">
+                <p className="font-medium text-muted-foreground">
                   Aktueller Termin
                 </p>
-                <p className="mt-1 text-[var(--color-text)]">
+                <p className="mt-1 text-foreground">
                   {formatDateDisplay(currentDate)} ·{" "}
                   {formatTimeDisplay(currentStartTime)}
                 </p>
@@ -173,7 +173,7 @@ export function ManageRescheduleModal({
               <div className="min-w-0 overflow-hidden">
                 <label
                   htmlFor="reschedule-date"
-                  className="mb-1.5 block text-sm font-medium text-[var(--color-text)]"
+                  className="mb-1.5 block text-sm font-medium text-foreground"
                 >
                   Neues Datum wählen
                 </label>
@@ -184,26 +184,26 @@ export function ManageRescheduleModal({
                   max={maxDate}
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="min-w-0 max-w-full w-full box-border rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                  className="min-w-0 max-w-full w-full box-border rounded-lg border border-border bg-card px-4 py-2.5 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
               {/* Slots */}
               {date && (
                 <div>
-                  <p className="mb-2 text-sm font-medium text-[var(--color-text)]">
+                  <p className="mb-2 text-sm font-medium text-foreground">
                     Verfügbare Zeiten am {formatDateDisplay(date)}
                   </p>
                   {loadingSlots ? (
-                    <div className="flex items-center justify-center rounded-lg border border-[var(--color-border)] py-8">
-                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-accent)]" />
+                    <div className="flex items-center justify-center rounded-lg border border-border py-8">
+                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-border border-t-primary" />
                     </div>
                   ) : slots.length === 0 ? (
-                    <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4 text-center text-sm text-[var(--color-muted)]">
+                    <div className="rounded-lg border border-border bg-background p-4 text-center text-sm text-muted-foreground">
                       Keine freien Zeiten an diesem Tag.
                     </div>
                   ) : (
-                    <div className="grid max-h-64 grid-cols-3 gap-2 overflow-y-auto rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-3 sm:grid-cols-4">
+                    <div className="grid max-h-64 grid-cols-3 gap-2 overflow-y-auto rounded-lg border border-border bg-background p-3 sm:grid-cols-4">
                       {slots.map((slot) => {
                         const isSelected =
                           selectedSlot?.start_time === slot.start_time;
@@ -214,8 +214,8 @@ export function ManageRescheduleModal({
                             onClick={() => setSelectedSlot(slot)}
                             className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
                               isSelected
-                                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
-                                : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]"
+                                ? "border-primary bg-primary text-white"
+                                : "border-border bg-card text-foreground hover:border-primary hover:bg-secondary"
                             }`}
                           >
                             {formatTimeDisplay(slot.start_time)}
@@ -229,7 +229,7 @@ export function ManageRescheduleModal({
             </div>
 
             {/* Footer */}
-            <div className="flex gap-3 border-t border-[var(--color-border)] px-6 py-4">
+            <div className="flex gap-3 border-t border-border px-6 py-4">
               <Button
                 variant="ghost"
                 onClick={handleClose}

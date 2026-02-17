@@ -85,8 +85,8 @@ export default function OwnerLayout({
 
   if (!mounted || !authChecked) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--color-page)]">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-accent)]" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-border border-t-primary" />
       </div>
     );
   }
@@ -108,8 +108,8 @@ export default function OwnerLayout({
             onClick={() => setSidebarOpen(false)}
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               isActive
-                ? "bg-[var(--color-accent-muted)] text-[var(--color-accent-strong)]"
-                : "text-[var(--color-text-soft)] hover:bg-[var(--color-page)] hover:text-[var(--color-text)]"
+                ? "bg-secondary text-primary"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground"
             }`}
           >
             <NavIcon d={item.icon} />
@@ -121,19 +121,19 @@ export default function OwnerLayout({
   );
 
   return (
-    <div className="min-h-screen bg-[var(--color-page)]">
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 lg:hidden">
+    <div className="min-h-screen bg-background">
+      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-card px-4 lg:hidden">
         <button
           type="button"
           onClick={() => setSidebarOpen((o) => !o)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-[var(--color-text)] hover:bg-[var(--color-page)]"
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground hover:bg-background"
           aria-label="Menü öffnen"
         >
           <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <Link href="/owner" className="font-display text-lg text-[var(--color-text)]">
+        <Link href="/owner" className="font-display text-lg text-foreground">
           SimplySeat Dashboard
         </Link>
         <div className="w-10" />
@@ -148,47 +148,47 @@ export default function OwnerLayout({
       )}
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-full w-64 border-r border-[var(--color-border)] bg-[var(--color-surface)] pt-14 transition-transform duration-200 lg:pt-0 ${
+        className={`fixed left-0 top-0 z-50 h-full w-64 border-r border-border bg-card pt-14 transition-transform duration-200 lg:pt-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div className="flex h-14 items-center border-b border-[var(--color-border)] px-4 lg:px-5">
-          <Link href="/owner" className="font-display text-lg font-semibold text-[var(--color-text)]">
-            <span className="text-[var(--color-accent)]">Simply</span>Seat Dashboard
+        <div className="flex h-14 items-center border-b border-border px-4 lg:px-5">
+          <Link href="/owner" className="font-display text-lg font-semibold text-foreground">
+            <span className="text-primary">Simply</span>Seat Dashboard
           </Link>
         </div>
         <div className="overflow-y-auto p-3 pb-24 lg:p-4 lg:pb-24">{navContent}</div>
-        <div className="absolute bottom-0 left-0 right-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] p-3">
-          <p className="truncate px-2 text-xs text-[var(--color-muted)]">{user?.email}</p>
-          <p className="truncate px-2 text-xs text-[var(--color-muted)]">{user?.name || "Betreiber"}</p>
+        <div className="absolute bottom-0 left-0 right-0 border-t border-border bg-card p-3">
+          <p className="truncate px-2 text-xs text-muted-foreground">{user?.email}</p>
+          <p className="truncate px-2 text-xs text-muted-foreground">{user?.name || "Betreiber"}</p>
         </div>
       </aside>
 
       <div className="lg:pl-64">
-        <div className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-end border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 lg:px-8">
+        <div className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-end border-b border-border bg-card px-4 lg:px-8">
           <div className="relative" ref={userMenuRef}>
             <button
               type="button"
               onClick={() => setUserMenuOpen((o) => !o)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-page)]"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground hover:bg-background"
             >
-              <span className="hidden max-w-[180px] truncate text-[var(--color-muted)] sm:inline">
+              <span className="hidden max-w-[180px] truncate text-muted-foreground sm:inline">
                 {user?.email}
               </span>
-              <svg className="h-5 w-5 text-[var(--color-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </button>
             {userMenuOpen && (
-              <div className="absolute right-0 top-full mt-1 w-56 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-1 shadow-[var(--shadow-lg)]">
-                <div className="border-b border-[var(--color-border)] px-3 py-2">
-                  <p className="truncate text-sm font-medium text-[var(--color-text)]">{user?.name || "Betreiber"}</p>
-                  <p className="truncate text-xs text-[var(--color-muted)]">{user?.email}</p>
+              <div className="absolute right-0 top-full mt-1 w-56 rounded-xl border border-border bg-card py-1 shadow-lg">
+                <div className="border-b border-border px-3 py-2">
+                  <p className="truncate text-sm font-medium text-foreground">{user?.name || "Betreiber"}</p>
+                  <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
                 </div>
                 <Link
                   href="/owner/settings#password"
                   onClick={() => setUserMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-page)]"
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-background"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
@@ -198,7 +198,7 @@ export default function OwnerLayout({
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-page)]"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-background"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

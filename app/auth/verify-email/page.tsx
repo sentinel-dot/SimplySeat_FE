@@ -45,16 +45,16 @@ function VerifyEmailContent() {
   return (
     <SiteLayout>
       <div className="mx-auto max-w-lg px-4 py-16 sm:px-6 sm:py-24">
-        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center shadow-lg">
+        <div className="rounded-xl border border-border bg-card p-8 text-center shadow-lg">
           {status === "loading" && (
             <>
               <div className="mx-auto flex h-16 w-16 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-accent)] border-t-transparent" />
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
               </div>
-              <h1 className="mt-6 text-2xl font-semibold text-[var(--color-text)]">
+              <h1 className="mt-6 text-2xl font-semibold text-foreground">
                 E-Mail wird verifiziert...
               </h1>
-              <p className="mt-2 text-[var(--color-muted)]">
+              <p className="mt-2 text-muted-foreground">
                 Bitte warten Sie einen Moment.
               </p>
             </>
@@ -73,10 +73,10 @@ function VerifyEmailContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h1 className="mt-6 text-2xl font-semibold text-[var(--color-text)]">
+              <h1 className="mt-6 text-2xl font-semibold text-foreground">
                 Erfolgreich verifiziert! 🎉
               </h1>
-              <p className="mt-2 text-[var(--color-muted)]">{message}</p>
+              <p className="mt-2 text-muted-foreground">{message}</p>
               <div className="mt-6 flex items-center gap-3 rounded-xl border border-emerald-400 bg-emerald-100 px-4 py-3 text-emerald-900 dark:border-emerald-500 dark:bg-emerald-900/80 dark:text-emerald-50">
                 <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white dark:bg-emerald-400 dark:text-emerald-950">
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -92,12 +92,12 @@ function VerifyEmailContent() {
                   </p>
                 </div>
               </div>
-              <p className="mt-6 text-sm text-[var(--color-muted)]">
+              <p className="mt-6 text-sm text-muted-foreground">
                 Sie werden automatisch weitergeleitet...
               </p>
               <a
                 href="/customer/dashboard"
-                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)]"
+                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/90"
               >
                 Zum Dashboard
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,20 +129,20 @@ function VerifyEmailContent() {
                   />
                 </svg>
               </div>
-              <h1 className="mt-6 text-2xl font-semibold text-[var(--color-text)]">
+              <h1 className="mt-6 text-2xl font-semibold text-foreground">
                 Verifizierung fehlgeschlagen
               </h1>
-              <p className="mt-2 text-[var(--color-muted)]">{message}</p>
+              <p className="mt-2 text-muted-foreground">{message}</p>
               <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
                 <a
                   href="/customer/dashboard"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-accent-hover)]"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
                 >
                   Zum Dashboard
                 </a>
                 <a
                   href="/"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm font-medium text-[var(--color-text)] hover:bg-[var(--color-page)]"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-background"
                 >
                   Zur Startseite
                 </a>
@@ -161,14 +161,14 @@ export default function VerifyEmailPage() {
       fallback={
         <SiteLayout>
           <div className="mx-auto max-w-lg px-4 py-16 sm:px-6 sm:py-24">
-            <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center shadow-lg">
+            <div className="rounded-xl border border-border bg-card p-8 text-center shadow-lg">
               <div className="mx-auto flex h-16 w-16 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-accent)] border-t-transparent" />
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
               </div>
-              <h1 className="mt-6 text-2xl font-semibold text-[var(--color-text)]">
+              <h1 className="mt-6 text-2xl font-semibold text-foreground">
                 E-Mail wird verifiziert...
               </h1>
-              <p className="mt-2 text-[var(--color-muted)]">Bitte warten Sie einen Moment.</p>
+              <p className="mt-2 text-muted-foreground">Bitte warten Sie einen Moment.</p>
             </div>
           </div>
         </SiteLayout>

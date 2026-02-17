@@ -9,19 +9,19 @@ export default function DatenschutzPage() {
   return (
     <SiteLayout>
       <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
-        <h1 className="font-display text-3xl font-semibold text-[var(--color-text)] sm:text-4xl">
+        <h1 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">
           Datenschutzerklärung
         </h1>
-        <p className="mt-2 text-sm text-[var(--color-text-soft)]">
+        <p className="mt-2 text-sm text-muted-foreground">
           Stand: [Datum einfügen]
         </p>
 
-        <section className="mt-8 space-y-8 text-[var(--color-text)]">
+        <section className="mt-8 space-y-8 text-foreground">
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               1. Verantwortlicher
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Verantwortlich für die Datenverarbeitung auf dieser Website ist:
               <br />
               [Name und Anschrift des Verantwortlichen]
@@ -31,10 +31,10 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               2. Erhebung und Speicherung personenbezogener Daten
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Beim Aufruf unserer Website werden durch den Browser auf Ihrem
               Endgerät automatisch Informationen an den Server gesendet. Diese
               Informationen werden temporär in einem sogenannten Logfile
@@ -50,10 +50,10 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               3. Buchungsanfragen
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Wenn Sie über die Plattform eine Buchungsanfrage stellen, werden
               die von Ihnen angegebenen Daten (Name, E-Mail, ggf. Telefon,
               Terminwunsch) verarbeitet. Diese Daten werden zum Zweck der
@@ -67,10 +67,10 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               4. Weitergabe von Daten
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Eine Weitergabe Ihrer personenbezogenen Daten an Dritte zu anderen
               als den im Folgenden genannten Zwecken erfolgt nicht. Wir geben
               Ihre Daten nur weiter, wenn Sie Ihre Einwilligung erteilt haben
@@ -84,10 +84,10 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               5. Ihre Rechte
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung
               (Art. 16 DSGVO), Löschung (Art. 17 DSGVO), Einschränkung der
               Verarbeitung (Art. 18 DSGVO), Datenübertragbarkeit (Art. 20
@@ -98,10 +98,10 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               6. Hosting
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Diese Website wird bei [Hosting-Anbieter, z. B. Vercel Inc.] gehostet.
               Dabei können personenbezogene Daten (z. B. IP-Adresse, Zugriffszeiten)
               an den Hoster übermittelt werden. Ein Auftragsverarbeitungsvertrag
@@ -110,10 +110,10 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               7. Änderungen
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um
               sie an geänderte Rechtslage oder bei Änderungen des Angebots
               anzupassen. Die aktuelle Version finden Sie stets auf dieser

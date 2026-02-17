@@ -27,7 +27,7 @@ export default function CustomerLayout({
     return (
       <SiteLayout>
         <div className="flex min-h-[40vh] items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-accent)] border-t-transparent" aria-hidden />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" aria-hidden />
         </div>
       </SiteLayout>
     );
@@ -37,7 +37,7 @@ export default function CustomerLayout({
     return (
       <SiteLayout>
         <div className="flex min-h-[40vh] items-center justify-center">
-          <p className="text-[var(--color-muted)]">Weiterleitung …</p>
+          <p className="text-muted-foreground">Weiterleitung …</p>
         </div>
       </SiteLayout>
     );
@@ -45,15 +45,15 @@ export default function CustomerLayout({
 
   return (
     <SiteLayout>
-      <div className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+      <div className="border-b border-border bg-card">
         <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
           <nav aria-label="Kundenbereich" className="flex flex-wrap items-center gap-2 text-sm">
             <Link
               href="/customer/dashboard"
               className={`rounded px-3 py-2 font-medium transition-colors ${
                 isActive("/customer/dashboard")
-                  ? "text-[var(--color-accent)]"
-                  : "text-[var(--color-muted)] hover:text-[var(--color-text)]"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Übersicht
@@ -62,8 +62,8 @@ export default function CustomerLayout({
               href="/customer/bookings"
               className={`rounded px-3 py-2 font-medium transition-colors ${
                 isActive("/customer/bookings")
-                  ? "text-[var(--color-accent)]"
-                  : "text-[var(--color-muted)] hover:text-[var(--color-text)]"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Meine Buchungen
@@ -72,8 +72,8 @@ export default function CustomerLayout({
               href="/customer/favorites"
               className={`rounded px-3 py-2 font-medium transition-colors ${
                 isActive("/customer/favorites")
-                  ? "text-[var(--color-accent)]"
-                  : "text-[var(--color-muted)] hover:text-[var(--color-text)]"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Favoriten
@@ -82,8 +82,8 @@ export default function CustomerLayout({
               href="/customer/loyalty"
               className={`rounded px-3 py-2 font-medium transition-colors ${
                 isActive("/customer/loyalty")
-                  ? "text-[var(--color-accent)]"
-                  : "text-[var(--color-muted)] hover:text-[var(--color-text)]"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Treuepunkte
@@ -92,8 +92,8 @@ export default function CustomerLayout({
               href="/customer/profile"
               className={`rounded px-3 py-2 font-medium transition-colors ${
                 isActive("/customer/profile")
-                  ? "text-[var(--color-accent)]"
-                  : "text-[var(--color-muted)] hover:text-[var(--color-text)]"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Profil

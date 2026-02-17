@@ -11,7 +11,7 @@ type Props = {
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <span className="inline-flex gap-0.5 text-[var(--color-accent)]" aria-label={`${rating} von 5 Sternen`}>
+    <span className="inline-flex gap-0.5 text-primary" aria-label={`${rating} von 5 Sternen`}>
       {[1, 2, 3, 4, 5].map((i) => (
         <svg
           key={i}
@@ -55,10 +55,10 @@ export function ReviewsList({ venueId }: Props) {
   if (loading) {
     return (
       <section aria-labelledby="reviews-heading" className="mt-8">
-        <h2 id="reviews-heading" className="text-lg font-semibold text-[var(--color-text)]">
+        <h2 id="reviews-heading" className="text-lg font-semibold text-foreground">
           Bewertungen
         </h2>
-        <div className="mt-4 h-24 animate-pulse rounded-xl bg-[var(--color-border)]/50" />
+        <div className="mt-4 h-24 animate-pulse rounded-xl bg-muted" />
       </section>
     );
   }
@@ -66,10 +66,13 @@ export function ReviewsList({ venueId }: Props) {
   if (reviews.length === 0 && (!average || average.count === 0)) {
     return (
       <section aria-labelledby="reviews-heading" className="mt-8">
-        <h2 id="reviews-heading" className="text-lg font-semibold text-[var(--color-text)]">
+        <h2 id="reviews-heading" className="text-lg font-semibold text-foreground">
           Bewertungen
         </h2>
-        <p className="mt-4 text-sm text-[var(--color-muted)]">Noch keine Bewertungen.</p>
+        <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">Platzhalter – echte Bewertungen folgen</p>
+        <div className="mt-4 rounded-lg border border-dashed border-border bg-muted/30 p-4">
+          <p className="text-sm text-muted-foreground italic">Noch keine Bewertungen. Hier erscheinen Bewertungen von Gästen.</p>
+        </div>
         <ReviewForm venueId={venueId} onSuccess={loadReviews} />
       </section>
     );
@@ -77,13 +80,13 @@ export function ReviewsList({ venueId }: Props) {
 
   return (
     <section aria-labelledby="reviews-heading" className="mt-8">
-      <h2 id="reviews-heading" className="text-lg font-semibold text-[var(--color-text)]">
+      <h2 id="reviews-heading" className="text-lg font-semibold text-foreground">
         Bewertungen
       </h2>
       {average && average.count > 0 && (
         <div className="mt-4 flex items-center gap-3">
           <StarRating rating={Math.round(average.average)} />
-          <span className="text-sm text-[var(--color-muted)]">
+          <span className="text-sm text-muted-foreground">
             {average.average.toFixed(1)} ({average.count} {average.count === 1 ? "Bewertung" : "Bewertungen"})
           </span>
         </div>
@@ -92,20 +95,20 @@ export function ReviewsList({ venueId }: Props) {
         {reviews.slice(0, 10).map((r) => (
           <li
             key={r.id}
-            className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
+            className="rounded-lg border border-border bg-card p-4"
           >
             <div className="flex items-center justify-between gap-2">
               <StarRating rating={r.rating} />
               {(r as Review & { customer_name?: string }).customer_name && (
-                <span className="text-sm text-[var(--color-muted)]">
+                <span className="text-sm text-muted-foreground">
                   {(r as Review & { customer_name?: string }).customer_name}
                 </span>
               )}
             </div>
             {r.comment && (
-              <p className="mt-2 text-sm text-[var(--color-text-soft)] leading-relaxed">{r.comment}</p>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{r.comment}</p>
             )}
-            <p className="mt-2 text-xs text-[var(--color-muted)]">
+            <p className="mt-2 text-xs text-muted-foreground">
               {new Date(r.created_at).toLocaleDateString("de-DE", {
                 day: "numeric",
                 month: "long",
@@ -116,7 +119,7 @@ export function ReviewsList({ venueId }: Props) {
         ))}
       </ul>
       {reviews.length > 10 && (
-        <p className="mt-4 text-sm text-[var(--color-muted)]">
+        <p className="mt-4 text-sm text-muted-foreground">
           und {reviews.length - 10} weitere Bewertungen
         </p>
       )}

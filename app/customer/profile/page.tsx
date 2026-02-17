@@ -5,8 +5,8 @@ import { toast } from "sonner";
 import { useCustomerAuth } from "@/contexts/CustomerAuthContext";
 import { getProfile, updateProfile, getPreferences, updatePreferences } from "@/lib/api/customers";
 import { changePassword } from "@/lib/api/customer-auth";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import type { CustomerPreferences } from "@/lib/api/customers";
 
 export default function CustomerProfilePage() {
@@ -97,22 +97,22 @@ export default function CustomerProfilePage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-8">
-        <div className="h-64 animate-pulse rounded-xl bg-[var(--color-border)]/50" />
+        <div className="h-64 animate-pulse rounded-xl bg-muted/50" />
       </div>
     );
   }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-10">
-      <h1 className="font-display text-2xl font-semibold text-[var(--color-text)] sm:text-3xl">
+      <h1 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
         Profil
       </h1>
-      <p className="mt-1 text-[var(--color-muted)]">
+      <p className="mt-1 text-muted-foreground">
         Ihre Kontodaten und Einstellungen.
       </p>
 
-      <form onSubmit={handleSaveProfile} className="mt-8 space-y-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-        <h2 className="text-lg font-semibold text-[var(--color-text)]">Persönliche Daten</h2>
+      <form onSubmit={handleSaveProfile} className="mt-8 space-y-4 rounded-xl border border-border bg-card p-6">
+        <h2 className="text-lg font-semibold text-foreground">Persönliche Daten</h2>
         <Input label="E-Mail" type="email" value={customer?.email ?? ""} disabled />
         <Input label="Name" value={name} onChange={(e) => setName(e.target.value)} required />
         <Input label="Telefon" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
@@ -122,28 +122,28 @@ export default function CustomerProfilePage() {
       </form>
 
       {prefs && (
-        <div className="mt-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-          <h2 className="text-lg font-semibold text-[var(--color-text)]">Einstellungen</h2>
+        <div className="mt-8 rounded-xl border border-border bg-card p-6">
+          <h2 className="text-lg font-semibold text-foreground">Einstellungen</h2>
           <div className="mt-4 flex items-center justify-between gap-4">
-            <span className="text-sm text-[var(--color-text)]">Standard-Gästeanzahl</span>
+            <span className="text-sm text-foreground">Standard-Gästeanzahl</span>
             <select
               value={Math.min(8, Math.max(1, prefs.default_party_size))}
               onChange={(e) => handleSavePrefs({ default_party_size: Number(e.target.value) })}
-              className="rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)]"
+              className="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground"
             >
               {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                 <option key={n} value={n}>{n}</option>
               ))}
             </select>
           </div>
-          <p className="mt-1 text-xs text-[var(--color-muted)]">Für mehr als 8 Gäste bitte anrufen.</p>
+          <p className="mt-1 text-xs text-muted-foreground">Für mehr als 8 Gäste bitte anrufen.</p>
           <div className="mt-4 flex items-center justify-between gap-4">
-            <span className="text-sm text-[var(--color-text)]">E-Mail-Benachrichtigungen</span>
+            <span className="text-sm text-foreground">E-Mail-Benachrichtigungen</span>
             <button
               type="button"
               onClick={() => handleSavePrefs({ notification_email: !prefs.notification_email })}
               className={`relative h-6 w-11 rounded-full transition-colors ${
-                prefs.notification_email ? "bg-[var(--color-accent)]" : "bg-[var(--color-border)]"
+                prefs.notification_email ? "bg-primary" : "bg-muted"
               }`}
             >
               <span
@@ -156,8 +156,8 @@ export default function CustomerProfilePage() {
         </div>
       )}
 
-      <form onSubmit={handleSavePassword} className="mt-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-        <h2 className="text-lg font-semibold text-[var(--color-text)]">Passwort ändern</h2>
+      <form onSubmit={handleSavePassword} className="mt-8 rounded-xl border border-border bg-card p-6">
+        <h2 className="text-lg font-semibold text-foreground">Passwort ändern</h2>
         <div className="mt-4 space-y-4">
           <Input
             type="password"

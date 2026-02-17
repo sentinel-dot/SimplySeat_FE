@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCustomerAuthOptional } from "@/contexts/CustomerAuthContext";
 import { canReviewVenue, createReview } from "@/lib/api/reviews";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 import { FeatureLockedTooltip } from "@/components/customer/FeatureLockedTooltip";
 import { toast } from "sonner";
 
@@ -22,11 +22,11 @@ function StarInput({ value, onChange }: { value: number; onChange: (n: number) =
           key={i}
           type="button"
           onClick={() => onChange(i)}
-          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] rounded p-0.5 transition-transform hover:scale-110"
+          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded p-0.5 transition-transform hover:scale-110"
           aria-label={`${i} Stern${i > 1 ? "e" : ""}`}
         >
           <svg
-            className="h-8 w-8 text-[var(--color-accent)]"
+            className="h-8 w-8 text-primary"
             fill={i <= value ? "currentColor" : "none"}
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -111,16 +111,16 @@ export function ReviewForm({ venueId, venueName, onSuccess }: Props) {
       return (
         <div className="mt-4">
           {alreadyReviewed ? (
-            <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-              <p className="text-sm font-medium text-[var(--color-text)]">
+            <div className="rounded-lg border border-border bg-background p-4">
+              <p className="text-sm font-medium text-foreground">
                 Sie haben diese Buchung bereits bewertet.
               </p>
-              <p className="mt-1 text-sm text-[var(--color-muted)]">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Vielen Dank für Ihr Feedback!
               </p>
               <Link
                 href={`/venues/${venueId}`}
-                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-hover)]"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/90"
               >
                 {venueName ? `${venueName} besuchen` : "Ort ansehen"}
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +129,7 @@ export function ReviewForm({ venueId, venueName, onSuccess }: Props) {
               </Link>
             </div>
           ) : (
-            <p className="text-sm text-[var(--color-muted)]">
+            <p className="text-sm text-muted-foreground">
               {canReview.reason}
             </p>
           )}
@@ -142,15 +142,15 @@ export function ReviewForm({ venueId, venueName, onSuccess }: Props) {
   const isEmailVerified = auth?.customer?.email_verified ?? false;
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+    <form onSubmit={handleSubmit} className="mt-6 rounded-xl border border-border bg-card p-4">
       <div className="flex items-center justify-between gap-4">
-        <h3 className="text-base font-semibold text-[var(--color-text)]">
+        <h3 className="text-base font-semibold text-foreground">
           Bewertung schreiben
         </h3>
         {!isEmailVerified && (
           <Link
             href="/customer/dashboard"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] border-l-4 border-l-orange-500 bg-[var(--color-surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--color-text)] transition-colors hover:border-orange-500 hover:bg-orange-50/50 dark:border-orange-800 dark:border-l-orange-500 dark:hover:bg-orange-950/30"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border border-l-4 border-l-orange-500 bg-card px-2.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-orange-500 hover:bg-orange-50/50 dark:border-orange-800 dark:border-l-orange-500 dark:hover:bg-orange-950/30"
           >
             <svg className="h-3.5 w-3.5 flex-shrink-0 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -159,15 +159,15 @@ export function ReviewForm({ venueId, venueName, onSuccess }: Props) {
           </Link>
         )}
       </div>
-      <p className="mt-1 text-sm text-[var(--color-muted)]">
+      <p className="mt-1 text-sm text-muted-foreground">
         Sie hatten hier einen abgeschlossenen Termin. Wie war Ihr Besuch?
       </p>
       <div className="mt-4">
-        <span className="block text-sm font-medium text-[var(--color-text)] mb-2">Sterne</span>
+        <span className="block text-sm font-medium text-foreground mb-2">Sterne</span>
         <StarInput value={rating} onChange={setRating} />
       </div>
       <div className="mt-4">
-        <label htmlFor="review-comment" className="block text-sm font-medium text-[var(--color-text)] mb-2">
+        <label htmlFor="review-comment" className="block text-sm font-medium text-foreground mb-2">
           Kommentar (optional)
         </label>
         <textarea
@@ -176,7 +176,7 @@ export function ReviewForm({ venueId, venueName, onSuccess }: Props) {
           onChange={(e) => setComment(e.target.value)}
           rows={3}
           disabled={!isEmailVerified}
-          className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-page)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           placeholder={isEmailVerified ? "Ihre Erfahrung in wenigen Worten …" : "E-Mail-Verifizierung erforderlich"}
         />
       </div>

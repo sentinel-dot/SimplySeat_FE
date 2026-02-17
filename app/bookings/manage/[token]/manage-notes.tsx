@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateBooking } from "@/lib/api/bookings";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   token: string;
@@ -52,8 +52,8 @@ export function ManageBookingNotes({
   if (!canEdit && !specialRequests) return null;
 
   return (
-    <div className="mt-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)]">
-      <h2 className="text-sm font-semibold text-[var(--color-text)]">
+    <div className="mt-6 rounded-xl border border-border bg-card p-4 shadow-sm">
+      <h2 className="text-sm font-semibold text-foreground">
         Notizen / Anmerkungen
       </h2>
       {editing && canEdit ? (
@@ -63,7 +63,7 @@ export function ManageBookingNotes({
             onChange={(e) => setNotes(e.target.value)}
             placeholder="z. B. Wünsche, Hinweise für Ihren Termin"
             rows={3}
-            className="mt-2 w-full rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+            className="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
           <div className="mt-3 flex gap-2">
             <Button
@@ -87,7 +87,7 @@ export function ManageBookingNotes({
         </>
       ) : (
         <>
-          <p className="mt-1 text-sm text-[var(--color-text)]">
+          <p className="mt-1 text-sm text-foreground">
             {specialRequests || "Keine Notizen."}
           </p>
           {canEdit && (

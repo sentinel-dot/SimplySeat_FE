@@ -22,10 +22,10 @@ export default function CustomerBookingsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
-      <h1 className="font-display text-2xl font-semibold text-[var(--color-text)] sm:text-3xl">
+      <h1 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
         Meine Buchungen
       </h1>
-      <p className="mt-1 text-[var(--color-muted)]">
+      <p className="mt-1 text-muted-foreground">
         Alle Ihre Buchungen an einem Ort.
       </p>
 
@@ -35,8 +35,8 @@ export default function CustomerBookingsPage() {
           onClick={() => setOnlyFuture(false)}
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             !onlyFuture
-              ? "bg-[var(--color-accent)] text-white"
-              : "bg-[var(--color-surface)] text-[var(--color-muted)] hover:bg-[var(--color-page)]"
+              ? "bg-primary text-white"
+              : "bg-card text-muted-foreground hover:bg-background"
           }`}
         >
           Alle
@@ -46,8 +46,8 @@ export default function CustomerBookingsPage() {
           onClick={() => setOnlyFuture(true)}
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             onlyFuture
-              ? "bg-[var(--color-accent)] text-white"
-              : "bg-[var(--color-surface)] text-[var(--color-muted)] hover:bg-[var(--color-page)]"
+              ? "bg-primary text-white"
+              : "bg-card text-muted-foreground hover:bg-background"
           }`}
         >
           Nur kommende
@@ -57,15 +57,15 @@ export default function CustomerBookingsPage() {
       {loading ? (
         <div className="mt-8 space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 animate-pulse rounded-xl bg-[var(--color-border)]/50" />
+            <div key={i} className="h-24 animate-pulse rounded-xl bg-muted/50" />
           ))}
         </div>
       ) : bookings.length === 0 ? (
-        <div className="mt-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center">
-          <p className="text-[var(--color-muted)]">Keine Buchungen gefunden.</p>
+        <div className="mt-8 rounded-xl border border-border bg-card p-8 text-center">
+          <p className="text-muted-foreground">Keine Buchungen gefunden.</p>
           <Link
             href="/venues"
-            className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)]"
+            className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/90"
           >
             Jetzt buchen
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,20 +89,20 @@ export default function CustomerBookingsPage() {
               <li key={b.id}>
                 <Link
                   href={`/bookings/manage/${b.booking_token}`}
-                  className="block rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]/30"
+                  className="block rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary hover:bg-secondary/30"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       {b.venue_name && (
-                        <p className="font-semibold text-[var(--color-text)]">{b.venue_name}</p>
+                        <p className="font-semibold text-foreground">{b.venue_name}</p>
                       )}
                       {b.service_name && (
-                        <p className="mt-0.5 text-sm text-[var(--color-muted)]">
+                        <p className="mt-0.5 text-sm text-muted-foreground">
                           {b.service_name}
                           {b.staff_member_name && ` · ${b.staff_member_name}`}
                         </p>
                       )}
-                      <p className="mt-2 text-sm text-[var(--color-text)]">
+                      <p className="mt-2 text-sm text-foreground">
                         {dateDisplay} · {timeDisplay}
                       </p>
                     </div>

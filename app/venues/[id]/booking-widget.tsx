@@ -14,8 +14,8 @@ import {
   formatDateDisplay,
   formatTimeDisplay,
 } from "@/lib/utils/date";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type Step = "service" | "date" | "time" | "details";
 
@@ -182,11 +182,11 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
 
   if (services.length === 0) {
     return (
-      <div className="rounded-md border border-[var(--color-border)] bg-[var(--color-page)] p-5 text-center">
-        <p className="text-sm text-[var(--color-muted)]">
+      <div className="rounded-md border border-border bg-background p-5 text-center">
+        <p className="text-sm text-muted-foreground">
           Derzeit sind keine buchbaren Leistungen hinterlegt.
         </p>
-        <p className="mt-1 text-xs text-[var(--color-muted)]">
+        <p className="mt-1 text-xs text-muted-foreground">
           Bitte später erneut vorbeischauen oder den Betrieb direkt kontaktieren.
         </p>
       </div>
@@ -205,10 +205,10 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
               <span
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
                   isActive
-                    ? "bg-[var(--color-accent)] text-white"
+                    ? "bg-primary text-primary-foreground"
                     : isPast
-                      ? "bg-[var(--color-accent-muted)] text-[var(--color-accent-strong)]"
-                      : "bg-[var(--color-page)] text-[var(--color-muted)]"
+                      ? "bg-secondary text-primary"
+                      : "bg-background text-muted-foreground"
                 }`}
                 aria-current={isActive ? "step" : undefined}
               >
@@ -222,7 +222,7 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
               </span>
               <span
                 className={`hidden text-[10px] font-medium sm:block ${
-                  isActive ? "text-[var(--color-accent-strong)]" : "text-[var(--color-muted)]"
+                  isActive ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 {s.label}
@@ -234,16 +234,16 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
 
       {/* Ihre Auswahl (rosa Box) – immer oben, füllt sich schrittweise */}
       {step !== "service" && service && (
-        <div className="rounded-md border border-[var(--color-accent-muted)] bg-[var(--color-accent-muted)]/40 px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-accent-strong)]">
+        <div className="rounded-md border border-primary/30 bg-secondary/50 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
             Ihre Auswahl
           </p>
-          <p className="mt-1 font-semibold text-[var(--color-text)]">
+          <p className="mt-1 font-semibold text-foreground">
             {service.name}
             {service.duration_minutes > 0 && ` · ${service.duration_minutes} Min.`}
           </p>
           {date && step !== "date" && (
-            <p className="mt-0.5 text-sm text-[var(--color-text-soft)]">
+            <p className="mt-0.5 text-sm text-muted-foreground">
               {formatDateDisplay(date)}
               {selectedSlot && `, ${formatTimeDisplay(selectedSlot.start_time)}`}
             </p>
@@ -254,7 +254,7 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
       {/* Schritt: Leistung */}
       {step === "service" && (
         <div className="space-y-4">
-          <p className="text-sm text-[var(--color-muted)]">
+          <p className="text-sm text-muted-foreground">
             Wählen Sie die gewünschte Leistung.
           </p>
           <ul className="space-y-2" role="list">
@@ -269,17 +269,17 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
                     setSelectedSlot(null);
                     setStep("date");
                   }}
-                  className="flex w-full items-center justify-between gap-3 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3.5 text-left transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]/30 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2"
+                  className="flex w-full items-center justify-between gap-3 rounded-md border border-border bg-card px-4 py-3.5 text-left transition-colors hover:border-primary hover:bg-secondary/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 >
-                  <span className="font-semibold text-[var(--color-text)]">{s.name}</span>
-                  <span className="flex shrink-0 items-center gap-2 text-sm text-[var(--color-muted)]">
+                  <span className="font-semibold text-foreground">{s.name}</span>
+                  <span className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
                     {s.duration_minutes > 0 && <span>{s.duration_minutes} Min.</span>}
                     {s.price != null && Number(s.price) > 0 && (
-                      <span className="font-semibold text-[var(--color-accent)]">
+                      <span className="font-semibold text-primary">
                         {Number(s.price).toFixed(2)} €
                       </span>
                     )}
-                    <svg className="h-5 w-5 text-[var(--color-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-5 w-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </span>
@@ -293,8 +293,8 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
       {/* Schritt: Datum */}
       {step === "date" && service && (
         <div className="space-y-4">
-          <p className="text-sm text-[var(--color-muted)]">
-            Wählen Sie ein Datum für <strong className="text-[var(--color-text)]">{service.name}</strong> – die verfügbaren Zeiten erscheinen automatisch.
+          <p className="text-sm text-muted-foreground">
+            Wählen Sie ein Datum für <strong className="text-foreground">{service.name}</strong> – die verfügbaren Zeiten erscheinen automatisch.
           </p>
           <div className="min-w-0 overflow-hidden">
             <label className="sr-only" htmlFor="booking-date">Datum</label>
@@ -305,7 +305,7 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
               max={maxDate}
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="min-w-0 max-w-full w-full box-border rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0 [&::-webkit-date-and-time-value]:min-h-[1.5rem]"
+              className="min-w-0 max-w-full w-full box-border rounded-md border border-border bg-card px-4 py-3 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0 [&::-webkit-date-and-time-value]:min-h-[1.5rem]"
             />
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -338,18 +338,18 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
       {/* Schritt: Uhrzeit */}
       {step === "time" && service && (
         <div className="space-y-4">
-          <p className="text-sm text-[var(--color-muted)]">
+          <p className="text-sm text-muted-foreground">
             {date && formatDateDisplay(date)} – wählen Sie eine freie Uhrzeit.
           </p>
           {loadingSlots ? (
-            <div className="flex flex-col items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-page)] py-10">
-              <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-accent)]" aria-hidden />
-              <p className="mt-3 text-sm text-[var(--color-muted)]">Verfügbare Zeiten werden geladen…</p>
+            <div className="flex flex-col items-center justify-center rounded-md border border-border bg-background py-10">
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary" aria-hidden />
+              <p className="mt-3 text-sm text-muted-foreground">Verfügbare Zeiten werden geladen…</p>
             </div>
           ) : slots.length === 0 ? (
-            <div className="rounded-md border border-[var(--color-border)] bg-[var(--color-page)] p-6 text-center">
-              <p className="font-medium text-[var(--color-text)]">Keine freien Zeiten an diesem Tag</p>
-              <p className="mt-1 text-sm text-[var(--color-muted)]">
+            <div className="rounded-md border border-border bg-background p-6 text-center">
+              <p className="font-medium text-foreground">Keine freien Zeiten an diesem Tag</p>
+              <p className="mt-1 text-sm text-muted-foreground">
                 Bitte wählen Sie ein anderes Datum.
               </p>
               <Button
@@ -384,8 +384,8 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
                       }}
                       className={`rounded-md py-2.5 text-sm font-semibold transition-colors ${
                         isSelected
-                          ? "border border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
-                          : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]/40"
+                          ? "border border-primary bg-primary text-primary-foreground"
+                          : "border border-border bg-card text-foreground hover:border-primary hover:bg-secondary/50"
                       }`}
                     >
                       {formatTimeDisplay(slot.start_time)}
@@ -414,13 +414,13 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
       {step === "details" && service && selectedSlot && (
         <div className="space-y-5">
           <div>
-            <h3 className="text-sm font-semibold text-[var(--color-text)]">Ihre Angaben</h3>
+            <h3 className="text-sm font-semibold text-foreground">Ihre Angaben</h3>
             {isAuthenticated ? (
-              <p className="mt-0.5 text-xs text-[var(--color-muted)]">
+              <p className="mt-0.5 text-xs text-muted-foreground">
                 Es werden Ihre Kontodaten verwendet. Änderungen im Profil möglich.
               </p>
             ) : (
-              <p className="mt-0.5 text-xs text-[var(--color-muted)]">
+              <p className="mt-0.5 text-xs text-muted-foreground">
                 Mit * markierte Felder sind Pflicht.
               </p>
             )}
@@ -433,14 +433,14 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
                   label="Name"
                   value={name}
                   disabled
-                  className="bg-[var(--color-page)] cursor-not-allowed opacity-90"
+                  className="bg-background cursor-not-allowed opacity-90"
                 />
                 <Input
                   label="E-Mail"
                   type="email"
                   value={email}
                   disabled
-                  className="bg-[var(--color-page)] cursor-not-allowed opacity-90"
+                  className="bg-background cursor-not-allowed opacity-90"
                 />
               </>
             ) : (
@@ -476,13 +476,13 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
             )}
             {showPartySize && (
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[var(--color-text)]">
+                <label className="mb-1.5 block text-sm font-medium text-foreground">
                   Anzahl Gäste *
                 </label>
                 <select
                   value={partySize}
                   onChange={(e) => setPartySize(Number(e.target.value))}
-                  className="w-full h-11 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0"
+                  className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0"
                 >
                   {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
                     <option key={n} value={n}>
@@ -490,18 +490,18 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
                     </option>
                   ))}
                 </select>
-                <p className="mt-1 text-xs text-[var(--color-muted)]">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Für mehr als 8 Gäste bitte anrufen.
                 </p>
                 {fieldErrors.partySize && (
-                  <p className="mt-1.5 text-sm text-[var(--color-error)]">
+                  <p className="mt-1.5 text-sm text-destructive">
                     {fieldErrors.partySize}
                   </p>
                 )}
               </div>
             )}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[var(--color-muted)]">
+              <label className="mb-1.5 block text-sm font-medium text-muted-foreground">
                 Anmerkungen (optional)
               </label>
               <textarea
@@ -509,7 +509,7 @@ export function BookingWidget({ venue, initialDate, initialTime, initialPartySiz
                 onChange={(e) => setSpecialRequests(e.target.value)}
                 placeholder="z. B. Allergien, Wünsche zum Tisch …"
                 rows={3}
-                className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-2.5 text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0"
+                className="w-full rounded-md border border-border bg-card px-3.5 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0"
               />
             </div>
           </div>

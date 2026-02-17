@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { changePassword } from "@/lib/api/auth";
 import { getLoyaltyConfig, updateLoyaltyConfig, type LoyaltyConfig } from "@/lib/api/admin";
-import { Card, CardTitle } from "@/components/shared/card";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Card, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function AdminSettingsPage() {
   const [passwordForm, setPasswordForm] = useState({
@@ -101,10 +101,10 @@ export default function AdminSettingsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+        <h1 className="font-display text-2xl font-semibold text-foreground">
           Einstellungen
         </h1>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Passwort ändern und Bonuspunkte-System konfigurieren.
         </p>
       </div>
@@ -154,13 +154,13 @@ export default function AdminSettingsPage() {
 
       <Card id="loyalty" className="p-6 scroll-mt-6">
         <CardTitle className="text-lg">Bonuspunkte-Konfiguration</CardTitle>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Legen Sie fest, wie viele Bonuspunkte Kunden für verschiedene Aktionen erhalten.
         </p>
         
         {loadingLoyalty ? (
           <div className="mt-6 flex items-center justify-center py-8">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-accent)]" />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary" />
           </div>
         ) : (
           <form onSubmit={handleLoyaltySubmit} className="mt-6 space-y-4 max-w-md">
@@ -178,7 +178,7 @@ export default function AdminSettingsPage() {
                 }
                 required
               />
-              <p className="mt-1 text-xs text-[var(--color-muted)]">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Basis-Punkte, die Kunden bei jeder abgeschlossenen Buchung erhalten
               </p>
             </div>
@@ -197,7 +197,7 @@ export default function AdminSettingsPage() {
                 }
                 required
               />
-              <p className="mt-1 text-xs text-[var(--color-muted)]">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Zusätzliche Punkte, wenn der Kunde eine Bewertung abgibt
               </p>
             </div>
@@ -216,7 +216,7 @@ export default function AdminSettingsPage() {
                 }
                 required
               />
-              <p className="mt-1 text-xs text-[var(--color-muted)]">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Einmalige Punkte bei Registrierung eines neuen Kundenkontos
               </p>
             </div>
@@ -235,7 +235,7 @@ export default function AdminSettingsPage() {
                 }
                 required
               />
-              <p className="mt-1 text-xs text-[var(--color-muted)]">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Einmalige Punkte nach Bestätigung der E-Mail-Adresse
               </p>
             </div>
@@ -255,7 +255,7 @@ export default function AdminSettingsPage() {
                 }
                 required
               />
-              <p className="mt-1 text-xs text-[var(--color-muted)]">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Zusätzliche Punkte basierend auf dem Buchungsbetrag (z.B. 1 Punkt pro Euro)
               </p>
             </div>

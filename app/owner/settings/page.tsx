@@ -5,9 +5,9 @@ import { toast } from "sonner";
 import { getVenueSettings, updateVenueSettings } from "@/lib/api/owner";
 import { changePassword } from "@/lib/api/auth";
 import type { Venue } from "@/lib/types";
-import { Card, CardTitle } from "@/components/shared/card";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Card, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
@@ -116,17 +116,17 @@ export default function OwnerSettingsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+        <h1 className="font-display text-2xl font-semibold text-foreground">
           Einstellungen
         </h1>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Buchungsregeln und Ihr Konto.
         </p>
       </div>
 
       <Card className="p-6">
         <CardTitle className="text-lg">Buchungsregeln</CardTitle>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Venue: {venue.name}
         </p>
         <form onSubmit={handleVenueSubmit} className="mt-6 space-y-4 max-w-md">
@@ -142,7 +142,7 @@ export default function OwnerSettingsPage() {
               }))
             }
           />
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-muted-foreground">
             Kunden können nur Termine buchen, die mindestens so viele Stunden in der Zukunft liegen.
           </p>
           <Input
@@ -157,7 +157,7 @@ export default function OwnerSettingsPage() {
               }))
             }
           />
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-muted-foreground">
             Kunden können bis zu dieser Stunde vor dem Termin kostenfrei stornieren.
           </p>
           <Input
@@ -169,7 +169,7 @@ export default function OwnerSettingsPage() {
             }
             placeholder="https://…"
           />
-          <p className="text-xs text-[var(--color-muted)]">
+          <p className="text-xs text-muted-foreground">
             Optional. Wird auf der Orteseite und in der Übersicht angezeigt.
           </p>
           <Button type="submit" isLoading={venueSaving}>
@@ -180,7 +180,7 @@ export default function OwnerSettingsPage() {
 
       <Card id="password" className="p-6 scroll-mt-6">
         <CardTitle className="text-lg">Passwort ändern</CardTitle>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Ändern Sie das Passwort Ihres Kontos.
         </p>
         <form onSubmit={handlePasswordSubmit} className="mt-6 space-y-4 max-w-md">

@@ -9,9 +9,9 @@ import {
   updateVenue,
 } from "@/lib/api/admin";
 import type { Venue } from "@/lib/types";
-import { Card } from "@/components/shared/card";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
@@ -178,14 +178,14 @@ export default function AdminVenuesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+          <h1 className="font-display text-2xl font-semibold text-foreground">
             Venues
           </h1>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Alle Betriebe anlegen und bearbeiten.
           </p>
         </div>
-        <Button variant="primary" onClick={openCreate}>
+        <Button variant="default" onClick={openCreate}>
           Venue anlegen
         </Button>
       </div>
@@ -194,24 +194,24 @@ export default function AdminVenuesPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-[var(--color-border)]">
-                <th className="pb-2 font-medium text-[var(--color-muted)]">ID</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Name</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Typ</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">E-Mail</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Status</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Aktion</th>
+              <tr className="border-b border-border">
+                <th className="pb-2 font-medium text-muted-foreground">ID</th>
+                <th className="pb-2 font-medium text-muted-foreground">Name</th>
+                <th className="pb-2 font-medium text-muted-foreground">Typ</th>
+                <th className="pb-2 font-medium text-muted-foreground">E-Mail</th>
+                <th className="pb-2 font-medium text-muted-foreground">Status</th>
+                <th className="pb-2 font-medium text-muted-foreground">Aktion</th>
               </tr>
             </thead>
             <tbody>
               {venues.map((v) => (
-                <tr key={v.id} className="border-b border-[var(--color-border)] last:border-0">
-                  <td className="py-2 text-[var(--color-muted)]">{v.id}</td>
-                  <td className="py-2 font-medium text-[var(--color-text)]">{v.name}</td>
-                  <td className="py-2 text-[var(--color-muted)]">{VENUE_TYPES.find((t) => t.value === v.type)?.label ?? v.type}</td>
-                  <td className="py-2 text-[var(--color-text)]">{v.email}</td>
+                <tr key={v.id} className="border-b border-border last:border-0">
+                  <td className="py-2 text-muted-foreground">{v.id}</td>
+                  <td className="py-2 font-medium text-foreground">{v.name}</td>
+                  <td className="py-2 text-muted-foreground">{VENUE_TYPES.find((t) => t.value === v.type)?.label ?? v.type}</td>
+                  <td className="py-2 text-foreground">{v.email}</td>
                   <td className="py-2">
-                    <span className={v.is_active ? "text-green-600" : "text-[var(--color-muted)]"}>
+                    <span className={v.is_active ? "text-green-600" : "text-muted-foreground"}>
                       {v.is_active ? "Aktiv" : "Inaktiv"}
                     </span>
                   </td>
@@ -219,7 +219,7 @@ export default function AdminVenuesPage() {
                     <Button variant="outline" size="sm" onClick={() => openEdit(v)}>
                       Bearbeiten
                     </Button>
-                    <Link href={`/venues/${v.id}`} target="_blank" className="ml-2 text-sm text-[var(--color-accent)] hover:underline">
+                    <Link href={`/venues/${v.id}`} target="_blank" className="ml-2 text-sm text-primary hover:underline">
                       Öffnen
                     </Link>
                   </td>
@@ -229,14 +229,14 @@ export default function AdminVenuesPage() {
           </table>
         </div>
         {venues.length === 0 && (
-          <p className="py-8 text-center text-[var(--color-muted)]">Noch keine Venues.</p>
+          <p className="py-8 text-center text-muted-foreground">Noch keine Venues.</p>
         )}
       </Card>
 
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <Card className="max-h-[90vh] w-full max-w-lg overflow-y-auto p-6">
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               {modal === "create" ? "Venue anlegen" : "Venue bearbeiten"}
             </h2>
             <form onSubmit={handleSubmit} className="mt-4 space-y-3">
@@ -247,11 +247,11 @@ export default function AdminVenuesPage() {
                 required
               />
               <div>
-                <label className="mb-1 block text-sm font-medium text-[var(--color-text)]">Typ</label>
+                <label className="mb-1 block text-sm font-medium text-foreground">Typ</label>
                 <select
                   value={form.type}
                   onChange={(e) => setForm((f) => ({ ...f, type: e.target.value as Venue["type"] }))}
-                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)]"
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-foreground"
                 >
                   {VENUE_TYPES.map((t) => (
                     <option key={t.value} value={t.value}>{t.label}</option>
@@ -333,13 +333,13 @@ export default function AdminVenuesPage() {
                     type="checkbox"
                     checked={form.is_active}
                     onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))}
-                    className="rounded border-[var(--color-border)]"
+                    className="rounded border-border"
                   />
-                  <span className="text-sm text-[var(--color-text)]">Aktiv</span>
+                  <span className="text-sm text-foreground">Aktiv</span>
                 </label>
               )}
               <div className="flex gap-2 pt-2">
-                <Button type="submit" variant="primary" disabled={saving}>
+                <Button type="submit" variant="default" disabled={saving}>
                   {saving ? "Speichern…" : "Speichern"}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setModal(null)}>

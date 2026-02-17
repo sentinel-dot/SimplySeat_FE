@@ -113,7 +113,7 @@ export function VenuesContent() {
   if (loading) {
     return (
       <div className="mt-10 flex justify-center py-14">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-accent)]" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary" />
       </div>
     );
   }
@@ -143,8 +143,8 @@ export function VenuesContent() {
             onClick={() => setFilter("all")}
             className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
               filter === "all"
-                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
-                : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-border-strong)]"
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-foreground hover:border-border"
             }`}
           >
             Alle
@@ -156,8 +156,8 @@ export function VenuesContent() {
               onClick={() => setFilter(type)}
               className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                 filter === type
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
-                  : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-border-strong)]"
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-foreground hover:border-border"
               }`}
             >
               {getVenueTypeLabel(type)}
@@ -193,18 +193,18 @@ export function VenuesContent() {
                   setLocationFocused(false);
                 }
               }}
-              className="w-36 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0 sm:w-40"
+              className="w-36 rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0 sm:w-40"
             />
           </div>
           <div className="flex items-center gap-2">
-            <label htmlFor="venues-sort" className="text-sm text-[var(--color-muted)]">
+            <label htmlFor="venues-sort" className="text-sm text-muted-foreground">
               Sortierung:
             </label>
             <select
             id="venues-sort"
             value={sort}
             onChange={(e) => setSort(e.target.value as "name" | "distance")}
-            className="rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-0"
+            className="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0"
           >
             <option value="name">Name</option>
             <option value="distance" disabled={!locationParam}>
@@ -217,17 +217,17 @@ export function VenuesContent() {
 
       {/* Such-Assistenz: Keine Treffer bei Datum/Uhrzeit */}
       {showSearchAssistance && (
-        <div className="mb-6 rounded-lg border border-[var(--color-accent-muted)] bg-[var(--color-accent-muted)] px-4 py-4 text-center">
-          <p className="font-medium text-[var(--color-text)]">
+        <div className="mb-6 rounded-lg border border-primary/30 bg-secondary px-4 py-4 text-center">
+          <p className="font-medium text-foreground">
             Keine freien Slots an diesem Tag.
           </p>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Wählen Sie ein anderes Datum oder eine andere Uhrzeit – oder schauen Sie ohne Datum, welche Orte es gibt.
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-3">
             <Link
               href="/"
-              className="inline-flex h-10 items-center justify-center rounded-md border border-[var(--color-accent)] bg-[var(--color-surface)] px-4 text-sm font-medium text-[var(--color-accent)] hover:bg-[var(--color-accent-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
+              className="inline-flex h-10 items-center justify-center rounded-md border border-primary bg-card px-4 text-sm font-medium text-primary hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               Neue Suche auf der Startseite
             </Link>
@@ -239,7 +239,7 @@ export function VenuesContent() {
                 const q = p.toString();
                 return q ? `/venues?${q}` : "/venues";
               })()}
-              className="inline-flex h-10 items-center justify-center rounded-md bg-[var(--color-accent)] px-4 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
+              className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               Alle Orte ohne Datum anzeigen
             </Link>
@@ -248,14 +248,14 @@ export function VenuesContent() {
       )}
 
       {venues.length === 0 && !showSearchAssistance ? (
-        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] py-16 text-center">
-          <p className="text-[var(--color-muted)]">
+        <div className="rounded-lg border border-border bg-card py-16 text-center">
+          <p className="text-muted-foreground">
             {filter === "all"
               ? "Noch keine Orte eingetragen."
               : `Keine Orte in der Kategorie „${getVenueTypeLabel(filter)}“.`}
           </p>
           {locationParam && (
-            <p className="mt-2 text-sm text-[var(--color-muted)]">
+            <p className="mt-2 text-sm text-muted-foreground">
               Keine Orte für „{locationParam}“ gefunden. Versuchen Sie einen anderen Ort oder PLZ.
             </p>
           )}
@@ -266,11 +266,11 @@ export function VenuesContent() {
             <li key={venue.id} className="flex">
               <Link
                 href={`/venues/${venue.id}${venueQuery}`}
-                className="card-hover flex h-full w-full flex-col overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]"
+                className="flex transition-shadow duration-200 hover:shadow-md h-full w-full flex-col overflow-hidden rounded-lg border border-border bg-card"
               >
                 {/* Venue-Bild oder Platzhalter */}
                 {venue.image_url ? (
-                  <div className="relative h-36 w-full shrink-0 overflow-hidden bg-[var(--color-page)]">
+                  <div className="relative h-36 w-full shrink-0 overflow-hidden bg-background">
                     <img
                       src={venue.image_url}
                       alt=""
@@ -280,26 +280,26 @@ export function VenuesContent() {
                     />
                   </div>
                 ) : (
-                  <div className="h-36 shrink-0 bg-[var(--color-page)]" aria-hidden />
+                  <div className="h-36 shrink-0 bg-background" aria-hidden />
                 )}
                 <div className="flex min-h-0 flex-1 flex-col p-4">
-                  <span className="text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+                  <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     {getVenueTypeLabel(venue.type)}
                   </span>
-                  <h2 className="mt-1 text-lg font-semibold text-[var(--color-text)]">
+                  <h2 className="mt-1 text-lg font-semibold text-foreground">
                     {venue.name}
                   </h2>
                   {venue.city && (
-                    <p className="mt-0.5 text-sm text-[var(--color-muted)]">
+                    <p className="mt-0.5 text-sm text-muted-foreground">
                       {venue.city}
                       {venue.address && ` · ${venue.address}`}
                     </p>
                   )}
                   {/* Feste Höhe für Beschreibung, damit alle Karten gleich hoch sind */}
-                  <p className="mt-2 min-h-[2.5rem] text-sm text-[var(--color-text-soft)] line-clamp-2">
+                  <p className="mt-2 min-h-[2.5rem] text-sm text-muted-foreground line-clamp-2">
                     {venue.description ?? "\u00A0"}
                   </p>
-                  <span className="mt-4 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[var(--color-accent)]">
+                  <span className="mt-4 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-primary">
                     {venue.type === "restaurant" ? "Tisch reservieren" : "Termin buchen"}
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

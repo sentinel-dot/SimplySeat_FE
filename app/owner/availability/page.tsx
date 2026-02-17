@@ -4,8 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { getAvailabilityRules, updateAvailabilityRule } from "@/lib/api/owner";
 import type { AvailabilityRule } from "@/lib/types";
-import { Card, CardTitle } from "@/components/shared/card";
-import { Button } from "@/components/shared/button";
+import { Card, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
@@ -90,10 +90,10 @@ export default function OwnerAvailabilityPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+        <h1 className="font-display text-2xl font-semibold text-foreground">
           Verfügbarkeit
         </h1>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Öffnungszeiten und Zeitslots, in denen Kunden buchen können.
         </p>
       </div>
@@ -101,7 +101,7 @@ export default function OwnerAvailabilityPage() {
       {loading ? (
         <PageLoader />
       ) : rules.length === 0 ? (
-        <Card className="py-12 text-center text-[var(--color-muted)]">
+        <Card className="py-12 text-center text-muted-foreground">
           Keine Verfügbarkeitsregeln angelegt.
         </Card>
       ) : (
@@ -119,7 +119,7 @@ export default function OwnerAvailabilityPage() {
                         {r.staff_member_name && ` · ${r.staff_member_name}`}
                       </CardTitle>
                       <div className="grid gap-4 sm:grid-cols-2">
-                        <label className="block text-sm font-medium text-[var(--color-text)]">
+                        <label className="block text-sm font-medium text-foreground">
                           Von
                         </label>
                         <input
@@ -128,9 +128,9 @@ export default function OwnerAvailabilityPage() {
                           onChange={(e) =>
                             setEditForm((f) => ({ ...f, start_time: e.target.value }))
                           }
-                          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                          className="rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                         />
-                        <label className="block text-sm font-medium text-[var(--color-text)] sm:col-start-1">
+                        <label className="block text-sm font-medium text-foreground sm:col-start-1">
                           Bis
                         </label>
                         <input
@@ -139,7 +139,7 @@ export default function OwnerAvailabilityPage() {
                           onChange={(e) =>
                             setEditForm((f) => ({ ...f, end_time: e.target.value }))
                           }
-                          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                          className="rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                         />
                       </div>
                       <label className="flex items-center gap-2">
@@ -149,9 +149,9 @@ export default function OwnerAvailabilityPage() {
                           onChange={(e) =>
                             setEditForm((f) => ({ ...f, is_active: e.target.checked }))
                           }
-                          className="h-4 w-4 rounded border-[var(--color-border)] text-[var(--color-accent)] focus:ring-[var(--color-accent)]"
+                          className="h-4 w-4 rounded border-border text-primary focus:ring-ring"
                         />
-                        <span className="text-sm text-[var(--color-text)]">Aktiv</span>
+                        <span className="text-sm text-foreground">Aktiv</span>
                       </label>
                       <div className="flex gap-3 pt-2">
                         <Button size="sm" onClick={saveEdit} isLoading={savingId === r.id}>
@@ -166,11 +166,11 @@ export default function OwnerAvailabilityPage() {
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="font-semibold text-[var(--color-text)]">
+                          <h3 className="font-semibold text-foreground">
                             {DAY_NAMES[r.day_of_week] ?? `Tag ${r.day_of_week}`}
                           </h3>
                           {r.staff_member_name && (
-                            <span className="text-sm text-[var(--color-muted)]">
+                            <span className="text-sm text-muted-foreground">
                               · {r.staff_member_name}
                             </span>
                           )}
@@ -180,7 +180,7 @@ export default function OwnerAvailabilityPage() {
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 text-sm text-[var(--color-muted)]">
+                        <p className="mt-1 text-sm text-muted-foreground">
                           {r.start_time} – {r.end_time}
                         </p>
                       </div>

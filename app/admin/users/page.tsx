@@ -11,9 +11,9 @@ import {
   type AdminWithVenue,
 } from "@/lib/api/admin";
 import type { Venue } from "@/lib/types";
-import { Card } from "@/components/shared/card";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
@@ -188,24 +188,24 @@ export default function AdminUsersPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+          <h1 className="font-display text-2xl font-semibold text-foreground">
             User
           </h1>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Alle User anlegen, Rollen zuweisen und Venues verwalten.
           </p>
         </div>
-        <Button variant="primary" onClick={openCreate}>
+        <Button variant="default" onClick={openCreate}>
           User anlegen
         </Button>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-sm font-medium text-[var(--color-muted)]">Rolle filtern:</span>
+        <span className="text-sm font-medium text-muted-foreground">Rolle filtern:</span>
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value as RoleFilter)}
-          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)]"
+          className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground"
         >
           {ROLE_FILTER_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -213,7 +213,7 @@ export default function AdminUsersPage() {
             </option>
           ))}
         </select>
-        <span className="text-sm text-[var(--color-muted)]">
+        <span className="text-sm text-muted-foreground">
           {filteredUsers.length} User
         </span>
       </div>
@@ -222,26 +222,26 @@ export default function AdminUsersPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-[var(--color-border)]">
-                <th className="pb-2 font-medium text-[var(--color-muted)]">E-Mail</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Name</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Rolle</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Venue</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Status</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Aktion</th>
+              <tr className="border-b border-border">
+                <th className="pb-2 font-medium text-muted-foreground">E-Mail</th>
+                <th className="pb-2 font-medium text-muted-foreground">Name</th>
+                <th className="pb-2 font-medium text-muted-foreground">Rolle</th>
+                <th className="pb-2 font-medium text-muted-foreground">Venue</th>
+                <th className="pb-2 font-medium text-muted-foreground">Status</th>
+                <th className="pb-2 font-medium text-muted-foreground">Aktion</th>
               </tr>
             </thead>
             <tbody>
               {filteredUsers.map((a) => (
-                <tr key={a.id} className="border-b border-[var(--color-border)] last:border-0">
-                  <td className="py-2 text-[var(--color-text)]">{a.email}</td>
-                  <td className="py-2 font-medium text-[var(--color-text)]">{a.name}</td>
-                  <td className="py-2 text-[var(--color-muted)]">
+                <tr key={a.id} className="border-b border-border last:border-0">
+                  <td className="py-2 text-foreground">{a.email}</td>
+                  <td className="py-2 font-medium text-foreground">{a.name}</td>
+                  <td className="py-2 text-muted-foreground">
                     {ROLE_LABELS[a.role] ?? a.role}
                   </td>
-                  <td className="py-2 text-[var(--color-text)]">{a.venue_name ?? "–"}</td>
+                  <td className="py-2 text-foreground">{a.venue_name ?? "–"}</td>
                   <td className="py-2">
-                    <span className={a.is_active ? "text-green-600" : "text-[var(--color-muted)]"}>
+                    <span className={a.is_active ? "text-green-600" : "text-muted-foreground"}>
                       {a.is_active ? "Aktiv" : "Inaktiv"}
                     </span>
                   </td>
@@ -268,7 +268,7 @@ export default function AdminUsersPage() {
       {modal === "create" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <Card className="w-full max-w-md p-6">
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               User anlegen
             </h2>
             <form onSubmit={handleSubmit} className="mt-4 space-y-3">
@@ -294,7 +294,7 @@ export default function AdminUsersPage() {
                 required
               />
               <div>
-                <label className="mb-1 block text-sm font-medium text-[var(--color-text)]">Venue</label>
+                <label className="mb-1 block text-sm font-medium text-foreground">Venue</label>
                 <select
                   value={form.venue_id ?? ""}
                   onChange={(e) =>
@@ -303,7 +303,7 @@ export default function AdminUsersPage() {
                       venue_id: e.target.value ? Number(e.target.value) : null,
                     }))
                   }
-                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)]"
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-foreground"
                 >
                   <option value="">– Keine –</option>
                   {venues.map((v) => (
@@ -312,13 +312,13 @@ export default function AdminUsersPage() {
                 </select>
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-[var(--color-text)]">Rolle</label>
+                <label className="mb-1 block text-sm font-medium text-foreground">Rolle</label>
                 <select
                   value={form.role}
                   onChange={(e) =>
                     setForm((f) => ({ ...f, role: e.target.value as AdminWithVenue["role"] }))
                   }
-                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)]"
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-foreground"
                 >
                   {ROLES.map((r) => (
                     <option key={r.value} value={r.value}>{r.label}</option>
@@ -326,7 +326,7 @@ export default function AdminUsersPage() {
                 </select>
               </div>
               <div className="flex gap-2 pt-2">
-                <Button type="submit" variant="primary" disabled={saving}>
+                <Button type="submit" variant="default" disabled={saving}>
                   {saving ? "Erstellen…" : "Erstellen"}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setModal(null)}>
@@ -341,7 +341,7 @@ export default function AdminUsersPage() {
       {modal === "edit" && editingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <Card className="w-full max-w-md p-6">
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               User bearbeiten
             </h2>
             <form onSubmit={handleSubmit} className="mt-4 space-y-3">
@@ -352,7 +352,7 @@ export default function AdminUsersPage() {
                 required
               />
               <div>
-                <label className="mb-1 block text-sm font-medium text-[var(--color-text)]">Venue</label>
+                <label className="mb-1 block text-sm font-medium text-foreground">Venue</label>
                 <select
                   value={form.venue_id ?? ""}
                   onChange={(e) =>
@@ -361,7 +361,7 @@ export default function AdminUsersPage() {
                       venue_id: e.target.value ? Number(e.target.value) : null,
                     }))
                   }
-                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)]"
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2 text-foreground"
                 >
                   <option value="">– Keine –</option>
                   {venues.map((v) => (
@@ -370,9 +370,9 @@ export default function AdminUsersPage() {
                 </select>
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-[var(--color-text)]">Rolle</label>
+                <label className="mb-1 block text-sm font-medium text-foreground">Rolle</label>
                 {form.role === "admin" ? (
-                  <p className="py-2 text-sm text-[var(--color-muted)]">
+                  <p className="py-2 text-sm text-muted-foreground">
                     System-Admin (Rolle nicht änderbar)
                   </p>
                 ) : (
@@ -381,7 +381,7 @@ export default function AdminUsersPage() {
                     onChange={(e) =>
                       setForm((f) => ({ ...f, role: e.target.value as "owner" | "staff" }))
                     }
-                    className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)]"
+                    className="w-full rounded-lg border border-border bg-card px-3 py-2 text-foreground"
                   >
                     {ROLES.map((r) => (
                       <option key={r.value} value={r.value}>{r.label}</option>
@@ -394,12 +394,12 @@ export default function AdminUsersPage() {
                   type="checkbox"
                   checked={form.is_active}
                   onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))}
-                  className="rounded border-[var(--color-border)]"
+                  className="rounded border-border"
                 />
-                <span className="text-sm text-[var(--color-text)]">Aktiv</span>
+                <span className="text-sm text-foreground">Aktiv</span>
               </label>
               <div className="flex gap-2 pt-2">
-                <Button type="submit" variant="primary" disabled={saving}>
+                <Button type="submit" variant="default" disabled={saving}>
                   {saving ? "Speichern…" : "Speichern"}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setModal(null)}>
@@ -414,7 +414,7 @@ export default function AdminUsersPage() {
       {modal === "password" && editingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <Card className="w-full max-w-md p-6">
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Passwort setzen
             </h2>
             <form onSubmit={handlePasswordSubmit} className="mt-4 space-y-3">
@@ -439,7 +439,7 @@ export default function AdminUsersPage() {
                 minLength={8}
               />
               <div className="flex gap-2 pt-2">
-                <Button type="submit" variant="primary" disabled={saving}>
+                <Button type="submit" variant="default" disabled={saving}>
                   {saving ? "Speichern…" : "Speichern"}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setModal(null)}>

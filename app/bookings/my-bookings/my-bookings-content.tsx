@@ -4,8 +4,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { apiClient } from "@/lib/api/client";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
 import type { Booking } from "@/lib/types";
 
@@ -88,8 +88,8 @@ export function MyBookingsContent() {
 
       {/* Ergebnisse */}
       {searched && bookings.length === 0 && (
-        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
-          <p className="text-[var(--color-muted)]">
+        <div className="rounded-xl border border-border bg-card p-6 text-center">
+          <p className="text-muted-foreground">
             Keine Buchungen für diese E-Mail-Adresse gefunden.
           </p>
         </div>
@@ -97,7 +97,7 @@ export function MyBookingsContent() {
 
       {bookings.length > 0 && (
         <div className="space-y-3">
-          <p className="text-sm text-[var(--color-muted)]">
+          <p className="text-sm text-muted-foreground">
             {bookings.length} Buchung{bookings.length !== 1 ? "en" : ""} gefunden
           </p>
           <ul className="space-y-3">
@@ -116,22 +116,22 @@ export function MyBookingsContent() {
                 <li key={b.id}>
                   <Link
                     href={`/bookings/manage/${b.booking_token}`}
-                    className="block rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]/30"
+                    className="block rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary hover:bg-secondary/30"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         {b.venue_name && (
-                          <p className="font-semibold text-[var(--color-text)]">
+                          <p className="font-semibold text-foreground">
                             {b.venue_name}
                           </p>
                         )}
                         {b.service_name && (
-                          <p className="mt-0.5 text-sm text-[var(--color-muted)]">
+                          <p className="mt-0.5 text-sm text-muted-foreground">
                             {b.service_name}
                             {b.staff_member_name && ` · ${b.staff_member_name}`}
                           </p>
                         )}
-                        <p className="mt-2 text-sm text-[var(--color-text)]">
+                        <p className="mt-2 text-sm text-foreground">
                           {dateDisplay} · {timeDisplay}
                         </p>
                       </div>
@@ -152,7 +152,7 @@ export function MyBookingsContent() {
       <div className="pt-4 text-center">
         <Link
           href="/venues"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-hover)]"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/90"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

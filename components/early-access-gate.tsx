@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const STORAGE_KEY = "early_access_ok";
 
@@ -34,13 +34,13 @@ export function EarlyAccessGate({ children }: { children: React.ReactNode }) {
   };
 
   if (!password || unlocked) return <>{children}</>;
-  if (checking) return <div className="min-h-screen flex items-center justify-center bg-[var(--color-page)]"><div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-accent)] border-t-transparent" /></div>;
+  if (checking) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--color-page)] px-4">
-      <div className="w-full max-w-sm rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)]">
-        <h1 className="text-center text-lg font-semibold text-[var(--color-text)]">Early Access</h1>
-        <p className="mt-1 text-center text-sm text-[var(--color-muted)]">Passwort eingeben, um fortzufahren.</p>
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <div className="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-sm">
+        <h1 className="text-center text-lg font-semibold text-foreground">Early Access</h1>
+        <p className="mt-1 text-center text-sm text-muted-foreground">Passwort eingeben, um fortzufahren.</p>
         <form onSubmit={submit} className="mt-6 space-y-4">
           <Input
             type="password"
@@ -50,7 +50,7 @@ export function EarlyAccessGate({ children }: { children: React.ReactNode }) {
             autoFocus
             autoComplete="current-password"
           />
-          {error && <p className="text-sm text-[var(--color-error)]">Falsches Passwort.</p>}
+          {error && <p className="text-sm text-destructive">Falsches Passwort.</p>}
           <Button type="submit" className="w-full">Zugang</Button>
         </form>
       </div>

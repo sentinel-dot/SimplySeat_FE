@@ -13,10 +13,10 @@ export default function VenuesPage() {
   return (
     <SiteLayout>
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
-        <h1 className="text-2xl font-bold text-[var(--color-text)] sm:text-3xl">
+        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
           Restaurants & Orte
         </h1>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Wählen Sie einen Ort und buchen Sie Ihren Termin.
         </p>
         <Suspense fallback={<PageLoader />}>

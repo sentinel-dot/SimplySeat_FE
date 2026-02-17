@@ -1,7 +1,7 @@
 export function LoadingSpinner({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`inline-block h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-accent)] ${className}`}
+      className={`inline-block h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary ${className}`}
       aria-hidden
     />
   );

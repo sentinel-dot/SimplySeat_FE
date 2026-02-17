@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { getBookingAuditLog } from "@/lib/api/owner";
 import type { BookingAuditLogEntry } from "@/lib/types";
 import { getStatusLabel } from "@/lib/utils/bookingStatus";
-import { Card, CardTitle } from "@/components/shared/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
@@ -88,7 +88,7 @@ export default function OwnerBookingVerlaufPage() {
         />
         <Link
           href="/owner/bookings"
-          className="text-sm font-medium text-[var(--color-accent)] hover:underline"
+          className="text-sm font-medium text-primary hover:underline"
         >
           ← Zurück zur Buchungsliste
         </Link>
@@ -98,26 +98,26 @@ export default function OwnerBookingVerlaufPage() {
 
   return (
     <div className="space-y-6">
-      <nav className="text-sm text-[var(--color-muted)]">
+      <nav className="text-sm text-muted-foreground">
         <Link
           href="/owner/bookings"
-          className="hover:text-[var(--color-accent)]"
+          className="hover:text-primary"
         >
           Buchungen
         </Link>
         <span className="mx-2">/</span>
-        <span className="text-[var(--color-text)]">
+        <span className="text-foreground">
           Verlauf · Buchung #{id}
         </span>
       </nav>
 
       <Card className="p-6 md:p-8 w-full">
         <CardTitle className="text-lg mb-1">Verlauf</CardTitle>
-        <p className="text-sm text-[var(--color-muted)] mb-6">
+        <p className="text-sm text-muted-foreground mb-6">
           Alle Änderungen an Buchung #{id} (Status, Stornierung, Details).
         </p>
         {auditLog.length === 0 ? (
-          <p className="text-sm text-[var(--color-muted)] py-6">
+          <p className="text-sm text-muted-foreground py-6">
             Noch keine Einträge.
           </p>
         ) : (
@@ -127,30 +127,30 @@ export default function OwnerBookingVerlaufPage() {
                 key={entry.id}
                 className={`flex gap-6 md:gap-8 lg:gap-10 ${
                   index < auditLog.length - 1
-                    ? "pb-6 mb-6 border-b border-[var(--color-border)]"
+                    ? "pb-6 mb-6 border-b border-border"
                     : ""
                 }`}
               >
                 <div className="flex flex-col items-center shrink-0">
-                  <div className="h-3 w-3 rounded-full bg-[var(--color-accent-muted)]" />
+                  <div className="h-3 w-3 rounded-full bg-secondary" />
                   {index < auditLog.length - 1 && (
-                    <div className="w-px flex-1 min-h-[2.5rem] mt-1 bg-[var(--color-border)]" />
+                    <div className="w-px flex-1 min-h-[2.5rem] mt-1 bg-muted" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-1 pt-0.5">
-                  <div className="text-xs text-[var(--color-muted)] sm:col-span-2 lg:col-span-1">
+                  <div className="text-xs text-muted-foreground sm:col-span-2 lg:col-span-1">
                     {formatAuditTime(entry.created_at)}
                   </div>
-                  <div className="font-medium text-[var(--color-text)] sm:col-span-2 lg:col-span-1">
+                  <div className="font-medium text-foreground sm:col-span-2 lg:col-span-1">
                     {formatAuditAction(entry)}
                   </div>
                   {entry.actor_label && (
-                    <div className="text-sm text-[var(--color-text-soft)] lg:col-span-1">
+                    <div className="text-sm text-muted-foreground lg:col-span-1">
                       {entry.actor_label}
                     </div>
                   )}
                   {entry.reason && (
-                    <div className="text-sm text-[var(--color-muted)] italic sm:col-span-2 lg:col-span-4">
+                    <div className="text-sm text-muted-foreground italic sm:col-span-2 lg:col-span-4">
                       „{entry.reason}"
                     </div>
                   )}

@@ -9,19 +9,19 @@ export default function ImpressumPage() {
   return (
     <SiteLayout>
       <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
-        <h1 className="font-display text-3xl font-semibold text-[var(--color-text)] sm:text-4xl">
+        <h1 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">
           Impressum
         </h1>
-        <p className="mt-2 text-sm text-[var(--color-text-soft)]">
+        <p className="mt-2 text-sm text-muted-foreground">
           Angaben gemäß § 5 Telemediengesetz (TMG)
         </p>
 
-        <section className="mt-8 space-y-6 text-[var(--color-text)]">
+        <section className="mt-8 space-y-6 text-foreground">
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Anbieter / Diensteanbieter
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               [Firmenname bzw. Vor- und Nachname des Betreibers]
               <br />
               [Straße und Hausnummer]
@@ -31,10 +31,10 @@ export default function ImpressumPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Kontakt
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               E-Mail: [Kontakt-E-Mail-Adresse]
               <br />
               Telefon: [optional]
@@ -42,36 +42,36 @@ export default function ImpressumPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Umsatzsteuer-ID
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               [Falls vorhanden: Umsatzsteuer-Identifikationsnummer gemäß § 27a
               UStG]
             </p>
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               [Name und Anschrift]
             </p>
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               EU-Streitschlichtung
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Die Europäische Kommission stellt eine Plattform zur
               Online-Streitbeilegung (OS) bereit:{" "}
               <a
                 href="https://ec.europa.eu/consumers/odr/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-hover)]"
+                className="font-medium text-primary transition-colors hover:text-primary/90"
               >
                 https://ec.europa.eu/consumers/odr/
               </a>
@@ -82,10 +82,10 @@ export default function ImpressumPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Haftung für Inhalte
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene
               Inhalte auf diesen Seiten nach den allgemeinen Gesetzen
               verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter
@@ -102,10 +102,10 @@ export default function ImpressumPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Haftung für Links
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Unser Angebot enthält Links zu externen Websites Dritter, auf
               deren Inhalte wir keinen Einfluss haben. Deshalb können wir für
               diese fremden Inhalte auch keine Gewähr übernehmen. Für die
@@ -122,10 +122,10 @@ export default function ImpressumPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Urheberrecht
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Die durch die Seitenbetreiber erstellten Inhalte und Werke auf
               diesen Seiten unterliegen dem deutschen Urheberrecht. Die
               Vervielfältigung, Bearbeitung, Verbreitung und jede Art der

@@ -9,21 +9,21 @@ export default function AGBPage() {
   return (
     <SiteLayout>
       <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
-        <h1 className="font-display text-3xl font-semibold text-[var(--color-text)] sm:text-4xl">
+        <h1 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">
           Allgemeine Geschäftsbedingungen (AGB)
         </h1>
-        <p className="mt-2 text-sm text-[var(--color-text-soft)]">
+        <p className="mt-2 text-sm text-muted-foreground">
           Für die Nutzung der Buchungsplattform SimplySeat
           <br />
           Stand: [Datum einfügen]
         </p>
 
-        <section className="mt-8 space-y-8 text-[var(--color-text)]">
+        <section className="mt-8 space-y-8 text-foreground">
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               § 1 Geltungsbereich
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Diese AGB gelten für die Nutzung der Buchungsplattform SimplySeat
               („Plattform“) und die über die Plattform angebahnten
               Buchungsanfragen und Verträge zwischen Nutzern („Gäste“) und den
@@ -34,10 +34,10 @@ export default function AGBPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               § 2 Leistungsbeschreibung
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Die Plattform ermöglicht es Gästen, Buchungsanfragen (z. B. für
               Tischreservierungen oder Termine) an Anbieter zu richten. Der
               Betreiber der Plattform vermittelt nur den Kontakt; der
@@ -48,10 +48,10 @@ export default function AGBPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               § 3 Buchungsanfrage und Vertragsschluss
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Die Abgabe einer Buchungsanfrage über die Plattform stellt ein
               unverbindliches Anfrageangebot des Gastes dar. Der Vertrag mit dem
               Anbieter kommt erst zustande, wenn der Anbieter die Buchung
@@ -61,10 +61,10 @@ export default function AGBPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               § 4 Stornierung durch den Gast
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Stornierungsfristen und -bedingungen ergeben sich aus den
               Angaben des jeweiligen Anbieters (z. B. auf der Buchungsseite
               oder in der Bestätigungsmail). Der Gast ist verpflichtet,
@@ -75,10 +75,10 @@ export default function AGBPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               § 5 Haftung
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Der Betreiber der Plattform haftet unbeschadet der gesetzlichen
               Haftung nur für Vorsatz und grobe Fahrlässigkeit sowie bei
               Verletzung von Leben, Körper oder Gesundheit. Die Haftung für
@@ -90,10 +90,10 @@ export default function AGBPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               § 6 Schlussbestimmungen
             </h2>
-            <p className="mt-2 text-[var(--color-text-soft)]">
+            <p className="mt-2 text-muted-foreground">
               Es gilt das Recht der Bundesrepublik Deutschland unter
               Ausschluss des UN-Kaufrechts. Gerichtsstand ist, soweit
               gesetzlich zulässig, der Sitz des Betreibers. Sollten einzelne

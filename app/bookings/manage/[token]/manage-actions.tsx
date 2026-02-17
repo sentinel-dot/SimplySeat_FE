@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { cancelBooking } from "@/lib/api/bookings";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   token: string;
@@ -57,18 +57,18 @@ export function ManageBookingActions({
           Buchung stornieren
         </Button>
       ) : (
-        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-          <p className="text-sm text-[var(--color-text)]">
+        <div className="rounded-xl border border-border bg-card p-4">
+          <p className="text-sm text-foreground">
             Möchten Sie diese Buchung wirklich stornieren?
             {cancellationHours != null && cancellationHours > 0 && (
-              <span className="mt-1 block text-[var(--color-muted)]">
+              <span className="mt-1 block text-muted-foreground">
                 Bitte mindestens {cancellationHours} Stunden vor dem Termin
                 stornieren.
               </span>
             )}
           </p>
           <div className="mt-3">
-            <label className="mb-1 block text-sm text-[var(--color-muted)]">
+            <label className="mb-1 block text-sm text-muted-foreground">
               Grund (optional)
             </label>
             <textarea
@@ -76,7 +76,7 @@ export function ManageBookingActions({
               onChange={(e) => setCancelReason(e.target.value)}
               placeholder="z. B. Termin passt nicht mehr"
               rows={2}
-              className="w-full rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+              className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
           <div className="mt-4 flex gap-2">

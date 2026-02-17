@@ -20,15 +20,15 @@ export default async function ConfirmationPage({ searchParams }: Props) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 className="mt-6 font-display text-3xl font-semibold text-[var(--color-text)] sm:text-4xl">
+        <h1 className="mt-6 font-display text-3xl font-semibold text-foreground sm:text-4xl">
           Vielen Dank
         </h1>
-        <p className="mt-4 leading-relaxed text-[var(--color-text-soft)]">
+        <p className="mt-4 leading-relaxed text-muted-foreground">
           Ihre Buchungsanfrage wurde gesendet. Das Unternehmen wird Sie
           zeitnah per E-Mail bestätigen oder bei Rückfragen kontaktieren.
         </p>
         {token && (
-          <p className="mt-6 text-sm text-[var(--color-muted)]">
+          <p className="mt-6 text-sm text-muted-foreground">
             Sie können Ihre Buchung jederzeit einsehen oder stornieren:
           </p>
         )}
@@ -36,7 +36,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
           <div className="mt-4 space-y-2">
             <Link
               href={`/bookings/manage/${token}`}
-              className="btn-primary inline-flex h-11 items-center justify-center rounded-xl bg-[var(--color-accent)] px-6 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               Meine Buchung anzeigen
             </Link>
@@ -46,13 +46,13 @@ export default async function ConfirmationPage({ searchParams }: Props) {
         <div className="mt-10 space-y-3 text-center">
           <Link
             href="/bookings/my-bookings"
-            className="block text-sm font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-hover)]"
+            className="block text-sm font-medium text-primary transition-colors hover:text-primary/90"
           >
             Alle meine Buchungen ansehen
           </Link>
           <Link
             href="/venues"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-hover)]"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/90"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

@@ -46,31 +46,31 @@ export default async function ManageBookingPage({ params }: Props) {
   return (
     <SiteLayout>
       <div className="mx-auto max-w-xl px-4 py-10 sm:px-6 sm:py-12">
-        <h1 className="font-display text-2xl font-semibold text-[var(--color-text)] sm:text-3xl">
+        <h1 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
           Ihre Buchung
         </h1>
 
-        <div className="mt-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)]">
+        <div className="mt-6 rounded-xl border border-border bg-card p-6 shadow-sm">
           {b.venue_name && (
-            <p className="font-medium text-[var(--color-text)]">
+            <p className="font-medium text-foreground">
               {b.venue_name}
             </p>
           )}
           {b.service_name && (
-            <p className="mt-1 text-sm text-[var(--color-muted)]">
+            <p className="mt-1 text-sm text-muted-foreground">
               {b.service_name}
               {b.staff_member_name && ` · ${b.staff_member_name}`}
             </p>
           )}
-          <p className="mt-2 text-[var(--color-text)]">{dateDisplay}</p>
-          <p className="text-[var(--color-text)]">{timeDisplay}</p>
+          <p className="mt-2 text-foreground">{dateDisplay}</p>
+          <p className="text-foreground">{timeDisplay}</p>
           {b.special_requests && (
-            <p className="mt-2 text-sm text-[var(--color-text)]">
-              <span className="font-medium text-[var(--color-muted)]">Notizen: </span>
+            <p className="mt-2 text-sm text-foreground">
+              <span className="font-medium text-muted-foreground">Notizen: </span>
               {b.special_requests}
             </p>
           )}
-          <p className="mt-2 text-sm text-[var(--color-muted)]">
+          <p className="mt-2 text-sm text-muted-foreground">
             {b.customer_name} · {b.customer_email}
           </p>
           <p className="mt-3">
@@ -120,7 +120,7 @@ export default async function ManageBookingPage({ params }: Props) {
         <p className="mt-8 text-center">
           <Link
             href="/venues"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent)] transition-colors hover:text-[var(--color-accent-hover)]"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/90"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

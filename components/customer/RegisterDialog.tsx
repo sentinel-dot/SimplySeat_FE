@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useCustomerAuth } from "@/contexts/CustomerAuthContext";
 import { toast } from "sonner";
 
@@ -77,12 +77,12 @@ export function RegisterDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby="register-title"
-        className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-xl"
+        className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl border border-border bg-card p-6 shadow-xl"
       >
-        <h2 id="register-title" className="text-xl font-semibold text-[var(--color-text)]">
+        <h2 id="register-title" className="text-xl font-semibold text-foreground">
           Konto erstellen
         </h2>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Speichern Sie Favoriten, Buchungshistorie und sammeln Sie Punkte.
         </p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -132,12 +132,12 @@ export function RegisterDialog({
           </div>
         </form>
         {switchToLogin && (
-          <p className="mt-4 text-center text-sm text-[var(--color-muted)]">
+          <p className="mt-4 text-center text-sm text-muted-foreground">
             Bereits ein Konto?{" "}
             <button
               type="button"
               onClick={switchToLogin}
-              className="font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)]"
+              className="font-medium text-primary hover:text-primary/90"
             >
               Anmelden
             </button>

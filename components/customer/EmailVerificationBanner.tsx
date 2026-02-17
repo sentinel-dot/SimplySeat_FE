@@ -43,7 +43,7 @@ export function EmailVerificationBanner({ email }: EmailVerificationBannerProps)
   if (dismissed) return null;
 
   return (
-    <div className="rounded-xl border border-[var(--color-border)] border-l-4 border-l-orange-500 bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)]">
+    <div className="rounded-xl border border-border border-l-4 border-l-orange-500 bg-card p-6 shadow-sm">
       <div className="flex items-start gap-3">
         <div className="mt-0.5 flex-shrink-0">
           <svg
@@ -61,11 +61,11 @@ export function EmailVerificationBanner({ email }: EmailVerificationBannerProps)
           </svg>
         </div>
         <div className="flex-1">
-          <h3 className="text-sm font-semibold text-[var(--color-text)]">
+          <h3 className="text-sm font-semibold text-foreground">
             E-Mail-Adresse noch nicht bestätigt
           </h3>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
-            Bitte bestätigen Sie Ihre E-Mail-Adresse (<strong className="text-[var(--color-text)]">{email}</strong>), um alle Funktionen nutzen zu
+          <p className="mt-1 text-sm text-muted-foreground">
+            Bitte bestätigen Sie Ihre E-Mail-Adresse (<strong className="text-foreground">{email}</strong>), um alle Funktionen nutzen zu
             können. Überprüfen Sie Ihr Postfach und klicken Sie auf den Bestätigungslink.
           </p>
           

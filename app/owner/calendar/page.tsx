@@ -4,8 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { getBookings } from "@/lib/api/owner";
 import type { BookingWithDetails } from "@/lib/types";
 import { getStatusColorBlock } from "@/lib/utils/bookingStatus";
-import { Card } from "@/components/shared/card";
-import { Button } from "@/components/shared/button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
@@ -95,10 +95,10 @@ export default function OwnerCalendarPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+          <h1 className="font-display text-2xl font-semibold text-foreground">
             Kalender
           </h1>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Monatsansicht aller Buchungen.
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function OwnerCalendarPage() {
           <Button variant="outline" size="sm" onClick={prevMonth}>
             ← Zurück
           </Button>
-          <span className="min-w-[180px] text-center font-medium text-[var(--color-text)] capitalize">
+          <span className="min-w-[180px] text-center font-medium text-foreground capitalize">
             {monthLabel}
           </span>
           <Button variant="outline" size="sm" onClick={nextMonth}>
@@ -129,11 +129,11 @@ export default function OwnerCalendarPage() {
       ) : (
         <>
           <Card className="overflow-hidden p-0">
-            <div className="grid grid-cols-7 border-b border-[var(--color-border)] bg-[var(--color-page)]">
+            <div className="grid grid-cols-7 border-b border-border bg-background">
               {WEEKDAY_LABELS.map((label) => (
                 <div
                   key={label}
-                  className="py-2 text-center text-xs font-medium text-[var(--color-muted)]"
+                  className="py-2 text-center text-xs font-medium text-muted-foreground"
                 >
                   {label}
                 </div>
@@ -142,7 +142,7 @@ export default function OwnerCalendarPage() {
             <div className="grid grid-cols-7">
               {days.map((day, i) => {
                 if (day === null) {
-                  return <div key={`empty-${i}`} className="h-[140px] border border-[var(--color-border)]/50 bg-[var(--color-page)]/50" />;
+                  return <div key={`empty-${i}`} className="h-[140px] border border-border/50 bg-background/50" />;
                 }
                 const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
                 const dayBookings = bookingsByDate[dateStr] ?? [];
@@ -153,13 +153,13 @@ export default function OwnerCalendarPage() {
                 return (
                   <div
                     key={dateStr}
-                    className={`flex h-[140px] flex-col border border-[var(--color-border)]/50 p-1 ${
-                      isToday ? "bg-[var(--color-accent-muted)]/30" : "bg-[var(--color-surface)]"
+                    className={`flex h-[140px] flex-col border border-border/50 p-1 ${
+                      isToday ? "bg-secondary/30" : "bg-card"
                     }`}
                   >
                     <div
                       className={`shrink-0 text-sm font-medium ${
-                        isToday ? "text-[var(--color-accent-strong)]" : "text-[var(--color-text)]"
+                        isToday ? "text-primary" : "text-foreground"
                       }`}
                     >
                       {day}
@@ -178,7 +178,7 @@ export default function OwnerCalendarPage() {
                       ))}
                     </div>
                     {dayBookings.length > 4 && (
-                      <div className="shrink-0 border-t border-[var(--color-border)]/50 pt-0.5 text-center text-[10px] text-[var(--color-muted)]">
+                      <div className="shrink-0 border-t border-border/50 pt-0.5 text-center text-[10px] text-muted-foreground">
                         {dayBookings.length} Buchungen · ↓ scrollen
                       </div>
                     )}
@@ -189,19 +189,19 @@ export default function OwnerCalendarPage() {
           </Card>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="inline-flex items-center gap-1.5 text-sm text-[var(--color-muted)]">
+            <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
               <span className="h-3 w-3 rounded bg-yellow-500" /> Ausstehend
             </span>
-            <span className="inline-flex items-center gap-1.5 text-sm text-[var(--color-muted)]">
+            <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
               <span className="h-3 w-3 rounded bg-green-500" /> Bestätigt
             </span>
-            <span className="inline-flex items-center gap-1.5 text-sm text-[var(--color-muted)]">
+            <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
               <span className="h-3 w-3 rounded bg-blue-500" /> Abgeschlossen
             </span>
-            <span className="inline-flex items-center gap-1.5 text-sm text-[var(--color-muted)]">
+            <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
               <span className="h-3 w-3 rounded bg-red-500" /> Storniert
             </span>
-            <span className="inline-flex items-center gap-1.5 text-sm text-[var(--color-muted)]">
+            <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
               <span className="h-3 w-3 rounded bg-gray-500" /> Nicht erschienen
             </span>
           </div>

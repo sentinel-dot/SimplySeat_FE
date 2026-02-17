@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getStats } from "@/lib/api/owner";
 import type { AdminStats } from "@/lib/types";
-import { Card, CardTitle } from "@/components/shared/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
@@ -46,15 +46,15 @@ export default function OwnerStatsPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+          <h1 className="font-display text-2xl font-semibold text-foreground">
             Statistik
           </h1>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Detaillierte Auswertungen zu Buchungen und Umsatz.
           </p>
         </div>
         <Link href="/owner">
-          <span className="text-sm font-medium text-[var(--color-accent)] hover:underline">
+          <span className="text-sm font-medium text-primary hover:underline">
             ← Zur Übersicht
           </span>
         </Link>
@@ -63,21 +63,21 @@ export default function OwnerStatsPage() {
       <Card>
         <CardTitle className="text-lg">Buchungsstatus (Gesamt)</CardTitle>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-            <p className="text-sm text-[var(--color-muted)]">Ausstehend</p>
-            <p className="text-2xl font-semibold text-[var(--color-text)]">{s.bookings.pending}</p>
+          <div className="rounded-lg border border-border bg-background p-4">
+            <p className="text-sm text-muted-foreground">Ausstehend</p>
+            <p className="text-2xl font-semibold text-foreground">{s.bookings.pending}</p>
           </div>
-          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-            <p className="text-sm text-[var(--color-muted)]">Bestätigt</p>
-            <p className="text-2xl font-semibold text-[var(--color-text)]">{s.bookings.confirmed}</p>
+          <div className="rounded-lg border border-border bg-background p-4">
+            <p className="text-sm text-muted-foreground">Bestätigt</p>
+            <p className="text-2xl font-semibold text-foreground">{s.bookings.confirmed}</p>
           </div>
-          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-            <p className="text-sm text-[var(--color-muted)]">Abgeschlossen</p>
-            <p className="text-2xl font-semibold text-[var(--color-text)]">{s.bookings.completed}</p>
+          <div className="rounded-lg border border-border bg-background p-4">
+            <p className="text-sm text-muted-foreground">Abgeschlossen</p>
+            <p className="text-2xl font-semibold text-foreground">{s.bookings.completed}</p>
           </div>
-          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-            <p className="text-sm text-[var(--color-muted)]">Storniert</p>
-            <p className="text-2xl font-semibold text-[var(--color-text)]">{s.bookings.cancelled}</p>
+          <div className="rounded-lg border border-border bg-background p-4">
+            <p className="text-sm text-muted-foreground">Storniert</p>
+            <p className="text-2xl font-semibold text-foreground">{s.bookings.cancelled}</p>
           </div>
         </div>
       </Card>
@@ -85,21 +85,21 @@ export default function OwnerStatsPage() {
       <Card>
         <CardTitle className="text-lg">Umsatz (abgeschlossene Buchungen)</CardTitle>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-            <p className="text-sm text-[var(--color-muted)]">Heute</p>
-            <p className="text-2xl font-semibold text-[var(--color-text)]">{s.revenue.today.toFixed(2)} €</p>
+          <div className="rounded-lg border border-border bg-background p-4">
+            <p className="text-sm text-muted-foreground">Heute</p>
+            <p className="text-2xl font-semibold text-foreground">{s.revenue.today.toFixed(2)} €</p>
           </div>
-          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-            <p className="text-sm text-[var(--color-muted)]">Diese Woche</p>
-            <p className="text-2xl font-semibold text-[var(--color-text)]">{s.revenue.thisWeek.toFixed(2)} €</p>
+          <div className="rounded-lg border border-border bg-background p-4">
+            <p className="text-sm text-muted-foreground">Diese Woche</p>
+            <p className="text-2xl font-semibold text-foreground">{s.revenue.thisWeek.toFixed(2)} €</p>
           </div>
-          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-            <p className="text-sm text-[var(--color-muted)]">Dieser Monat</p>
-            <p className="text-2xl font-semibold text-[var(--color-text)]">{s.revenue.thisMonth.toFixed(2)} €</p>
+          <div className="rounded-lg border border-border bg-background p-4">
+            <p className="text-sm text-muted-foreground">Dieser Monat</p>
+            <p className="text-2xl font-semibold text-foreground">{s.revenue.thisMonth.toFixed(2)} €</p>
           </div>
-          <div className="rounded-lg border border-[var(--color-accent)]/30 bg-[var(--color-accent-muted)]/50 p-4">
-            <p className="text-sm text-[var(--color-accent-strong)]">Gesamt</p>
-            <p className="text-2xl font-bold text-[var(--color-accent-strong)]">{s.revenue.total.toFixed(2)} €</p>
+          <div className="rounded-lg border border-primary/30 bg-secondary/50 p-4">
+            <p className="text-sm text-primary">Gesamt</p>
+            <p className="text-2xl font-bold text-primary">{s.revenue.total.toFixed(2)} €</p>
           </div>
         </div>
       </Card>
@@ -110,7 +110,7 @@ export default function OwnerStatsPage() {
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-[var(--color-border)] text-[var(--color-muted)]">
+                <tr className="border-b border-border text-muted-foreground">
                   <th className="pb-2 pr-4 font-medium">Leistung</th>
                   <th className="pb-2 pr-4 font-medium text-right">Buchungen</th>
                   <th className="pb-2 font-medium text-right">Umsatz</th>
@@ -118,10 +118,10 @@ export default function OwnerStatsPage() {
               </thead>
               <tbody>
                 {s.popularServices.map((ps) => (
-                  <tr key={ps.service_id} className="border-b border-[var(--color-border)]/50">
-                    <td className="py-3 pr-4 font-medium text-[var(--color-text)]">{ps.service_name}</td>
-                    <td className="py-3 pr-4 text-right text-[var(--color-muted)]">{ps.booking_count}</td>
-                    <td className="py-3 text-right font-medium text-[var(--color-text)]">
+                  <tr key={ps.service_id} className="border-b border-border/50">
+                    <td className="py-3 pr-4 font-medium text-foreground">{ps.service_name}</td>
+                    <td className="py-3 pr-4 text-right text-muted-foreground">{ps.booking_count}</td>
+                    <td className="py-3 text-right font-medium text-foreground">
                       {ps.total_revenue.toFixed(2)} €
                     </td>
                   </tr>
@@ -135,19 +135,19 @@ export default function OwnerStatsPage() {
       {s.popularTimeSlots.length > 0 && (
         <Card>
           <CardTitle className="text-lg">Beliebteste Uhrzeiten (Stunde)</CardTitle>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Nach Anzahl abgeschlossener Buchungen.
           </p>
           <div className="mt-4 flex flex-wrap gap-4">
             {s.popularTimeSlots.map((slot) => (
               <div
                 key={slot.hour}
-                className="flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-page)] px-4 py-2"
+                className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2"
               >
-                <span className="font-medium text-[var(--color-text)]">
+                <span className="font-medium text-foreground">
                   {String(slot.hour).padStart(2, "0")}:00
                 </span>
-                <span className="text-sm text-[var(--color-muted)]">
+                <span className="text-sm text-muted-foreground">
                   {slot.booking_count} Buchungen
                 </span>
               </div>

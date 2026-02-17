@@ -19,17 +19,17 @@ export function PostBookingRegisterPrompt({ customerEmail = "" }: Props) {
 
   return (
     <>
-      <div className="mt-8 rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-accent-muted)]/30 p-4 text-center">
-        <p className="text-sm font-medium text-[var(--color-text)]">
+      <div className="mt-8 rounded-xl border border-primary/40 bg-secondary/30 p-4 text-center">
+        <p className="text-sm font-medium text-foreground">
           Konto erstellen und Buchungen immer im Überblick haben
         </p>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Mit einem Konto sehen Sie alle Buchungen, speichern Favoriten und sammeln Treuepunkte.
         </p>
         <button
           type="button"
           onClick={() => setRegisterOpen(true)}
-          className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-[var(--color-accent)] px-4 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+          className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Kostenlos Konto erstellen
         </button>

@@ -46,10 +46,10 @@ export default function CustomerDashboardPage() {
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-[var(--color-text)] sm:text-3xl">
+          <h1 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
             Hallo, {customer?.name ?? "Gast"}
           </h1>
-          <p className="mt-1 text-[var(--color-muted)]">
+          <p className="mt-1 text-muted-foreground">
             Hier ist Ihre Übersicht.
           </p>
         </div>
@@ -64,39 +64,39 @@ export default function CustomerDashboardPage() {
       )}
 
       {loading ? (
-        <div className="mt-8 h-32 animate-pulse rounded-xl bg-[var(--color-border)]/50" />
+        <div className="mt-8 h-32 animate-pulse rounded-xl bg-muted/50" />
       ) : (
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <Link
             href="/customer/bookings"
-            className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]/20"
+            className="rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary hover:bg-secondary/20"
           >
-            <span className="text-sm font-medium text-[var(--color-muted)]">Meine Buchungen</span>
-            <p className="mt-1 text-2xl font-semibold text-[var(--color-text)]">{bookings.length}</p>
-            <span className="mt-1 block text-sm text-[var(--color-accent)]">Ansehen →</span>
+            <span className="text-sm font-medium text-muted-foreground">Meine Buchungen</span>
+            <p className="mt-1 text-2xl font-semibold text-foreground">{bookings.length}</p>
+            <span className="mt-1 block text-sm text-primary">Ansehen →</span>
           </Link>
           <Link
             href="/customer/favorites"
-            className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]/20"
+            className="rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary hover:bg-secondary/20"
           >
-            <span className="text-sm font-medium text-[var(--color-muted)]">Favoriten</span>
-            <p className="mt-1 text-2xl font-semibold text-[var(--color-text)]">{favorites.length}</p>
-            <span className="mt-1 block text-sm text-[var(--color-accent)]">Ansehen →</span>
+            <span className="text-sm font-medium text-muted-foreground">Favoriten</span>
+            <p className="mt-1 text-2xl font-semibold text-foreground">{favorites.length}</p>
+            <span className="mt-1 block text-sm text-primary">Ansehen →</span>
           </Link>
           <Link
             href="/customer/loyalty"
-            className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]/20"
+            className="rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary hover:bg-secondary/20"
           >
-            <span className="text-sm font-medium text-[var(--color-muted)]">Treuepunkte</span>
-            <p className="mt-1 text-2xl font-semibold text-[var(--color-text)]">{points ?? 0}</p>
-            <span className="mt-1 block text-sm text-[var(--color-accent)]">Ansehen →</span>
+            <span className="text-sm font-medium text-muted-foreground">Treuepunkte</span>
+            <p className="mt-1 text-2xl font-semibold text-foreground">{points ?? 0}</p>
+            <span className="mt-1 block text-sm text-primary">Ansehen →</span>
           </Link>
         </div>
       )}
 
       {!loading && upcomingBookings.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-lg font-semibold text-[var(--color-text)]">Kommende Buchungen</h2>
+          <h2 className="text-lg font-semibold text-foreground">Kommende Buchungen</h2>
           <ul className="mt-4 space-y-3">
             {upcomingBookings.map((b) => {
               const dateDisplay = b.booking_date
@@ -112,17 +112,17 @@ export default function CustomerDashboardPage() {
                 <li key={b.id}>
                   <Link
                     href={`/bookings/manage/${b.booking_token}`}
-                    className="block rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)]/30"
+                    className="block rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary hover:bg-secondary/30"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         {b.venue_name && (
-                          <p className="font-semibold text-[var(--color-text)]">{b.venue_name}</p>
+                          <p className="font-semibold text-foreground">{b.venue_name}</p>
                         )}
                         {b.service_name && (
-                          <p className="mt-0.5 text-sm text-[var(--color-muted)]">{b.service_name}</p>
+                          <p className="mt-0.5 text-sm text-muted-foreground">{b.service_name}</p>
                         )}
-                        <p className="mt-2 text-sm text-[var(--color-text)]">
+                        <p className="mt-2 text-sm text-foreground">
                           {dateDisplay} · {timeDisplay}
                         </p>
                       </div>
@@ -139,7 +139,7 @@ export default function CustomerDashboardPage() {
           </ul>
           <Link
             href="/customer/bookings"
-            className="mt-4 inline-block text-sm font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)]"
+            className="mt-4 inline-block text-sm font-medium text-primary hover:text-primary/90"
           >
             Alle Buchungen anzeigen
           </Link>
@@ -149,7 +149,7 @@ export default function CustomerDashboardPage() {
       <div className="mt-10">
         <Link
           href="/venues"
-          className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm font-medium text-[var(--color-text)] hover:bg-[var(--color-page)]"
+          className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-background"
         >
           <span>Neue Buchung</span>
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

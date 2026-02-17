@@ -9,9 +9,9 @@ import {
   adjustCustomerLoyaltyPoints,
   type CustomerWithStats,
 } from "@/lib/api/admin";
-import { Card } from "@/components/shared/card";
-import { Button } from "@/components/shared/button";
-import { Input } from "@/components/shared/input";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
@@ -183,21 +183,21 @@ export default function AdminCustomersPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+          <h1 className="font-display text-2xl font-semibold text-foreground">
             Kunden
           </h1>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Kunden anzeigen, bearbeiten und Bonuspunkte verwalten.
           </p>
         </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-sm font-medium text-[var(--color-muted)]">Status:</span>
+        <span className="text-sm font-medium text-muted-foreground">Status:</span>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)]"
+          className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground"
         >
           {STATUS_FILTER_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -210,9 +210,9 @@ export default function AdminCustomersPage() {
           placeholder="Suche Name, E-Mail, Telefon…"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] w-64"
+          className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground w-64"
         />
-        <span className="text-sm text-[var(--color-muted)]">
+        <span className="text-sm text-muted-foreground">
           {customers.length} Kunden
         </span>
       </div>
@@ -221,25 +221,25 @@ export default function AdminCustomersPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-[var(--color-border)]">
-                <th className="pb-2 font-medium text-[var(--color-muted)]">E-Mail</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Name</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Telefon</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Punkte</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Buchungen</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Verifiziert</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Status</th>
-                <th className="pb-2 font-medium text-[var(--color-muted)]">Aktion</th>
+              <tr className="border-b border-border">
+                <th className="pb-2 font-medium text-muted-foreground">E-Mail</th>
+                <th className="pb-2 font-medium text-muted-foreground">Name</th>
+                <th className="pb-2 font-medium text-muted-foreground">Telefon</th>
+                <th className="pb-2 font-medium text-muted-foreground">Punkte</th>
+                <th className="pb-2 font-medium text-muted-foreground">Buchungen</th>
+                <th className="pb-2 font-medium text-muted-foreground">Verifiziert</th>
+                <th className="pb-2 font-medium text-muted-foreground">Status</th>
+                <th className="pb-2 font-medium text-muted-foreground">Aktion</th>
               </tr>
             </thead>
             <tbody>
               {customers.map((c) => (
-                <tr key={c.id} className="border-b border-[var(--color-border)] last:border-0">
-                  <td className="py-2 text-[var(--color-text)]">{c.email}</td>
-                  <td className="py-2 font-medium text-[var(--color-text)]">{c.name}</td>
-                  <td className="py-2 text-[var(--color-muted)]">{c.phone ?? "–"}</td>
-                  <td className="py-2 text-[var(--color-text)]">{c.loyalty_points}</td>
-                  <td className="py-2 text-[var(--color-muted)]">
+                <tr key={c.id} className="border-b border-border last:border-0">
+                  <td className="py-2 text-foreground">{c.email}</td>
+                  <td className="py-2 font-medium text-foreground">{c.name}</td>
+                  <td className="py-2 text-muted-foreground">{c.phone ?? "–"}</td>
+                  <td className="py-2 text-foreground">{c.loyalty_points}</td>
+                  <td className="py-2 text-muted-foreground">
                     {c.total_bookings} ({c.completed_bookings} abgeschl.)
                   </td>
                   <td className="py-2">
@@ -258,7 +258,7 @@ export default function AdminCustomersPage() {
                     )}
                   </td>
                   <td className="py-2">
-                    <span className={c.is_active ? "text-green-600 dark:text-green-400" : "text-[var(--color-muted)]"}>
+                    <span className={c.is_active ? "text-green-600 dark:text-green-400" : "text-muted-foreground"}>
                       {c.is_active ? "Aktiv" : "Inaktiv"}
                     </span>
                   </td>
@@ -289,7 +289,7 @@ export default function AdminCustomersPage() {
           </table>
         </div>
         {customers.length === 0 && (
-          <p className="py-8 text-center text-[var(--color-muted)]">
+          <p className="py-8 text-center text-muted-foreground">
             Keine Kunden gefunden.
           </p>
         )}
@@ -298,10 +298,10 @@ export default function AdminCustomersPage() {
       {modal === "edit" && editingCustomer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <Card className="w-full max-w-md p-6">
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Kunde bearbeiten
             </h2>
-            <p className="mt-1 text-sm text-[var(--color-muted)]">{editingCustomer.email}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{editingCustomer.email}</p>
             <form onSubmit={handleEditSubmit} className="mt-4 space-y-3">
               <Input
                 label="Name"
@@ -319,21 +319,21 @@ export default function AdminCustomersPage() {
                   type="checkbox"
                   checked={form.email_verified}
                   onChange={(e) => setForm((f) => ({ ...f, email_verified: e.target.checked }))}
-                  className="rounded border-[var(--color-border)]"
+                  className="rounded border-border"
                 />
-                <span className="text-sm text-[var(--color-text)]">E-Mail verifiziert</span>
+                <span className="text-sm text-foreground">E-Mail verifiziert</span>
               </label>
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   checked={form.is_active}
                   onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))}
-                  className="rounded border-[var(--color-border)]"
+                  className="rounded border-border"
                 />
-                <span className="text-sm text-[var(--color-text)]">Aktiv</span>
+                <span className="text-sm text-foreground">Aktiv</span>
               </label>
               <div className="flex gap-2 pt-2">
-                <Button type="submit" variant="primary" disabled={saving}>
+                <Button type="submit" variant="default" disabled={saving}>
                   {saving ? "Speichern…" : "Speichern"}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setModal(null)}>
@@ -348,10 +348,10 @@ export default function AdminCustomersPage() {
       {modal === "password" && editingCustomer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <Card className="w-full max-w-md p-6">
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Passwort setzen
             </h2>
-            <p className="mt-1 text-sm text-[var(--color-muted)]">{editingCustomer.email}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{editingCustomer.email}</p>
             <form onSubmit={handlePasswordSubmit} className="mt-4 space-y-3">
               <Input
                 label="Neues Passwort"
@@ -374,7 +374,7 @@ export default function AdminCustomersPage() {
                 minLength={8}
               />
               <div className="flex gap-2 pt-2">
-                <Button type="submit" variant="primary" disabled={saving}>
+                <Button type="submit" variant="default" disabled={saving}>
                   {saving ? "Speichern…" : "Speichern"}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setModal(null)}>
@@ -389,10 +389,10 @@ export default function AdminCustomersPage() {
       {modal === "points" && editingCustomer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <Card className="w-full max-w-md p-6">
-            <h2 className="font-display text-lg font-semibold text-[var(--color-text)]">
+            <h2 className="font-display text-lg font-semibold text-foreground">
               Bonuspunkte anpassen
             </h2>
-            <p className="mt-1 text-sm text-[var(--color-muted)]">
+            <p className="mt-1 text-sm text-muted-foreground">
               {editingCustomer.name} – aktuell {editingCustomer.loyalty_points} Punkte
             </p>
             <form onSubmit={handlePointsSubmit} className="mt-4 space-y-3">
@@ -418,7 +418,7 @@ export default function AdminCustomersPage() {
                 required
               />
               <div className="flex gap-2 pt-2">
-                <Button type="submit" variant="primary" disabled={saving}>
+                <Button type="submit" variant="default" disabled={saving}>
                   {saving ? "Speichern…" : "Anpassen"}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setModal(null)}>

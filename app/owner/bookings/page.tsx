@@ -7,10 +7,10 @@ import { getBookings, updateBookingStatus, getServices, createManualBooking } fr
 import type { BookingWithDetails } from "@/lib/types";
 import type { Service } from "@/lib/types";
 import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
-import { Button } from "@/components/shared/button";
-import { Card } from "@/components/shared/card";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
-import { Input } from "@/components/shared/input";
+import { Input } from "@/components/ui/input";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
@@ -209,10 +209,10 @@ export default function OwnerBookingsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">
+          <h1 className="font-display text-2xl font-semibold text-foreground">
             Buchungen
           </h1>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">
+          <p className="mt-1 text-sm text-muted-foreground">
             Buchungsanfragen bestätigen, Status ändern oder manuelle Buchungen anlegen.
           </p>
         </div>
@@ -229,11 +229,11 @@ export default function OwnerBookingsPage() {
       <Card className="p-4">
         <div className="flex flex-wrap items-end gap-4">
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-[var(--color-muted)]">Status</span>
+            <span className="text-muted-foreground">Status</span>
             <select
               value={statusFilter}
               onChange={(e) => { setStatusFilter(e.target.value); setOffset(0); }}
-              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] min-w-[140px]"
+              className="rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring min-w-[140px]"
             >
               {STATUS_OPTIONS.map((o) => (
                 <option key={o.value || "all"} value={o.value}>
@@ -243,30 +243,30 @@ export default function OwnerBookingsPage() {
             </select>
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-[var(--color-muted)]">Von Datum</span>
+            <span className="text-muted-foreground">Von Datum</span>
             <input
               type="date"
               value={startDate}
               onChange={(e) => { setStartDate(e.target.value); setOffset(0); }}
-              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+              className="rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-[var(--color-muted)]">Bis Datum</span>
+            <span className="text-muted-foreground">Bis Datum</span>
             <input
               type="date"
               value={endDate}
               onChange={(e) => { setEndDate(e.target.value); setOffset(0); }}
-              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+              className="rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </label>
           {services.length > 0 && (
             <label className="flex flex-col gap-1 text-sm">
-              <span className="text-[var(--color-muted)]">Leistung</span>
+              <span className="text-muted-foreground">Leistung</span>
               <select
                 value={serviceFilter}
                 onChange={(e) => { setServiceFilter(e.target.value); setOffset(0); }}
-                className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] min-w-[160px]"
+                className="rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring min-w-[160px]"
               >
                 <option value="">Alle</option>
                 {services.map((s) => (
@@ -276,14 +276,14 @@ export default function OwnerBookingsPage() {
             </label>
           )}
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-[var(--color-muted)]">Suche (Name, E-Mail, Tel.)</span>
+            <span className="text-muted-foreground">Suche (Name, E-Mail, Tel.)</span>
             <input
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && (setOffset(0), loadBookings())}
               placeholder="Suchen…"
-              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] w-48"
+              className="rounded-lg border border-border bg-card px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring w-48"
             />
           </label>
           <Button variant="secondary" size="sm" onClick={() => { setOffset(0); loadBookings(); }}>
@@ -295,12 +295,12 @@ export default function OwnerBookingsPage() {
       {loading ? (
         <PageLoader />
       ) : bookings.length === 0 ? (
-        <Card className="py-12 text-center text-[var(--color-muted)]">
+        <Card className="py-12 text-center text-muted-foreground">
           Keine Buchungen gefunden. Passe die Filter an oder lege eine manuelle Buchung an.
         </Card>
       ) : (
         <>
-          <p className="text-sm text-[var(--color-muted)]">
+          <p className="text-sm text-muted-foreground">
             {offset + 1}–{Math.min(offset + limit, total)} von {total} Buchungen
           </p>
           <ul className="space-y-4">
@@ -311,21 +311,21 @@ export default function OwnerBookingsPage() {
                   tabIndex={0}
                   onClick={() => setDetailBooking(b)}
                   onKeyDown={(e) => e.key === "Enter" && setDetailBooking(b)}
-                  className="flex flex-col gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-sm)] transition-all sm:flex-row sm:items-start sm:justify-between cursor-pointer hover:ring-2 hover:ring-[var(--color-accent)]/30 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/50"
+                  className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-sm transition-all sm:flex-row sm:items-start sm:justify-between cursor-pointer hover:ring-2 hover:ring-primary/30 focus:outline-none focus:ring-2 focus:ring-ring/50"
                 >
                   <div className="min-w-0">
-                    <p className="font-medium text-[var(--color-text)]">
+                    <p className="font-medium text-foreground">
                       {b.customer_name}
                     </p>
-                    <p className="text-sm text-[var(--color-muted)]">
+                    <p className="text-sm text-muted-foreground">
                       {b.customer_email}
                       {b.customer_phone && ` · ${b.customer_phone}`}
                     </p>
-                    <p className="mt-1 text-sm text-[var(--color-text)]">
+                    <p className="mt-1 text-sm text-foreground">
                       {b.service_name}
                       {b.staff_member_name && ` · ${b.staff_member_name}`}
                     </p>
-                    <p className="text-sm text-[var(--color-muted)]">
+                    <p className="text-sm text-muted-foreground">
                       {formatDate(b.booking_date)} · {formatTime(b.start_time)}–
                       {formatTime(b.end_time)}
                       {b.party_size > 0 && ` · ${b.party_size} Pers.`}
@@ -400,10 +400,10 @@ export default function OwnerBookingsPage() {
               onClick={() => setReasonDialog(null)}
             >
               <div
-                className="w-full max-w-md rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-lg)]"
+                className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-lg"
                 onClick={(e) => e.stopPropagation()}
               >
-                <h3 className="font-display text-lg font-semibold text-[var(--color-text)]">
+                <h3 className="font-display text-lg font-semibold text-foreground">
                   Grund für {reasonDialog.label} (erforderlich)
                 </h3>
                 <textarea
@@ -411,7 +411,7 @@ export default function OwnerBookingsPage() {
                   onChange={(e) => setReasonInput(e.target.value)}
                   placeholder="z. B. Kunde hat abgesagt, Termin durchgeführt, …"
                   rows={3}
-                  className="mt-3 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                  className="mt-3 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                   autoFocus
                 />
                 <div className="mt-4 flex gap-2 justify-end">
@@ -459,22 +459,22 @@ export default function OwnerBookingsPage() {
 
       {manualOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-lg)]">
-            <h2 className="font-display text-xl font-semibold text-[var(--color-text)]">
+          <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-lg">
+            <h2 className="font-display text-xl font-semibold text-foreground">
               Manuelle Buchung anlegen
             </h2>
-            <p className="mt-1 text-sm text-[var(--color-muted)]">
+            <p className="mt-1 text-sm text-muted-foreground">
               z. B. für Laufkundschaft oder Nachbuchung.
             </p>
             <form onSubmit={handleManualSubmit} className="mt-6 space-y-4">
-              <label className="block text-sm font-medium text-[var(--color-text)]">
+              <label className="block text-sm font-medium text-foreground">
                 Leistung
               </label>
               <select
                 required
                 value={manualForm.service_id || ""}
                 onChange={(e) => setManualForm((f) => ({ ...f, service_id: Number(e.target.value) }))}
-                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                className="w-full rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="">Bitte wählen</option>
                 {services.map((s) => (
@@ -492,20 +492,20 @@ export default function OwnerBookingsPage() {
                   required
                 />
                 <div className="space-y-1">
-                  <label className="block text-sm font-medium text-[var(--color-text)]">Uhrzeit</label>
+                  <label className="block text-sm font-medium text-foreground">Uhrzeit</label>
                   <div className="flex gap-2">
                     <input
                       type="time"
                       value={manualForm.start_time}
                       onChange={(e) => setManualForm((f) => ({ ...f, start_time: e.target.value }))}
-                      className="flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                      className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                     />
-                    <span className="self-center text-[var(--color-muted)]">–</span>
+                    <span className="self-center text-muted-foreground">–</span>
                     <input
                       type="time"
                       value={manualForm.end_time}
                       onChange={(e) => setManualForm((f) => ({ ...f, end_time: e.target.value }))}
-                      className="flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                      className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                     />
                   </div>
                 </div>
@@ -533,7 +533,7 @@ export default function OwnerBookingsPage() {
                 placeholder="+49 …"
               />
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[var(--color-text)]">
+                <label className="mb-1.5 block text-sm font-medium text-foreground">
                   Anzahl Personen (1–8)
                 </label>
                 <input
@@ -542,9 +542,9 @@ export default function OwnerBookingsPage() {
                   max={8}
                   value={manualForm.party_size}
                   onChange={(e) => setManualForm((f) => ({ ...f, party_size: Math.min(8, Math.max(1, parseInt(e.target.value, 10) || 1)) }))}
-                  className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)]"
+                  className="w-full rounded-md border border-border bg-card px-3 py-2 text-foreground"
                 />
-                <p className="mt-1 text-xs text-[var(--color-muted)]">Für mehr als 8 Personen bitte anrufen.</p>
+                <p className="mt-1 text-xs text-muted-foreground">Für mehr als 8 Personen bitte anrufen.</p>
               </div>
               <div className="flex gap-3 pt-2">
                 <Button type="submit" isLoading={manualSaving} className="flex-1">

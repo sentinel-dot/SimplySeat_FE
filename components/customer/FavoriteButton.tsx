@@ -67,10 +67,10 @@ export function FavoriteButton({ venueId, className = "" }: Props) {
   if (checking && auth?.isAuthenticated) {
     return (
       <span
-        className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] ${className}`}
+        className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card ${className}`}
         aria-hidden
       >
-        <span className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--color-accent)] border-t-transparent" />
+        <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </span>
     );
   }
@@ -81,10 +81,10 @@ export function FavoriteButton({ venueId, className = "" }: Props) {
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 disabled:opacity-50 ${
+        className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 ${
           favorited
-            ? "border-[var(--color-accent)] bg-[var(--color-accent-muted)] text-[var(--color-accent)]"
-            : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            ? "border-primary bg-secondary text-primary"
+            : "border-border bg-card text-muted-foreground hover:border-primary hover:text-primary"
         } ${className}`}
         aria-label={favorited ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
         title={favorited ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
