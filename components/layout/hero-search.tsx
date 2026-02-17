@@ -129,7 +129,6 @@ export function HeroSearch() {
                 </option>
               ))}
             </select>
-            <p className="mt-1 text-xs text-[var(--color-muted)]">Für mehr als 8 Gäste bitte anrufen.</p>
           </div>
         )}
       </div>
