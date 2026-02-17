@@ -11,7 +11,7 @@ import {
 } from "@/lib/utils/venueType";
 import { ErrorMessage } from "@/components/shared/error-message";
 
-const VALID_VENUE_TYPES: Venue["type"][] = ["restaurant", "hair_salon", "beauty_salon", "massage", "other"];
+const VALID_VENUE_TYPES: Venue["type"][] = ["restaurant", "hair_salon", "beauty_salon", "cafe", "bar", "spa"];
 
 function typeFromParam(param: string | null): Venue["type"] | "all" {
   if (!param) return "all";

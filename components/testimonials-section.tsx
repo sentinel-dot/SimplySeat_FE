@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 
 const testimonials = [
   {
@@ -7,6 +7,7 @@ const testimonials = [
     content:
       "SimplySeat hat für mich komplett verändert, wie ich Termine buche. Ich habe innerhalb von Minuten einen tollen Friseur gefunden und die Buchung war reibungslos.",
     rating: 5,
+    initials: "SM",
   },
   {
     name: "Thomas K.",
@@ -14,6 +15,7 @@ const testimonials = [
     content:
       "Ich nutze SimplySeat für alle meine Termine. Die Möglichkeit, Anbieter zu vergleichen und direkt zu buchen, ist unbezahlbar.",
     rating: 5,
+    initials: "TK",
   },
   {
     name: "Lena W.",
@@ -21,40 +23,44 @@ const testimonials = [
     content:
       "Das Beste an SimplySeat ist die sofortige Bestätigung. Kein Hin und Her mehr. Einfach auswählen, buchen und hingehen. So einfach ist das.",
     rating: 5,
+    initials: "LW",
   },
 ];
 
 export function TestimonialsSection() {
   return (
-    <section id="testimonials" className="bg-background py-12 sm:py-20 border-t border-border">
+    <section id="testimonials" className="bg-background py-20 md:py-28 border-t border-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="font-display text-balance text-2xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+            Was Nutzer sagen
+          </p>
+          <h2 className="mt-2 font-display text-3xl font-bold text-foreground md:text-4xl text-balance">
             Von Tausenden geschätzt
           </h2>
-          <p className="mt-2 sm:mt-3 text-pretty text-sm sm:text-base text-muted-foreground">
-            Lies, was unsere Community über SimplySeat sagt
-          </p>
         </div>
 
-        <div className="mt-8 sm:mt-12 grid gap-6 sm:gap-8 md:grid-cols-3">
-          {testimonials.map((testimonial, index) => (
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {testimonials.map((testimonial) => (
             <div
               key={testimonial.name}
-              className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)] transition-all duration-300 hover:shadow-[var(--shadow-card-hover)] animate-in fade-in slide-in-from-bottom-3 animate-fill-both"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="flex flex-col rounded-2xl border border-border bg-card p-6 transition-shadow hover:shadow-lg"
             >
-              <div className="flex gap-0.5">
+              <Quote className="h-8 w-8 text-primary/30" />
+
+              <div className="mt-4 flex gap-0.5">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-highlight text-highlight" />
+                  <Star key={i} className="h-4 w-4 fill-primary text-primary" />
                 ))}
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+
+              <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">
                 &quot;{testimonial.content}&quot;
               </p>
-              <div className="mt-5 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/15 text-sm font-semibold text-primary">
-                  {testimonial.name.charAt(0)}
+
+              <div className="mt-6 flex items-center gap-3 border-t border-border pt-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                  {testimonial.initials}
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-foreground">{testimonial.name}</p>

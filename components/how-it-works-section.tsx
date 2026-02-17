@@ -1,54 +1,64 @@
-import { Search, CalendarCheck, Star } from "lucide-react";
+import { Search, CalendarDays, CheckCircle2 } from "lucide-react";
 
 const steps = [
   {
     icon: Search,
-    title: "Suchen & Entdecken",
+    title: "Suchen",
     description:
-      "Durchstöbere lokale Betriebe. Filtere nach Kategorie, Ort und Verfügbarkeit.",
+      "Finde den passenden Anbieter: nach Kategorie, Ort oder Name durchstöbern.",
+    step: "01",
   },
   {
-    icon: CalendarCheck,
-    title: "Sofort buchen",
+    icon: CalendarDays,
+    title: "Buchen",
     description:
-      "Wähle dein Wunschdatum und -uhrzeit. Bestätige deinen Termin mit wenigen Klicks – keine Anrufe nötig.",
+      "Wähle Datum und Uhrzeit aus der Echtzeit-Verfügbarkeit – ohne Anruf.",
+    step: "02",
   },
   {
-    icon: Star,
-    title: "Genießen & Bewerten",
+    icon: CheckCircle2,
+    title: "Genießen",
     description:
-      "Komm vorbei und genieße. Hinterlasse eine Bewertung und hilf anderen, die besten Anbieter zu finden.",
+      "Komm vorbei und entspann. Hilf anderen mit einer Bewertung, tolle Anbieter zu entdecken.",
+    step: "03",
   },
 ];
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="bg-background py-12 sm:py-20 border-t border-border">
+    <section id="how-it-works" className="bg-background py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="font-display text-balance text-2xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+            Einfacher Ablauf
+          </p>
+          <h2 className="mt-2 font-display text-3xl font-bold text-foreground md:text-4xl text-balance">
             So funktioniert&apos;s
           </h2>
-          <p className="mt-2 sm:mt-3 text-pretty text-sm sm:text-base text-muted-foreground">
-            Buche deinen nächsten Termin in drei einfachen Schritten
+          <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
+            Deinen nächsten Termin buchst du in wenigen Sekunden.
           </p>
         </div>
 
-        <div className="mt-10 sm:mt-14 grid gap-10 sm:gap-8 md:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
           {steps.map((step, index) => (
-            <div
-              key={step.title}
-              className="relative flex flex-col items-center text-center animate-in fade-in slide-in-from-bottom-3 animate-fill-both"
-              style={{ animationDelay: `${index * 120}ms` }}
-            >
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md">
-                <step.icon className="h-7 w-7" />
+            <div key={step.title} className="relative text-center">
+              {index < steps.length - 1 && (
+                <div
+                  className="absolute left-1/2 top-10 hidden h-px w-full bg-border md:block"
+                  aria-hidden
+                />
+              )}
+
+              <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-secondary">
+                <step.icon className="h-8 w-8 text-primary" />
+                <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                  {step.step}
+                </span>
               </div>
-              <span className="mt-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary">
-                {index + 1}
-              </span>
-              <h3 className="mt-3 text-lg font-semibold text-foreground">{step.title}</h3>
-              <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
+
+              <h3 className="mt-6 text-lg font-bold text-foreground">{step.title}</h3>
+              <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
                 {step.description}
               </p>
             </div>

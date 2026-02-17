@@ -6,15 +6,23 @@ import { HowItWorksSection } from "@/components/how-it-works-section";
 import { FeaturedProviders } from "@/components/featured-providers";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { CtaSection } from "@/components/cta-section";
-import { getPublicStats } from "@/lib/api/venues";
+import { getPublicStats, getVenues } from "@/lib/api/venues";
+import type { Venue } from "@/lib/types";
 
 export default async function HomePage() {
   let stats: { venueCount: number; bookingCountThisMonth: number } | null = null;
+  let venues: Venue[] = [];
   try {
     const res = await getPublicStats();
     if (res.success && res.data) stats = res.data;
   } catch {
     // Stats optional – Seite bleibt nutzbar
+  }
+  try {
+    const res = await getVenues();
+    if (res.success && Array.isArray(res.data)) venues = res.data;
+  } catch {
+    // optional
   }
 
   return (
@@ -27,7 +35,7 @@ export default async function HomePage() {
           bookingCountThisMonth={stats?.bookingCountThisMonth}
         />
         <HowItWorksSection />
-        <FeaturedProviders />
+        <FeaturedProviders venues={venues} />
         <TestimonialsSection />
         <CtaSection />
       </div>

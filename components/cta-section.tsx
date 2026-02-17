@@ -4,34 +4,32 @@ import { ArrowRight } from "lucide-react";
 
 export function CtaSection() {
   return (
-    <section className="relative border-t border-border overflow-hidden py-16 sm:py-24 bg-gradient-to-br from-primary via-primary/98 to-primary/90">
-      <div className="pattern-dots absolute inset-0 text-primary-foreground/10" aria-hidden />
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 text-center lg:px-8">
-        <h2 className="font-display text-balance text-2xl font-bold tracking-tight text-primary-foreground animate-in fade-in slide-in-from-bottom-2 duration-500 sm:text-4xl">
+    <section className="bg-primary py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 text-center lg:px-8">
+        <h2 className="font-display text-3xl font-bold text-primary-foreground md:text-5xl text-balance">
           Bereit für deinen nächsten Termin?
         </h2>
-        <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-pretty text-sm sm:text-base text-primary-foreground/85">
-          Schließe dich zufriedenen Kunden an, die SimplySeat nutzen, um die besten lokalen Betriebe
-          zu entdecken und zu buchen.
+        <p className="mx-auto mt-4 max-w-lg text-primary-foreground/70">
+          Schließe dich tausenden zufriedenen Kunden an, die ihre Lieblingsangebote täglich über SimplySeat buchen.
         </p>
-        <div className="mt-8 sm:mt-10 flex flex-col items-stretch sm:items-center justify-center gap-3 sm:gap-4 sm:flex-row">
+        <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Button
             size="lg"
-            className="min-h-[48px] w-full sm:w-auto rounded-xl sm:rounded-2xl bg-primary-foreground px-8 text-primary shadow-lg hover:bg-primary-foreground/95"
+            className="rounded-xl bg-primary-foreground px-8 text-sm font-semibold text-primary hover:bg-primary-foreground/90"
             asChild
           >
-            <Link href="/venues" className="inline-flex items-center justify-center">
-              Orte entdecken
+            <Link href="/venues" className="inline-flex items-center">
+              Kostenlos starten
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
           <Button
-            size="lg"
             variant="outline"
-            className="min-h-[48px] w-full sm:w-auto rounded-xl sm:rounded-2xl border-2 border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/15"
+            size="lg"
+            className="rounded-xl border-2 border-primary-foreground/50 bg-transparent px-8 text-sm font-semibold text-primary-foreground hover:border-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground"
             asChild
           >
-            <Link href="/login">Betreiber werden</Link>
+            <Link href="/login">Unternehmen eintragen</Link>
           </Button>
         </div>
       </div>

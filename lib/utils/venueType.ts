@@ -4,16 +4,18 @@ export const VENUE_TYPE_LABELS: Record<Venue["type"], string> = {
   restaurant: "Restaurant",
   hair_salon: "Friseur",
   beauty_salon: "Kosmetik",
-  massage: "Massage",
-  other: "Sonstiges",
+  cafe: "Café",
+  bar: "Bar",
+  spa: "Spa & Wellness",
 };
 
 export const VENUE_TYPES_ORDER: Venue["type"][] = [
   "restaurant",
   "hair_salon",
   "beauty_salon",
-  "massage",
-  "other",
+  "cafe",
+  "bar",
+  "spa",
 ];
 
 export function getVenueTypeLabel(type: Venue["type"]): string {

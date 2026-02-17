@@ -3,7 +3,7 @@ export interface Venue
 {
     id: number;
     name: string;
-    type: 'restaurant' | 'hair_salon' | 'beauty_salon' | 'massage' | 'other';
+    type: 'restaurant' | 'hair_salon' | 'beauty_salon' | 'cafe' | 'bar' | 'spa';
     email: string;
     phone?: string;
     address?: string;

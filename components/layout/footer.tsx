@@ -3,10 +3,11 @@ import Link from "next/link";
 const footerLinks: Record<string, { label: string; href: string }[]> = {
   Dienstleistungen: [
     { label: "Haar & Barbier", href: "/venues?type=hair_salon" },
-    { label: "Massage & Spa", href: "/venues?type=massage" },
+    { label: "Spa & Wellness", href: "/venues?type=spa" },
     { label: "Kosmetik", href: "/venues?type=beauty_salon" },
     { label: "Restaurant", href: "/venues?type=restaurant" },
-    { label: "Sonstiges", href: "/venues?type=other" },
+    { label: "Café", href: "/venues?type=cafe" },
+    { label: "Bar", href: "/venues?type=bar" },
   ],
   Unternehmen: [
     { label: "Über uns", href: "#" },
@@ -47,12 +48,12 @@ export function Footer() {
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
               <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-              <ul className="mt-3 flex flex-col gap-1 sm:gap-2.5">
+              <ul className="mt-2 flex flex-col gap-0.5 sm:gap-1">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="inline-block min-h-[44px] py-2 text-sm text-muted-foreground transition-colors hover:text-foreground active:text-foreground"
+                      className="inline-block py-1 text-sm text-muted-foreground transition-colors hover:text-foreground active:text-foreground"
                     >
                       {link.label}
                     </Link>

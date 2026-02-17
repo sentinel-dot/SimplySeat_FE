@@ -9,19 +9,17 @@ import {
   updateVenue,
 } from "@/lib/api/admin";
 import type { Venue } from "@/lib/types";
+import { VENUE_TYPES_ORDER, getVenueTypeLabel } from "@/lib/utils/venueType";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PageLoader } from "@/components/shared/loading-spinner";
 import { ErrorMessage } from "@/components/shared/error-message";
 
-const VENUE_TYPES: { value: Venue["type"]; label: string }[] = [
-  { value: "restaurant", label: "Restaurant" },
-  { value: "hair_salon", label: "Friseur" },
-  { value: "beauty_salon", label: "Kosmetik" },
-  { value: "massage", label: "Massage" },
-  { value: "other", label: "Sonstiges" },
-];
+const VENUE_TYPES: { value: Venue["type"]; label: string }[] = VENUE_TYPES_ORDER.map((value) => ({
+  value,
+  label: getVenueTypeLabel(value),
+}));
 
 export default function AdminVenuesPage() {
   const [venues, setVenues] = useState<Venue[]>([]);
@@ -31,7 +29,7 @@ export default function AdminVenuesPage() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState({
     name: "",
-    type: "other" as Venue["type"],
+    type: "restaurant" as Venue["type"],
     email: "",
     phone: "",
     address: "",
@@ -67,7 +65,7 @@ export default function AdminVenuesPage() {
   const openCreate = () => {
     setForm({
       name: "",
-      type: "other",
+      type: "restaurant",
       email: "",
       phone: "",
       address: "",

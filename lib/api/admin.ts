@@ -140,13 +140,19 @@ export async function getVenue(id: number): Promise<{
 export async function createVenue(
   data: Partial<Venue> & { name: string; type: Venue["type"]; email: string }
 ): Promise<{ success: boolean; data?: Venue; message?: string }> {
-  const res = await fetch(`${getAdminApiBase()}/admin/venues`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  }).then((r) => r.json());
-  return res;
+  try {
+    const response = await fetch(`${getAdminApiBase()}/admin/venues`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const res = await response.json().catch(() => ({}));
+    return res;
+  } catch (error) {
+    if (isNetworkError(error)) throw new Error(NETWORK_ERROR_MESSAGE);
+    throw error;
+  }
 }
 
 export async function updateVenue(
@@ -174,13 +180,19 @@ export async function createAdmin(data: {
   venue_id?: number | null;
   role?: "owner" | "staff";
 }): Promise<{ success: boolean; data?: AdminUser; message?: string }> {
-  const res = await fetch(`${getAdminApiBase()}/admin/users`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  }).then((r) => r.json());
-  return res;
+  try {
+    const response = await fetch(`${getAdminApiBase()}/admin/users`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const res = await response.json().catch(() => ({}));
+    return res;
+  } catch (error) {
+    if (isNetworkError(error)) throw new Error(NETWORK_ERROR_MESSAGE);
+    throw error;
+  }
 }
 
 export async function updateAdmin(
