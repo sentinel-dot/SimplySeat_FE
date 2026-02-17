@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { verifyEmail } from "@/lib/api/customer-auth";
 import { SiteLayout } from "@/components/layout/site-layout";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -152,5 +152,29 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </SiteLayout>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense
+      fallback={
+        <SiteLayout>
+          <div className="mx-auto max-w-lg px-4 py-16 sm:px-6 sm:py-24">
+            <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center shadow-lg">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center">
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-accent)] border-t-transparent" />
+              </div>
+              <h1 className="mt-6 text-2xl font-semibold text-[var(--color-text)]">
+                E-Mail wird verifiziert...
+              </h1>
+              <p className="mt-2 text-[var(--color-muted)]">Bitte warten Sie einen Moment.</p>
+            </div>
+          </div>
+        </SiteLayout>
+      }
+    >
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
