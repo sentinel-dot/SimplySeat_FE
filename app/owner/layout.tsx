@@ -154,7 +154,7 @@ export default function OwnerLayout({
       >
         <div className="flex h-14 items-center border-b border-[var(--color-border)] px-4 lg:px-5">
           <Link href="/owner" className="font-display text-lg font-semibold text-[var(--color-text)]">
-            <span className="text-[var(--color-accent)]">easy</span>seat Dashboard
+            <span className="text-[var(--color-accent)]">Simply</span>Seat Dashboard
           </Link>
         </div>
         <div className="overflow-y-auto p-3 pb-24 lg:p-4 lg:pb-24">{navContent}</div>

@@ -53,7 +53,7 @@ function LoginForm() {
           href="/"
           className="font-display text-xl font-semibold text-[var(--color-text)] transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 rounded-lg"
         >
-          <span className="text-[var(--color-accent)]">easy</span>seat
+          <span className="text-[var(--color-accent)]">Simply</span>Seat
         </Link>
         <div className="mt-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 shadow-[var(--shadow-md)]">
           <h1 className="font-display text-2xl font-semibold text-[var(--color-text)]">

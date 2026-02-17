@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import { CustomerAuthProvider } from "@/contexts/CustomerAuthContext";
+import { EarlyAccessGate } from "@/components/early-access-gate";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -25,7 +26,7 @@ export default function RootLayout({
     <html lang="de" className={dmSans.variable}>
       <body className="min-h-screen flex flex-col">
         <CustomerAuthProvider>
-          {children}
+          <EarlyAccessGate>{children}</EarlyAccessGate>
           <Toaster position="top-center" richColors closeButton />
         </CustomerAuthProvider>
       </body>

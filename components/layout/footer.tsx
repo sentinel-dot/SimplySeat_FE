@@ -7,7 +7,7 @@ export function Footer() {
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <span className="text-base font-bold text-[var(--color-text)]">
-              <span className="text-[var(--color-accent)]">easy</span>seat
+              <span className="text-[var(--color-accent)]">Simply</span>Seat
             </span>
             <p className="mt-1 max-w-xs text-sm text-[var(--color-muted)]">
               Tische & Termine einfach buchen.

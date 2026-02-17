@@ -148,7 +148,7 @@ export default function AdminLayout({
       >
         <div className="flex h-14 items-center border-b border-[var(--color-border)] px-4 lg:px-5">
           <Link href="/admin" className="font-display text-lg font-semibold text-[var(--color-text)]">
-            <span className="text-[var(--color-accent)]">easy</span>seat Admin
+            <span className="text-[var(--color-accent)]">Simply</span>Seat Admin
           </Link>
         </div>
         <div className="overflow-y-auto p-3 pb-24 lg:p-4 lg:pb-24">{navContent}</div>
