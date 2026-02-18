@@ -11,20 +11,12 @@ import type { Booking } from "@/lib/types";
 
 /**
  * TODO (Post-MVP): E-Mail-Verifizierung per Code hinzufügen
- * 
- * Aktuell: Jeder kann die E-Mail eingeben und alle Buchungen sehen (potenzielles Datenschutzproblem).
- * 
+ *
  * Zukünftige Implementierung:
- * 1. User gibt E-Mail ein
- * 2. Backend sendet Verifizierungs-Code (6-stellig) per E-Mail
- * 3. User gibt Code ein
- * 4. Bei Erfolg: Temporäre Session (z.B. JWT mit 15 Min Laufzeit) oder Magic-Link
- * 
- * Alternativ: Komplett auf Magic-Link umstellen (wie bei vielen modernen Apps)
- * - User gibt E-Mail ein → Backend sendet Link → Link öffnet /bookings/my-bookings?token=xyz
+ * - User gibt E-Mail ein → Backend sendet Link → Link öffnet /bookings/suchen?token=xyz
  */
 
-export function MyBookingsContent() {
+export function SuchenContent() {
   const [email, setEmail] = useState("");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(false);
@@ -70,7 +62,6 @@ export function MyBookingsContent() {
 
   return (
     <div className="mt-6 space-y-6">
-      {/* Suchfeld */}
       <div className="flex gap-3">
         <Input
           type="email"
@@ -86,7 +77,6 @@ export function MyBookingsContent() {
         </Button>
       </div>
 
-      {/* Ergebnisse */}
       {searched && bookings.length === 0 && (
         <div className="rounded-xl border border-border bg-card p-6 text-center">
           <p className="text-muted-foreground">

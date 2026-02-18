@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateBooking } from "@/lib/api/bookings";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Pencil, StickyNote } from "lucide-react";
 
 type Props = {
   token: string;
@@ -52,55 +54,67 @@ export function ManageBookingNotes({
   if (!canEdit && !specialRequests) return null;
 
   return (
-    <div className="mt-6 rounded-xl border border-border bg-card p-4 shadow-sm">
-      <h2 className="text-sm font-semibold text-foreground">
-        Notizen / Anmerkungen
-      </h2>
-      {editing && canEdit ? (
-        <>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="z. B. Wünsche, Hinweise für Ihren Termin"
-            rows={3}
-            className="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          />
-          <div className="mt-3 flex gap-2">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setNotes(specialRequests);
-                setEditing(false);
-              }}
-              disabled={saving}
-            >
-              Abbrechen
-            </Button>
-            <Button
-              onClick={handleSave}
-              isLoading={saving}
-              disabled={!hasChanges || saving}
-            >
-              Speichern
-            </Button>
+    <Card className="overflow-hidden">
+      <div className="border-b border-border bg-muted/30 px-6 py-3">
+        <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          <StickyNote className="size-4" />
+          Notizen & Wünsche
+        </h2>
+      </div>
+      <div className="p-6">
+        {editing && canEdit ? (
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Teilen Sie dem Betrieb Wünsche oder Hinweise mit (z. B. Allergien, besondere Wünsche).
+            </p>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="z. B. Wünsche, Hinweise für Ihren Termin"
+              rows={3}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/20"
+            />
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setNotes(specialRequests);
+                  setEditing(false);
+                }}
+                disabled={saving}
+              >
+                Abbrechen
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleSave}
+                isLoading={saving}
+                disabled={!hasChanges || saving}
+              >
+                Speichern
+              </Button>
+            </div>
           </div>
-        </>
-      ) : (
-        <>
-          <p className="mt-1 text-sm text-foreground">
-            {specialRequests || "Keine Notizen."}
-          </p>
-          {canEdit && (
-            <Button
-              variant="outline"
-              className="mt-2"
-              onClick={() => setEditing(true)}
-            >
-              Notizen bearbeiten
-            </Button>
-          )}
-        </>
-      )}
-    </div>
+        ) : (
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <p className="text-sm text-foreground">
+              {specialRequests || "Keine Notizen hinterlegt."}
+            </p>
+            {canEdit && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="shrink-0 gap-2"
+                onClick={() => setEditing(true)}
+              >
+                <Pencil className="size-4" />
+                Bearbeiten
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+    </Card>
   );
 }

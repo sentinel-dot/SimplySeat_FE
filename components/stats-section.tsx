@@ -64,7 +64,7 @@ export function StatsSection({
   if (displayStats.length === 0) return null;
 
   return (
-    <section className="border-y border-border bg-muted/80">
+    <section id="stats" className="border-y border-border bg-muted/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 sm:py-14 lg:px-8">
         {showDummy && (
           <p className="mb-4 text-center">

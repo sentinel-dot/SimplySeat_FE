@@ -6,6 +6,7 @@ import { HowItWorksSection } from "@/components/how-it-works-section";
 import { FeaturedProviders } from "@/components/featured-providers";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { CtaSection } from "@/components/cta-section";
+import { ScrollHashSync } from "@/components/scroll-hash-sync";
 import { getPublicStats, getVenues } from "@/lib/api/venues";
 import type { Venue } from "@/lib/types";
 
@@ -27,6 +28,7 @@ export default async function HomePage() {
 
   return (
     <SiteLayout>
+      <ScrollHashSync />
       <div className="min-h-screen overflow-x-hidden">
         <HeroSection />
         <CategoriesSection />

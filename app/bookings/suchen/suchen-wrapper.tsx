@@ -3,9 +3,9 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCustomerAuthOptional } from "@/contexts/CustomerAuthContext";
-import { MyBookingsContent } from "./my-bookings-content";
+import { SuchenContent } from "./suchen-content";
 
-export function MyBookingsWrapper() {
+export function SuchenWrapper() {
   const auth = useCustomerAuthOptional();
   const router = useRouter();
 
@@ -31,5 +31,5 @@ export function MyBookingsWrapper() {
     );
   }
 
-  return <MyBookingsContent />;
+  return <SuchenContent />;
 }

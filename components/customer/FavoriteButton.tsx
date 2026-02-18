@@ -10,11 +10,13 @@ import { RegisterDialog } from "./RegisterDialog";
 type Props = {
   venueId: number;
   className?: string;
+  /** Wenn bekannt (z. B. auf der Favoriten-Seite): Herz sofort als „favorisiert“ anzeigen, API bestätigt im Hintergrund */
+  initialFavorited?: boolean;
 };
 
-export function FavoriteButton({ venueId, className = "" }: Props) {
+export function FavoriteButton({ venueId, className = "", initialFavorited }: Props) {
   const auth = useCustomerAuthOptional();
-  const [favorited, setFavorited] = useState(false);
+  const [favorited, setFavorited] = useState(initialFavorited ?? false);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -64,7 +66,7 @@ export function FavoriteButton({ venueId, className = "" }: Props) {
     }
   };
 
-  if (checking && auth?.isAuthenticated) {
+  if (checking && auth?.isAuthenticated && initialFavorited === undefined) {
     return (
       <span
         className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card ${className}`}

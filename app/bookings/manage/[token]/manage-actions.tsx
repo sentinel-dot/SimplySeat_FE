@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { cancelBooking } from "@/lib/api/bookings";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { AlertTriangle } from "lucide-react";
 
 type Props = {
   token: string;
@@ -22,8 +24,7 @@ export function ManageBookingActions({
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
 
-  const canCancel =
-    status === "pending" || status === "confirmed";
+  const canCancel = status === "pending" || status === "confirmed";
 
   const handleCancel = async () => {
     setCancelling(true);
@@ -47,58 +48,82 @@ export function ManageBookingActions({
   if (!canCancel) return null;
 
   return (
-    <div className="mt-6">
-      {!showCancelConfirm ? (
-        <Button
-          variant="outline"
-          className="border-red-200 text-red-700 hover:bg-red-50"
-          onClick={() => setShowCancelConfirm(true)}
-        >
-          Buchung stornieren
-        </Button>
-      ) : (
-        <div className="rounded-xl border border-border bg-card p-4">
-          <p className="text-sm text-foreground">
-            Möchten Sie diese Buchung wirklich stornieren?
-            {cancellationHours != null && cancellationHours > 0 && (
-              <span className="mt-1 block text-muted-foreground">
-                Bitte mindestens {cancellationHours} Stunden vor dem Termin
-                stornieren.
-              </span>
-            )}
-          </p>
-          <div className="mt-3">
-            <label className="mb-1 block text-sm text-muted-foreground">
-              Grund (optional)
-            </label>
-            <textarea
-              value={cancelReason}
-              onChange={(e) => setCancelReason(e.target.value)}
-              placeholder="z. B. Termin passt nicht mehr"
-              rows={2}
-              className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-          </div>
-          <div className="mt-4 flex gap-2">
+    <Card className="overflow-hidden">
+      <div className="border-b border-border bg-muted/30 px-6 py-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Stornierung
+        </h2>
+      </div>
+      <div className="p-6">
+        {!showCancelConfirm ? (
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-muted-foreground">
+              Sie können diese Buchung kostenfrei stornieren.
+              {cancellationHours != null && cancellationHours > 0 && (
+                <span className="mt-1 block font-medium text-foreground">
+                  Bitte mindestens {cancellationHours} Stunden vor dem Termin.
+                </span>
+              )}
+            </p>
             <Button
-              variant="ghost"
-              onClick={() => {
-                setShowCancelConfirm(false);
-                setCancelReason("");
-              }}
+              variant="outline"
+              size="sm"
+              className="shrink-0 border-destructive/50 text-destructive hover:bg-destructive/10 hover:text-destructive"
+              onClick={() => setShowCancelConfirm(true)}
             >
-              Abbrechen
-            </Button>
-            <Button
-              className="border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
-              onClick={handleCancel}
-              isLoading={cancelling}
-            >
-              Ja, stornieren
+              Buchung stornieren
             </Button>
           </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
+            <div className="flex gap-3">
+              <AlertTriangle className="size-5 shrink-0 text-destructive" />
+              <div className="min-w-0 flex-1">
+                <p className="font-medium text-foreground">
+                  Buchung wirklich stornieren?
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Diese Aktion kann nicht rückgängig gemacht werden.
+                  {cancellationHours != null && cancellationHours > 0 && (
+                    <> Stornieren Sie mindestens {cancellationHours} Stunden vor dem Termin.</>
+                  )}
+                </p>
+                <label className="mt-3 block text-sm font-medium text-foreground">
+                  Grund (optional)
+                </label>
+                <textarea
+                  value={cancelReason}
+                  onChange={(e) => setCancelReason(e.target.value)}
+                  placeholder="z. B. Termin passt nicht mehr"
+                  rows={2}
+                  className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/20"
+                />
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setShowCancelConfirm(false);
+                      setCancelReason("");
+                    }}
+                    disabled={cancelling}
+                  >
+                    Behalten
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleCancel}
+                    isLoading={cancelling}
+                  >
+                    Ja, stornieren
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </Card>
   );
 }

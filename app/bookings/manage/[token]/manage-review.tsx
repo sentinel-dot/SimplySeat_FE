@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useCustomerAuthOptional } from "@/contexts/CustomerAuthContext";
 import { ReviewForm } from "@/components/customer/ReviewForm";
+import { Card } from "@/components/ui/card";
+import { Star, ExternalLink } from "lucide-react";
 
 type Props = {
   venueId: number;
@@ -16,41 +18,38 @@ export function ManageBookingReview({ venueId, venueName, status }: Props) {
   if (status !== "completed") return null;
 
   return (
-    <div className="mt-6 rounded-xl border border-border bg-card p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-foreground">
-        Bewertung
-      </h2>
-      {auth?.isAuthenticated ? (
-        <div className="mt-2">
-          <ReviewForm venueId={venueId} venueName={venueName} onSuccess={() => {}} />
-        </div>
-      ) : (
-        <>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Diese Buchung ist abgeschlossen. Melden Sie sich an, um eine
-            Bewertung zu schreiben, oder besuchen Sie die Seite des Ortes.
-          </p>
-        <Link
-          href={`/venues/${venueId}`}
-          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/90"
-        >
-          {venueName ?? "Ort"} besuchen und bewerten
-          <svg
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
-            />
-          </svg>
-        </Link>
-        </>
-      )}
-    </div>
+    <Card className="overflow-hidden">
+      <div className="border-b border-border bg-muted/30 px-6 py-3">
+        <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          <Star className="size-4" />
+          Bewertung
+        </h2>
+      </div>
+      <div className="p-6">
+        {auth?.isAuthenticated ? (
+          <div>
+            <p className="text-sm text-muted-foreground">
+              Wie hat Ihnen Ihr Besuch gefallen? Ihre Bewertung hilft anderen Gästen.
+            </p>
+            <div className="mt-4">
+              <ReviewForm venueId={venueId} venueName={venueName} onSuccess={() => {}} />
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Diese Buchung ist abgeschlossen. Melden Sie sich an, um eine Bewertung zu schreiben, oder besuchen Sie die Seite des Ortes.
+            </p>
+            <Link
+              href={`/venues/${venueId}`}
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/90"
+            >
+              {venueName ?? "Ort"} besuchen und bewerten
+              <ExternalLink className="size-4" />
+            </Link>
+          </div>
+        )}
+      </div>
+    </Card>
   );
 }

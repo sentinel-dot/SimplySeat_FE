@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { getVenues } from "@/lib/api/venues";
@@ -24,38 +24,72 @@ export function VenuesContent() {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [locationInput, setLocationInput] = useState("");
-  const [locationFocused, setLocationFocused] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [panelLocation, setPanelLocation] = useState("");
+  const [panelFilter, setPanelFilter] = useState<Venue["type"] | "all">("all");
+  const [panelSort, setPanelSort] = useState<"name" | "distance">("name");
 
   const filter = useMemo(() => typeFromParam(searchParams.get("type")), [searchParams]);
   const locationParam = searchParams.get("location")?.trim() ?? "";
   const sortParam = searchParams.get("sort");
   const sort = sortParam === "distance" ? "distance" : "name";
 
-  const applyLocation = (value: string) => {
-    const trimmed = value.trim();
-    const params = new URLSearchParams(searchParams.toString());
-    if (trimmed) params.set("location", trimmed);
-    else params.delete("location");
-    if (trimmed && !params.get("sort")) params.set("sort", "distance");
-    const q = params.toString();
-    router.push(q ? `/venues?${q}` : "/venues", { scroll: false });
+  const activeFilterCount = useMemo(() => {
+    let n = 0;
+    if (filter !== "all") n += 1;
+    if (locationParam) n += 1;
+    if (sort === "distance") n += 1;
+    return n;
+  }, [filter, locationParam, sort]);
+
+  const applyParams = useCallback(
+    (updates: { type?: Venue["type"] | "all"; location?: string; sort?: "name" | "distance" }) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (updates.type !== undefined) {
+        if (updates.type === "all") params.delete("type");
+        else params.set("type", updates.type);
+      }
+      if (updates.location !== undefined) {
+        if (updates.location.trim()) {
+          params.set("location", updates.location.trim());
+          if (updates.sort === undefined && !params.get("sort")) params.set("sort", "distance");
+        } else params.delete("location");
+      }
+      if (updates.sort !== undefined) {
+        if (updates.sort === "name") params.delete("sort");
+        else params.set("sort", "distance");
+      }
+      const q = params.toString();
+      router.push(q ? `/venues?${q}` : "/venues", { scroll: false });
+    },
+    [searchParams, router]
+  );
+
+  const openFilterPanel = () => {
+    setPanelLocation(locationParam);
+    setPanelFilter(filter);
+    setPanelSort(sort);
+    setFilterOpen(true);
   };
 
-  const setFilter = (newFilter: Venue["type"] | "all") => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (newFilter === "all") params.delete("type");
-    else params.set("type", newFilter);
-    const q = params.toString();
-    router.push(q ? `/venues?${q}` : "/venues", { scroll: false });
+  const closeFilterPanel = () => setFilterOpen(false);
+
+  /** Wendet die aktuellen Panel-Werte an → URL-Update → ein useEffect lädt dann die Venues. */
+  const applyFilterPanel = () => {
+    const trimmed = panelLocation.trim();
+    const effectiveSort = trimmed && panelSort === "distance" ? "distance" : "name";
+    applyParams({
+      type: panelFilter,
+      location: trimmed,
+      sort: effectiveSort,
+    });
+    closeFilterPanel();
   };
 
-  const setSort = (newSort: "name" | "distance") => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (newSort === "name") params.delete("sort");
-    else params.set("sort", "distance");
-    const q = params.toString();
-    router.push(q ? `/venues?${q}` : "/venues", { scroll: false });
+  const resetFilters = () => {
+    setPanelFilter("all");
+    setPanelSort("name");
+    setPanelLocation("");
   };
 
   const queryString = [
@@ -135,85 +169,163 @@ export function VenuesContent() {
 
   return (
     <div className="mt-8">
-      {/* Filter-Pills + Sortierung */}
+      {/* Filter-Button + aktive Filter-Anzeige */}
       <div className="mb-6 flex flex-wrap items-center gap-3">
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setFilter("all")}
-            className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-              filter === "all"
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-card text-foreground hover:border-border"
-            }`}
-          >
-            Alle
-          </button>
-          {VENUE_TYPES_ORDER.map((type) => (
-            <button
-              key={type}
-              type="button"
-              onClick={() => setFilter(type)}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-                filter === type
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-card text-foreground hover:border-border"
-              }`}
-            >
-              {getVenueTypeLabel(type)}
-            </button>
-          ))}
-        </div>
-        <div className="ml-auto flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2">
-            <label htmlFor="venues-location" className="sr-only">
-              Ort oder PLZ
-            </label>
-            <input
-              id="venues-location"
-              type="text"
-              placeholder="Ort oder PLZ"
-              value={locationFocused ? locationInput : locationParam}
-              onFocus={() => {
-                setLocationFocused(true);
-                setLocationInput(locationParam);
-              }}
-              onChange={(e) => setLocationInput(e.target.value)}
-              onBlur={() => {
-                setLocationFocused(false);
-                const v = locationInput.trim();
-                if (v !== locationParam) applyLocation(v);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  (e.target as HTMLInputElement).blur();
-                  const v = locationInput.trim();
-                  if (v !== locationParam) applyLocation(v);
-                  setLocationFocused(false);
-                }
-              }}
-              className="w-36 rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0 sm:w-40"
-            />
+        <button
+          type="button"
+          onClick={openFilterPanel}
+          className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-colors hover:border-primary/50 hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          aria-expanded={filterOpen}
+          aria-haspopup="dialog"
+        >
+          <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          Filter & Sortierung
+          {activeFilterCount > 0 && (
+            <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-primary-foreground">
+              {activeFilterCount}
+            </span>
+          )}
+        </button>
+        {activeFilterCount > 0 && !filterOpen && (
+          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <span className="hidden sm:inline">Aktiv:</span>
+            {filter !== "all" && (
+              <span className="rounded-md bg-secondary px-2 py-0.5 font-medium text-foreground">
+                {getVenueTypeLabel(filter)}
+              </span>
+            )}
+            {locationParam && (
+              <span className="rounded-md bg-secondary px-2 py-0.5 font-medium text-foreground">
+                {locationParam}
+              </span>
+            )}
+            {sort === "distance" && (
+              <span className="rounded-md bg-secondary px-2 py-0.5 font-medium text-foreground">
+                Nach Entfernung
+              </span>
+            )}
           </div>
-          <div className="flex items-center gap-2">
-            <label htmlFor="venues-sort" className="text-sm text-muted-foreground">
-              Sortierung:
-            </label>
-            <select
-            id="venues-sort"
-            value={sort}
-            onChange={(e) => setSort(e.target.value as "name" | "distance")}
-            className="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0"
-          >
-            <option value="name">Name</option>
-            <option value="distance" disabled={!locationParam}>
-              {locationParam ? "Entfernung (Ort/PLZ)" : "Entfernung (Ort eingeben)"}
-            </option>
-          </select>
-          </div>
-        </div>
+        )}
       </div>
+
+      {/* Slide-over Filter-Panel */}
+      {filterOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/40 transition-opacity"
+            aria-hidden
+            onClick={closeFilterPanel}
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="filter-panel-title"
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col border-l border-border bg-card shadow-xl sm:max-w-md"
+          >
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <h2 id="filter-panel-title" className="text-lg font-semibold text-foreground">
+                Filter & Sortierung
+              </h2>
+              <button
+                type="button"
+                onClick={closeFilterPanel}
+                className="rounded-md p-1 text-muted-foreground hover:bg-secondary hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                aria-label="Schließen"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-4 py-4">
+              <div className="space-y-6">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-foreground">Kategorie</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setPanelFilter("all")}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                        panelFilter === "all"
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border bg-card text-foreground hover:border-border"
+                      }`}
+                    >
+                      Alle
+                    </button>
+                    {VENUE_TYPES_ORDER.map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setPanelFilter(type)}
+                        className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                          panelFilter === type
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border bg-card text-foreground hover:border-border"
+                        }`}
+                      >
+                        {getVenueTypeLabel(type)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="panel-location" className="mb-2 block text-sm font-medium text-foreground">
+                    Ort oder PLZ
+                  </label>
+                  <input
+                    id="panel-location"
+                    type="text"
+                    placeholder="z. B. Berlin, 10115"
+                    value={panelLocation}
+                    onChange={(e) => setPanelLocation(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") applyFilterPanel();
+                    }}
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="panel-sort" className="mb-2 block text-sm font-medium text-foreground">
+                    Sortierung
+                  </label>
+                  <select
+                    id="panel-sort"
+                    value={panelSort}
+                    onChange={(e) => setPanelSort(e.target.value as "name" | "distance")}
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0"
+                  >
+                    <option value="name">Name (A–Z)</option>
+                    <option value="distance" disabled={!panelLocation.trim()}>
+                      {panelLocation.trim()
+                        ? "Entfernung (vom Ort)"
+                        : "Entfernung (zuerst Ort eingeben)"}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3 border-t border-border px-4 py-3">
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="flex-1 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
+                Zurücksetzen
+              </button>
+              <button
+                type="button"
+                onClick={applyFilterPanel}
+                className="flex-1 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
+                Anwenden
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Such-Assistenz: Keine Treffer bei Datum/Uhrzeit */}
       {showSearchAssistance && (

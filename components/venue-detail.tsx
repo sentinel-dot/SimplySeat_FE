@@ -12,33 +12,22 @@ import type { VenueWithStaff, Service } from "@/lib/types";
 
 const DAY_NAMES = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
 
-function formatOpeningHours(opening_hours: { day_of_week: number; start_time: string; end_time: string }[] | undefined): string {
-  if (!opening_hours?.length) return "–";
-  const byDay = opening_hours.reduce((acc, s) => {
-    if (!acc[s.day_of_week]) acc[s.day_of_week] = [];
-    acc[s.day_of_week].push(`${s.start_time.slice(0, 5)}–${s.end_time.slice(0, 5)}`);
-    return acc;
-  }, {} as Record<number, string[]>);
-  return [0, 1, 2, 3, 4, 5, 6].map((d) => `${DAY_NAMES[d]}: ${(byDay[d] ?? []).join(", ") || "Geschlossen"}`).join(" · ");
-}
-
 interface VenueDetailProps {
   venue: VenueWithStaff;
   averageRating?: { average: number; count: number } | null;
 }
 
 export function VenueDetail({ venue, averageRating }: VenueDetailProps) {
-  const [activeTab, setActiveTab] = useState<"services" | "reviews" | "about">("services");
+  const [activeTab, setActiveTab] = useState<"services" | "reviews" | "about" | "hours">("services");
   const services = (venue.services ?? []).filter((s) => s.is_active !== false);
   const addressLine = [venue.address, venue.postal_code, venue.city].filter(Boolean).join(", ");
-  const openHoursStr = formatOpeningHours(venue.opening_hours);
   const minPrice = services.length
     ? Math.min(...services.map((s) => s.price ?? 0).filter((p) => p > 0), Infinity)
     : null;
   const hasRealRating = averageRating && averageRating.count > 0;
 
   return (
-    <div className="bg-background">
+    <div className="bg-background overflow-x-hidden">
       {/* Hero */}
       <div className="relative h-64 overflow-hidden bg-muted sm:h-80 lg:h-96">
         {venue.image_url ? (
@@ -47,15 +36,24 @@ export function VenueDetail({ venue, averageRating }: VenueDetailProps) {
           <div className="h-full w-full bg-muted" />
         )}
         <div className="absolute inset-0 bg-foreground/30" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-          <div className="mx-auto max-w-7xl">
+        {/* Obere Zeile: Zurück (content-aligned) + Favoriten (rechts) */}
+        <div className="absolute left-0 right-0 top-4 z-10 flex items-center justify-between px-4 sm:top-6 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-7xl flex items-center justify-between">
             <Link
               href="/venues"
-              className="mb-4 inline-flex items-center gap-1 rounded-full bg-card/80 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-card"
+              className="inline-flex items-center gap-1 rounded-full bg-card/80 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-card"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               Zurück zur Suche
             </Link>
+            <FavoriteButton
+              venueId={venue.id}
+              className="size-10 shrink-0 border-white/40 bg-white/20 text-white backdrop-blur-sm hover:bg-white/30 hover:text-white focus-visible:ring-white/50"
+            />
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+          <div className="mx-auto max-w-7xl">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <Badge className="mb-2 bg-primary text-primary-foreground">
@@ -86,7 +84,6 @@ export function VenueDetail({ venue, averageRating }: VenueDetailProps) {
                   )}
                 </div>
               </div>
-              <FavoriteButton venueId={venue.id} className="shrink-0 text-white hover:text-white/90" />
             </div>
           </div>
         </div>
@@ -95,28 +92,32 @@ export function VenueDetail({ venue, averageRating }: VenueDetailProps) {
       {/* Content */}
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <div className="flex gap-1 rounded-xl bg-muted p-1">
-              {(["services", "reviews", "about"] as const).map((tab) => {
-                const tabLabels: Record<string, string> = {
-                  services: "Dienstleistungen",
-                  reviews: "Bewertungen",
-                  about: "Über uns",
-                };
-                return (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-                      activeTab === tab
-                        ? "bg-card text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {tabLabels[tab]}
-                  </button>
-                );
-              })}
+          <div className="min-w-0 lg:col-span-2">
+            {/* Tabs: horizontal scroll on mobile so labels don't overlap; wrap on larger screens */}
+            <div className="min-w-0 w-full -mx-1 overflow-x-auto px-1 scrollbar-none sm:overflow-visible sm:mx-0 sm:px-0">
+              <div className="flex w-max min-w-max gap-1 rounded-xl bg-muted p-1 sm:min-w-0 sm:w-full sm:flex-wrap">
+                {(["services", "reviews", "hours", "about"] as const).map((tab) => {
+                  const tabLabels: Record<string, string> = {
+                    services: "Dienstleistungen",
+                    reviews: "Bewertungen",
+                    hours: "Öffnungszeiten",
+                    about: "Über uns",
+                  };
+                  return (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`shrink-0 whitespace-nowrap rounded-lg px-3 py-2.5 text-sm font-medium transition-colors sm:flex-1 sm:min-w-0 sm:px-4 ${
+                        activeTab === tab
+                          ? "bg-card text-foreground shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {tabLabels[tab]}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {activeTab === "services" && (
@@ -167,6 +168,52 @@ export function VenueDetail({ venue, averageRating }: VenueDetailProps) {
               </div>
             )}
 
+            {activeTab === "hours" && (
+              <div className="mt-6">
+                <div className="rounded-xl border border-border bg-card p-6">
+                  <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+                    <Clock className="h-5 w-5 text-primary" />
+                    Öffnungszeiten
+                  </h3>
+                  {venue.opening_hours && venue.opening_hours.length > 0 ? (
+                    <ul className="mt-4 space-y-3">
+                      {[0, 1, 2, 3, 4, 5, 6].map((dayOfWeek) => {
+                        const isToday = new Date().getDay() === dayOfWeek;
+                        const slots = (venue.opening_hours ?? []).filter((s) => s.day_of_week === dayOfWeek);
+                        const times = slots
+                          .map((s) => `${s.start_time.slice(0, 5)} – ${s.end_time.slice(0, 5)}`)
+                          .join(", ");
+                        return (
+                          <li
+                            key={dayOfWeek}
+                            className={`flex items-center justify-between gap-4 rounded-lg border-b border-border py-3 px-3 last:border-0 ${
+                              isToday ? "border-l-4 border-l-primary bg-primary/10" : ""
+                            }`}
+                          >
+                            <span className="flex items-center gap-2 font-medium text-foreground">
+                              {DAY_NAMES[dayOfWeek]}
+                              {isToday && (
+                                <span className="rounded bg-primary px-1.5 py-0.5 text-xs font-semibold text-primary-foreground">
+                                  Heute
+                                </span>
+                              )}
+                            </span>
+                            <span className="text-sm text-muted-foreground">
+                              {times || "Geschlossen"}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      Keine Öffnungszeiten hinterlegt.
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
             {activeTab === "about" && (
               <div className="mt-6">
                 <div className="rounded-xl border border-border bg-card p-6">
@@ -190,15 +237,6 @@ export function VenueDetail({ venue, averageRating }: VenueDetailProps) {
                       <div>
                         <p className="text-sm font-medium text-foreground">{venue.city || "Adresse"}</p>
                         <p className="text-xs text-muted-foreground">{addressLine}</p>
-                      </div>
-                    </div>
-                  )}
-                  {venue.opening_hours && venue.opening_hours.length > 0 && (
-                    <div className="flex items-start gap-3">
-                      <Clock className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      <div>
-                        <p className="text-sm font-medium text-foreground">Öffnungszeiten</p>
-                        <p className="text-xs text-muted-foreground whitespace-pre-line">{openHoursStr}</p>
                       </div>
                     </div>
                   )}

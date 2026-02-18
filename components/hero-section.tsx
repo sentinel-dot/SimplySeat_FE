@@ -22,7 +22,7 @@ export function HeroSection() {
   const heroImageUrl = "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&q=80";
 
   return (
-    <section className="relative overflow-hidden">
+    <section id="hero" className="relative overflow-hidden">
       <div className="absolute inset-0">
         <img
           src={heroImageUrl}

@@ -45,7 +45,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
         <PostBookingRegisterPrompt customerEmail={email ?? ""} />
         <div className="mt-10 space-y-3 text-center">
           <Link
-            href="/bookings/my-bookings"
+            href="/bookings/suchen"
             className="block text-sm font-medium text-primary transition-colors hover:text-primary/90"
           >
             Alle meine Buchungen ansehen
