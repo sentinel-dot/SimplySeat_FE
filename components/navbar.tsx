@@ -57,15 +57,10 @@ export function Navbar() {
                 <User className="h-5 w-5" />
               </Link>
             ) : (
-              <>
-                <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={() => setLoginOpen(true)}>
-                  <User className="mr-2 h-4 w-4" />
-                  Anmelden
-                </Button>
-                <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => setRegisterOpen(true)}>
-                  Registrieren
-                </Button>
-              </>
+              <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => setLoginOpen(true)}>
+                <User className="mr-2 h-4 w-4" />
+                Anmelden
+              </Button>
             )}
           </div>
 
@@ -87,7 +82,7 @@ export function Navbar() {
               <Link href="/#categories" className={mobileLinkClass} onClick={() => setMobileMenuOpen(false)}>Kategorien</Link>
               <Link href="/#how-it-works" className={mobileLinkClass} onClick={() => setMobileMenuOpen(false)}>So funktioniert&apos;s</Link>
               <Link href={bookingsHref} className={mobileLinkClass} onClick={() => setMobileMenuOpen(false)}>Meine Buchungen</Link>
-              <div className="mt-3 flex flex-col gap-2 border-t border-border pt-4">
+              <div className="mt-3 border-t border-border pt-4">
                 {auth?.isAuthenticated ? (
                   <Link
                     href="/customer/dashboard"
@@ -98,14 +93,14 @@ export function Navbar() {
                     Kundenbereich
                   </Link>
                 ) : (
-                  <>
-                    <Button variant="ghost" size="sm" className="min-h-[44px] justify-start text-muted-foreground" onClick={() => { setMobileMenuOpen(false); setLoginOpen(true); }}>
-                      <User className="mr-2 h-4 w-4" /> Anmelden
-                    </Button>
-                    <Button size="sm" className="min-h-[44px] bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => { setMobileMenuOpen(false); setRegisterOpen(true); }}>
-                      Registrieren
-                    </Button>
-                  </>
+                  <Button 
+                    size="lg" 
+                    className="w-full min-h-[48px] justify-center font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+                    onClick={() => { setMobileMenuOpen(false); setLoginOpen(true); }}
+                  >
+                    <User className="mr-2 h-5 w-5" />
+                    Anmelden
+                  </Button>
                 )}
               </div>
             </div>

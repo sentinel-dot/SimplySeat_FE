@@ -6,18 +6,17 @@ import { ArrowRight } from "lucide-react";
 import { VENUE_TYPES_ORDER, getVenueTypeLabel } from "@/lib/utils/venueType";
 import type { Venue } from "@/lib/types";
 
-const CATEGORY_CONFIG: Record<Venue["type"], { description: string }> = {
+const CATEGORY_CONFIG: Record<Exclude<Venue["type"], "other">, { description: string }> = {
   restaurant: { description: "Reservieren & Genießen" },
   hair_salon: { description: "Schnitte, Färben & Styling" },
   beauty_salon: { description: "Gesicht, Nägel & Wimpern" },
   cafe: { description: "Kaffee, Kuchen & Frühstück" },
   bar: { description: "Cocktails & Drinks" },
   spa: { description: "Massage, Sauna & Entspannung" },
-  other: { description: "Weitere Angebote" },
 };
 
 // Unsplash images per venue type (no local /images needed)
-const CATEGORY_IMAGES: Record<Venue["type"], string> = {
+const CATEGORY_IMAGES: Record<Exclude<Venue["type"], "other">, string> = {
   restaurant:
     "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800",
   hair_salon:
@@ -30,12 +29,12 @@ const CATEGORY_IMAGES: Record<Venue["type"], string> = {
     "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=800",
   spa:
     "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800",
-  other:
-    "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800",
 };
 
+const DISCOVER_CATEGORY_TYPES = VENUE_TYPES_ORDER.filter((t) => t !== "other");
+
 export function CategoriesSection() {
-  const categories = VENUE_TYPES_ORDER.map((type) => ({
+  const categories = DISCOVER_CATEGORY_TYPES.map((type) => ({
     type,
     title: getVenueTypeLabel(type),
     description: CATEGORY_CONFIG[type].description,

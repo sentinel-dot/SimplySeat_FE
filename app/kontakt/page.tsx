@@ -1,56 +1,97 @@
 import { SiteLayout } from "@/components/layout/site-layout";
-import { Mail, ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/contact-form";
+import { Mail, MessageCircle, Clock } from "lucide-react";
 
 export const metadata = {
   title: "Kontakt – SimplySeat",
-  description: "Kontakt aufnehmen mit SimplySeat.",
+  description: "Kontaktieren Sie das SimplySeat-Team. Wir helfen Ihnen gerne weiter.",
 };
 
 export default function KontaktPage() {
   return (
     <SiteLayout>
-      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
-        <h1 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">
-          Kontakt
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Du hast eine Frage oder Anregung? Schreib uns einfach.
-        </p>
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
+        <div className="text-center mb-12">
+          <h1 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">
+            Kontakt
+          </h1>
+          <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
+            Haben Sie Fragen, Anregungen oder benötigen Sie Unterstützung? Wir freuen uns auf Ihre Nachricht.
+          </p>
+        </div>
 
-        <section className="mt-10 space-y-8">
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h2 className="font-display text-lg font-semibold text-foreground">
+        <div className="grid gap-8 lg:grid-cols-3 mb-12">
+          <div className="rounded-xl border border-border bg-card p-6 text-center transition-all hover:shadow-lg hover:border-primary/50">
+            <div className="mx-auto rounded-lg bg-primary/10 p-3 w-fit">
+              <Mail className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="mt-4 font-display text-lg font-semibold text-foreground">
               E-Mail
-            </h2>
+            </h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              Schreib uns unter der folgenden Adresse – wir antworten in der Regel innerhalb von 1–2 Werktagen.
+              Direkter Kontakt per E-Mail
             </p>
             <a
-              href="mailto:info@simplyseat.de?subject=Anfrage%20SimplySeat"
-              className="mt-4 inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              href="mailto:info@simplyseat.de"
+              className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
             >
-              <Mail className="h-4 w-4" />
               info@simplyseat.de
             </a>
           </div>
 
+          <div className="rounded-xl border border-border bg-card p-6 text-center transition-all hover:shadow-lg hover:border-primary/50">
+            <div className="mx-auto rounded-lg bg-primary/10 p-3 w-fit">
+              <Clock className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="mt-4 font-display text-lg font-semibold text-foreground">
+              Antwortzeit
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Wir antworten in der Regel innerhalb von
+            </p>
+            <p className="mt-1 text-sm font-medium text-primary">
+              1–2 Werktagen
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card p-6 text-center transition-all hover:shadow-lg hover:border-primary/50">
+            <div className="mx-auto rounded-lg bg-primary/10 p-3 w-fit">
+              <MessageCircle className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="mt-4 font-display text-lg font-semibold text-foreground">
+              Support
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Fragen zu Buchungen, Account oder technischen Problemen
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-card p-8 sm:p-10">
+          <div className="mb-6">
+            <h2 className="font-display text-2xl font-semibold text-foreground">
+              Kontaktformular
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Füllen Sie das Formular aus und wir melden uns schnellstmöglich bei Ihnen.
+            </p>
+          </div>
+          <ContactForm />
+        </div>
+
+        <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Weitere Angaben (z.&nbsp;B. Name, Adresse, Telefon) findest du im{" "}
-            <Link href="/impressum" className="font-medium text-primary hover:underline">
+            Weitere Informationen finden Sie in unserem{" "}
+            <a href="/impressum" className="font-medium text-primary hover:underline">
               Impressum
-            </Link>
+            </a>
+            {" "}und in der{" "}
+            <a href="/datenschutz" className="font-medium text-primary hover:underline">
+              Datenschutzerklärung
+            </a>
             .
           </p>
-        </section>
-
-        <Button variant="ghost" className="mt-10" asChild>
-          <Link href="/" className="inline-flex items-center gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Zur Startseite
-          </Link>
-        </Button>
+        </div>
       </div>
     </SiteLayout>
   );

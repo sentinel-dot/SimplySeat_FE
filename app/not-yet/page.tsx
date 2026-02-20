@@ -4,11 +4,9 @@ import { Clock, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const PLANNED_ITEMS = [
-  "Über uns",
   "Unternehmen eintragen",
   "Partnerprogramm",
   "Preise",
-  "Cookies (Informationen)",
 ] as const;
 
 export const metadata = {

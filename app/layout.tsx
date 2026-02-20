@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { CustomerAuthProvider } from "@/contexts/CustomerAuthContext";
 import { EarlyAccessGate } from "@/components/early-access-gate";
 import { ScrollHashSync } from "@/components/scroll-hash-sync";
+import { CookieNotice } from "@/components/cookie-notice";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -41,6 +42,7 @@ export default function RootLayout({
           <ScrollHashSync />
           <EarlyAccessGate>{children}</EarlyAccessGate>
           <Toaster position="top-center" richColors closeButton />
+          <CookieNotice />
         </CustomerAuthProvider>
       </body>
     </html>

@@ -13,7 +13,7 @@ export default function DatenschutzPage() {
           Datenschutzerklärung
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Stand: 19.02.2026
+          Stand: 20.02.2026
         </p>
 
         <section className="mt-8 space-y-8 text-foreground">
@@ -68,7 +68,59 @@ export default function DatenschutzPage() {
 
           <div>
             <h2 className="font-display text-lg font-semibold text-foreground">
-              4. Weitergabe von Daten
+              4. Standortdaten (Geolocation)
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Unsere Website bietet Ihnen die Möglichkeit, Ihren aktuellen
+              Standort zu verwenden, um relevante Suchergebnisse in Ihrer Nähe
+              zu finden. Diese Funktion ist vollständig freiwillig und erfolgt
+              nur nach Ihrer ausdrücklichen Zustimmung über die
+              Browser-Berechtigungsabfrage.
+            </p>
+            <p className="mt-2 text-muted-foreground">
+              <span className="font-semibold">Wie wir Standortdaten verarbeiten:</span>
+              <br />
+              • Ihr Browser fragt Sie um Erlaubnis, bevor Standortdaten übermittelt werden
+              <br />
+              • Die GPS-Koordinaten (Längen- und Breitengrad) werden ausschließlich
+              im Browser verarbeitet
+              <br />
+              • Wir verwenden den kostenlosen OpenStreetMap Nominatim-Dienst, um
+              aus den Koordinaten einen Ortsnamen (Stadt) zu ermitteln
+              <br />
+              • Es werden keine Standortdaten auf unseren Servern gespeichert
+              <br />
+              • Die Daten werden nicht mit Ihrem Nutzerkonto verknüpft
+              <br />
+              • Sie können die Berechtigung jederzeit in Ihren
+              Browser-Einstellungen widerrufen
+            </p>
+            <p className="mt-2 text-muted-foreground">
+              <span className="font-semibold">Rechtsgrundlage:</span> Art. 6 Abs. 1
+              lit. a DSGVO (Einwilligung). Die Einwilligung kann jederzeit durch
+              Änderung der Browser-Einstellungen widerrufen werden.
+            </p>
+            <p className="mt-2 text-muted-foreground">
+              <span className="font-semibold">Drittanbieter:</span> Für die
+              Umwandlung von Koordinaten in Ortsnamen nutzen wir den
+              OpenStreetMap Nominatim-Dienst. Dabei werden Ihre Koordinaten
+              sowie Ihre IP-Adresse an OpenStreetMap übermittelt. Weitere
+              Informationen finden Sie in der{" "}
+              <a
+                href="https://osmfoundation.org/wiki/Privacy_Policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Datenschutzerklärung der OpenStreetMap Foundation
+              </a>
+              .
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-display text-lg font-semibold text-foreground">
+              5. Weitergabe von Daten
             </h2>
             <p className="mt-2 text-muted-foreground">
               Eine Weitergabe Ihrer personenbezogenen Daten an Dritte zu anderen
@@ -85,7 +137,7 @@ export default function DatenschutzPage() {
 
           <div>
             <h2 className="font-display text-lg font-semibold text-foreground">
-              5. Ihre Rechte
+              6. Ihre Rechte
             </h2>
             <p className="mt-2 text-muted-foreground">
               Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung
@@ -99,7 +151,7 @@ export default function DatenschutzPage() {
 
           <div>
             <h2 className="font-display text-lg font-semibold text-foreground">
-              6. Hosting
+              7. Hosting
             </h2>
             <p className="mt-2 text-muted-foreground">
               Das Frontend (Website) wird bei Vercel Inc. (USA) gehostet, das Backend (API und Datenbank)
@@ -110,7 +162,7 @@ export default function DatenschutzPage() {
 
           <div>
             <h2 className="font-display text-lg font-semibold text-foreground">
-              7. Änderungen
+              8. Änderungen
             </h2>
             <p className="mt-2 text-muted-foreground">
               Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um

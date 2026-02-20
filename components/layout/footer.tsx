@@ -9,7 +9,7 @@ const footerLinks: Record<string, { label: string; href: string }[]> = {
     { label: "Café", href: "/venues?type=cafe" },
     { label: "Bar", href: "/venues?type=bar" },
   ],
-  Unternehmen: [{ label: "Über uns", href: "/not-yet" }],
+  Unternehmen: [{ label: "Über uns", href: "/ueber-uns" }],
   Support: [
     { label: "Kontakt", href: "/kontakt" },
     { label: "Datenschutz", href: "/datenschutz" },
@@ -68,7 +68,7 @@ export function Footer() {
             <Link href="/agb" className="text-xs text-muted-foreground hover:text-foreground">
               AGB
             </Link>
-            <Link href="/not-yet" className="text-xs text-muted-foreground hover:text-foreground">
+            <Link href="/cookies" className="text-xs text-muted-foreground hover:text-foreground">
               Cookies
             </Link>
           </div>
