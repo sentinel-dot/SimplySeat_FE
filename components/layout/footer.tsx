@@ -9,23 +9,16 @@ const footerLinks: Record<string, { label: string; href: string }[]> = {
     { label: "Café", href: "/venues?type=cafe" },
     { label: "Bar", href: "/venues?type=bar" },
   ],
-  Unternehmen: [
-    { label: "Über uns", href: "#" },
-    { label: "Karriere", href: "#" },
-    { label: "Blog", href: "#" },
-    { label: "Presse", href: "#" },
-  ],
+  Unternehmen: [{ label: "Über uns", href: "/not-yet" }],
   Support: [
-    { label: "Hilfe-Center", href: "#" },
-    { label: "Kontakt", href: "#" },
+    { label: "Kontakt", href: "/kontakt" },
     { label: "Datenschutz", href: "/datenschutz" },
     { label: "AGB", href: "/agb" },
   ],
   "Für Unternehmen": [
-    { label: "Unternehmen eintragen", href: "#" },
-    { label: "Partnerprogramm", href: "#" },
-    { label: "Preise", href: "#" },
-    { label: "API", href: "#" },
+    { label: "Unternehmen eintragen", href: "/not-yet" },
+    { label: "Partnerprogramm", href: "/not-yet" },
+    { label: "Preise", href: "/not-yet" },
   ],
 };
 
@@ -75,9 +68,9 @@ export function Footer() {
             <Link href="/agb" className="text-xs text-muted-foreground hover:text-foreground">
               AGB
             </Link>
-            <a href="#" className="text-xs text-muted-foreground hover:text-foreground">
+            <Link href="/not-yet" className="text-xs text-muted-foreground hover:text-foreground">
               Cookies
-            </a>
+            </Link>
           </div>
         </div>
       </div>

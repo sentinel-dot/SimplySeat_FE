@@ -3,13 +3,14 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { getVenues } from "@/lib/api/venues";
+import { getVenues, type VenueListItem } from "@/lib/api/venues";
 import type { Venue } from "@/lib/types";
 import {
   VENUE_TYPES_ORDER,
   getVenueTypeLabel,
 } from "@/lib/utils/venueType";
 import { ErrorMessage } from "@/components/shared/error-message";
+import { VenueCard } from "@/components/venue-card";
 
 const VALID_VENUE_TYPES: Venue["type"][] = ["restaurant", "hair_salon", "beauty_salon", "cafe", "bar", "spa"];
 
@@ -21,7 +22,7 @@ function typeFromParam(param: string | null): Venue["type"] | "all" {
 export function VenuesContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [venues, setVenues] = useState<Venue[]>([]);
+  const [venues, setVenues] = useState<VenueListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -31,6 +32,7 @@ export function VenuesContent() {
 
   const filter = useMemo(() => typeFromParam(searchParams.get("type")), [searchParams]);
   const locationParam = searchParams.get("location")?.trim() ?? "";
+  const qParam = searchParams.get("q")?.trim() ?? "";
   const sortParam = searchParams.get("sort");
   const sort = sortParam === "distance" ? "distance" : "name";
 
@@ -38,12 +40,13 @@ export function VenuesContent() {
     let n = 0;
     if (filter !== "all") n += 1;
     if (locationParam) n += 1;
+    if (qParam) n += 1;
     if (sort === "distance") n += 1;
     return n;
-  }, [filter, locationParam, sort]);
+  }, [filter, locationParam, qParam, sort]);
 
   const applyParams = useCallback(
-    (updates: { type?: Venue["type"] | "all"; location?: string; sort?: "name" | "distance" }) => {
+    (updates: { type?: Venue["type"] | "all"; location?: string; sort?: "name" | "distance"; q?: string }) => {
       const params = new URLSearchParams(searchParams.toString());
       if (updates.type !== undefined) {
         if (updates.type === "all") params.delete("type");
@@ -59,14 +62,22 @@ export function VenuesContent() {
         if (updates.sort === "name") params.delete("sort");
         else params.set("sort", "distance");
       }
-      const q = params.toString();
-      router.push(q ? `/venues?${q}` : "/venues", { scroll: false });
+      if (updates.q !== undefined) {
+        const qVal = typeof updates.q === "string" ? updates.q.trim() : "";
+        if (qVal) params.set("q", qVal);
+        else params.delete("q");
+      }
+      const queryString = params.toString();
+      router.push(queryString ? `/venues?${queryString}` : "/venues", { scroll: false });
     },
     [searchParams, router]
   );
 
+  const [panelQuery, setPanelQuery] = useState("");
+
   const openFilterPanel = () => {
     setPanelLocation(locationParam);
+    setPanelQuery(qParam);
     setPanelFilter(filter);
     setPanelSort(sort);
     setFilterOpen(true);
@@ -82,6 +93,7 @@ export function VenuesContent() {
       type: panelFilter,
       location: trimmed,
       sort: effectiveSort,
+      q: panelQuery.trim(),
     });
     closeFilterPanel();
   };
@@ -90,9 +102,11 @@ export function VenuesContent() {
     setPanelFilter("all");
     setPanelSort("name");
     setPanelLocation("");
+    setPanelQuery("");
   };
 
   const queryString = [
+    searchParams.get("q")?.trim() && `q=${encodeURIComponent(searchParams.get("q")!.trim())}`,
     searchParams.get("location")?.trim() && `location=${encodeURIComponent(searchParams.get("location")!.trim())}`,
     searchParams.get("date") && `date=${encodeURIComponent(searchParams.get("date")!)}`,
     searchParams.get("time") && `time=${encodeURIComponent(searchParams.get("time")!)}`,
@@ -123,6 +137,7 @@ export function VenuesContent() {
         const params: import("@/lib/api/venues").VenuesParams = {};
         if (filter !== "all") params.type = filter;
         if (locationParam) params.location = locationParam;
+        if (qParam) params.q = qParam;
         if (sort) params.sort = sort;
         if (dateParam) params.date = dateParam;
         if (timeParam) params.time = timeParam;
@@ -142,7 +157,7 @@ export function VenuesContent() {
     return () => {
       cancelled = true;
     };
-  }, [filter, locationParam, sort, dateParam, timeParam, partySizeNum]);
+  }, [filter, locationParam, qParam, sort, dateParam, timeParam, partySizeNum]);
 
   if (loading) {
     return (
@@ -194,6 +209,11 @@ export function VenuesContent() {
             {filter !== "all" && (
               <span className="rounded-md bg-secondary px-2 py-0.5 font-medium text-foreground">
                 {getVenueTypeLabel(filter)}
+              </span>
+            )}
+            {qParam && (
+              <span className="rounded-md bg-secondary px-2 py-0.5 font-medium text-foreground">
+                „{qParam}"
               </span>
             )}
             {locationParam && (
@@ -270,6 +290,22 @@ export function VenuesContent() {
                       </button>
                     ))}
                   </div>
+                </div>
+                <div>
+                  <label htmlFor="panel-query" className="mb-2 block text-sm font-medium text-foreground">
+                    Suchbegriff (Name)
+                  </label>
+                  <input
+                    id="panel-query"
+                    type="text"
+                    placeholder="z. B. Restaurant, Pizza"
+                    value={panelQuery}
+                    onChange={(e) => setPanelQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") applyFilterPanel();
+                    }}
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0"
+                  />
                 </div>
                 <div>
                   <label htmlFor="panel-location" className="mb-2 block text-sm font-medium text-foreground">
@@ -362,66 +398,37 @@ export function VenuesContent() {
       {venues.length === 0 && !showSearchAssistance ? (
         <div className="rounded-lg border border-border bg-card py-16 text-center">
           <p className="text-muted-foreground">
-            {filter === "all"
+            {filter === "all" && !qParam && !locationParam
               ? "Noch keine Orte eingetragen."
-              : `Keine Orte in der Kategorie „${getVenueTypeLabel(filter)}“.`}
+              : filter !== "all"
+                ? `Keine Orte in der Kategorie „${getVenueTypeLabel(filter)}“.`
+                : "Keine Orte gefunden."}
           </p>
+          {qParam && (
+            <p className="mt-2 text-sm text-muted-foreground">
+              Keine Treffer für „{qParam}“. Anderen Suchbegriff oder Filter versuchen.
+            </p>
+          )}
           {locationParam && (
             <p className="mt-2 text-sm text-muted-foreground">
-              Keine Orte für „{locationParam}“ gefunden. Versuchen Sie einen anderen Ort oder PLZ.
+              Keine Orte für „{locationParam}“ gefunden. Anderen Ort oder PLZ versuchen.
             </p>
           )}
         </div>
       ) : venues.length > 0 ? (
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {venues.map((venue) => (
-            <li key={venue.id} className="flex">
-              <Link
-                href={`/venues/${venue.id}${venueQuery}`}
-                className="flex transition-shadow duration-200 hover:shadow-md h-full w-full flex-col overflow-hidden rounded-lg border border-border bg-card"
-              >
-                {/* Venue-Bild oder Platzhalter */}
-                {venue.image_url ? (
-                  <div className="relative h-36 w-full shrink-0 overflow-hidden bg-background">
-                    <img
-                      src={venue.image_url}
-                      alt=""
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </div>
-                ) : (
-                  <div className="h-36 shrink-0 bg-background" aria-hidden />
-                )}
-                <div className="flex min-h-0 flex-1 flex-col p-4">
-                  <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {getVenueTypeLabel(venue.type)}
-                  </span>
-                  <h2 className="mt-1 text-lg font-semibold text-foreground">
-                    {venue.name}
-                  </h2>
-                  {venue.city && (
-                    <p className="mt-0.5 text-sm text-muted-foreground">
-                      {venue.city}
-                      {venue.address && ` · ${venue.address}`}
-                    </p>
-                  )}
-                  {/* Feste Höhe für Beschreibung, damit alle Karten gleich hoch sind */}
-                  <p className="mt-2 min-h-[2.5rem] text-sm text-muted-foreground line-clamp-2">
-                    {venue.description ?? "\u00A0"}
-                  </p>
-                  <span className="mt-4 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-primary">
-                    {venue.type === "restaurant" ? "Tisch reservieren" : "Termin buchen"}
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </span>
-                </div>
-              </Link>
-            </li>
+            <div key={venue.id} className="h-full">
+              <VenueCard
+                venue={venue}
+                rating={venue.averageRating ?? undefined}
+                reviews={venue.reviewCount}
+                linkSuffix={venueQuery}
+                showFavoriteButton
+              />
+            </div>
           ))}
-        </ul>
+        </div>
       ) : null}
     </div>
   );

@@ -109,8 +109,8 @@ export interface GlobalStats {
 export interface AdminWithVenue extends AdminUser {
   venue_name: string | null;
   is_active: boolean;
-  last_login: Date | null;
-  created_at: Date;
+  last_login: string | null;
+  created_at: string;
 }
 
 export async function getAdminStats(): Promise<{
@@ -146,6 +146,75 @@ export async function createVenue(
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
+    });
+    const res = await response.json().catch(() => ({}));
+    return res;
+  } catch (error) {
+    if (isNetworkError(error)) throw new Error(NETWORK_ERROR_MESSAGE);
+    throw error;
+  }
+}
+
+/** Payload für Venue inkl. Owner, Staff, Services und Öffnungszeiten (POST /admin/venues/full) */
+export interface CreateVenueFullPayload {
+  venue: {
+    name: string;
+    type: Venue["type"];
+    email: string;
+    phone?: string;
+    address?: string;
+    city?: string;
+    postal_code?: string;
+    country?: string;
+    description?: string;
+    image_url?: string;
+    website_url?: string;
+    booking_advance_days?: number;
+    booking_advance_hours?: number;
+    cancellation_hours?: number;
+    require_phone?: boolean;
+    require_deposit?: boolean;
+    deposit_amount?: number;
+    is_active?: boolean;
+  };
+  owner: {
+    email: string;
+    password: string;
+    name: string;
+  };
+  /** Indizes der Services (0-basiert), die der Owner durchführt; fehlt oder leer = alle */
+  owner_service_indices?: number[];
+  staff?: Array<{
+    name: string;
+    email?: string;
+    phone?: string;
+    description?: string;
+    service_indices?: number[];
+  }>;
+  services?: Array<{
+    name: string;
+    description?: string;
+    duration_minutes: number;
+    price?: number;
+    capacity?: number;
+    requires_staff?: boolean;
+  }>;
+  opening_hours?: Array<{
+    day_of_week: number;
+    start_time: string;
+    end_time: string;
+  }>;
+}
+
+export async function createVenueFull(
+  payload: CreateVenueFullPayload
+): Promise<{ success: boolean; data?: { venue: Venue; venueId: number }; message?: string }> {
+  try {
+    const response = await fetch(`${getAdminApiBase()}/admin/venues/full`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
     const res = await response.json().catch(() => ({}));
     return res;
@@ -202,6 +271,7 @@ export async function updateAdmin(
     role?: "owner" | "staff";
     is_active?: boolean;
     name?: string;
+    email?: string;
   }
 ): Promise<{ success: boolean; data?: AdminUser; message?: string }> {
   return adminApiClient<AdminUser>(`/admin/users/${id}`, {
@@ -230,8 +300,8 @@ export interface CustomerWithStats {
   loyalty_points: number;
   is_active: boolean;
   email_verified: boolean;
-  last_login?: Date;
-  created_at: Date;
+  last_login?: string;
+  created_at: string;
   total_bookings: number;
   completed_bookings: number;
   cancelled_bookings: number;

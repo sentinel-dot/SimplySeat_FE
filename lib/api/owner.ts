@@ -187,6 +187,7 @@ export async function getVenueSettings(): Promise<{
 }
 
 export async function updateVenueSettings(updates: {
+  booking_advance_days?: number;
   booking_advance_hours?: number;
   cancellation_hours?: number;
   image_url?: string | null;

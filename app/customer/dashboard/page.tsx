@@ -6,7 +6,7 @@ import { useCustomerAuth } from "@/contexts/CustomerAuthContext";
 import { getBookings } from "@/lib/api/customers";
 import { getFavorites } from "@/lib/api/favorites";
 import { getLoyaltyBalance } from "@/lib/api/loyalty";
-import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { EmailVerificationBanner } from "@/components/customer/EmailVerificationBanner";
 import { VerifiedBadge } from "@/components/customer/VerifiedBadge";
 import type { Booking } from "@/lib/api/customers";
@@ -126,11 +126,7 @@ export default function CustomerDashboardPage() {
                           {dateDisplay} · {timeDisplay}
                         </p>
                       </div>
-                      <span
-                        className={`inline-flex shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${getStatusColor(b.status)}`}
-                      >
-                        {getStatusLabel(b.status)}
-                      </span>
+                      <StatusBadge status={b.status} />
                     </div>
                   </Link>
                 </li>

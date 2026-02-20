@@ -69,11 +69,10 @@ export function ReviewsList({ venueId }: Props) {
         <h2 id="reviews-heading" className="text-lg font-semibold text-foreground">
           Bewertungen
         </h2>
-        <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">Platzhalter – echte Bewertungen folgen</p>
+        <p className="mt-2 text-sm text-muted-foreground">Noch keine Bewertungen (0). Hier erscheinen Bewertungen von Gästen.</p>
         <div className="mt-4 rounded-lg border border-dashed border-border bg-muted/30 p-4">
-          <p className="text-sm text-muted-foreground italic">Noch keine Bewertungen. Hier erscheinen Bewertungen von Gästen.</p>
+          <ReviewForm venueId={venueId} onSuccess={loadReviews} />
         </div>
-        <ReviewForm venueId={venueId} onSuccess={loadReviews} />
       </section>
     );
   }

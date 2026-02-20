@@ -18,12 +18,21 @@ const SCROLL_THRESHOLD = 120; // Bereich oberhalb des Viewports (px), ab dem ein
 /**
  * Aktualisiert die URL (Hash) beim Scrollen auf der Homepage,
  * sodass der sichtbare Abschnitt in der URL steht (z. B. /#categories).
+ * Auf anderen Seiten wird ein mitgeführter Home-Section-Hash entfernt (z. B. /venues#cta → /venues).
  */
 export function ScrollHashSync() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname !== "/") return;
+    // Nicht auf Home: mitgeführten Home-Section-Hash entfernen (z. B. nach Klick auf „Entdecken“)
+    if (pathname !== "/") {
+      const hash = window.location.hash.slice(1);
+      if (hash && HOME_SECTION_IDS.includes(hash as (typeof HOME_SECTION_IDS)[number])) {
+        const cleanUrl = window.location.pathname + window.location.search;
+        window.history.replaceState(null, "", cleanUrl);
+      }
+      return;
+    }
 
     const elements = HOME_SECTION_IDS.map((id) => document.getElementById(id)).filter(
       (el): el is HTMLElement => el != null

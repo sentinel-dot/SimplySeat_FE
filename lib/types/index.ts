@@ -1,9 +1,10 @@
 // lib/types/index.ts
+/** API liefert Datum/Zeit-Felder als ISO-String; als string typisiert, damit keine implizite Date-Arithmetik ohne Parsing. */
 export interface Venue 
 {
     id: number;
     name: string;
-    type: 'restaurant' | 'hair_salon' | 'beauty_salon' | 'cafe' | 'bar' | 'spa';
+    type: 'restaurant' | 'hair_salon' | 'beauty_salon' | 'cafe' | 'bar' | 'spa' | 'other';
     email: string;
     phone?: string;
     address?: string;
@@ -20,8 +21,8 @@ export interface Venue
     require_deposit: boolean;
     deposit_amount?: number;
     is_active: boolean;
-    created_at: Date;
-    updated_at: Date;
+    created_at: string;
+    updated_at: string;
 }
  
 export interface Service 
@@ -35,21 +36,24 @@ export interface Service
     capacity: number;
     requires_staff: boolean;
     is_active: boolean;
-    created_at: Date;
-    updated_at: Date;
+    created_at: string;
+    updated_at: string;
+    /** Bei getVenueById: Mitarbeiter, die diesen Service anbieten (für Schritt „Mitarbeiter wählen“) */
+    available_staff?: { id: number; name: string }[];
 }
 
-export interface StaffMember 
-{
-    id: number;
-    venue_id?: number;
-    name: string;
-    email?: string;
-    phone?: string;
-    description?: string;
-    is_active: boolean;
-    created_at: Date;
-    updated_at: Date;
+export interface StaffMember {
+  id: number;
+  venue_id?: number;
+  /** Wenn gesetzt: dieser Staff-Eintrag gehört zum Dashboard-User (Owner) */
+  user_id?: number | null;
+  name: string;
+  email?: string;
+  phone?: string;
+  description?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface OpeningHoursSlot {
@@ -71,6 +75,8 @@ export interface TimeSlot
     end_time: string;
     available: boolean;
     staff_member_id?: number;
+    /** Bei kapazitätsbasierten Services (z. B. Restaurant): freie Plätze in diesem Slot */
+    remaining_capacity?: number;
 }
 
 export interface DayAvailability 
@@ -78,6 +84,12 @@ export interface DayAvailability
     date: string;
     day_of_week: number;
     time_slots: TimeSlot[];
+    /** true wenn an dem Tag keine Öffnungszeiten (geschlossen) */
+    is_closed?: boolean;
+    /** true wenn der Tag geöffnet wäre, aber wegen Mindestvorlaufzeit keine Slots angeboten werden */
+    within_advance_hours?: boolean;
+    /** Mindestvorlaufzeit in Stunden (z. B. 48), nur gesetzt wenn within_advance_hours true */
+    booking_advance_hours?: number;
 }
 
 export interface CreateBookingData
@@ -103,12 +115,12 @@ export interface Booking extends CreateBookingData
     status: 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'no_show';
     deposit_paid?: number | null;                 
     payment_status?: string | null;
-    confirmation_sent_at?: Date | null;
-    reminder_sent_at?: Date | null;
-    cancelled_at?: Date | null;
+    confirmation_sent_at?: string | null;
+    reminder_sent_at?: string | null;
+    cancelled_at?: string | null;
     cancellation_reason?: string | null;
-    created_at: Date;
-    updated_at: Date;
+    created_at: string;
+    updated_at: string;
     /** Vom Backend bei getBookingByToken geliefert */
     venue_name?: string | null;
     cancellation_hours?: number | null;

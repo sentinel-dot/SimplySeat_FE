@@ -13,9 +13,9 @@ export default function AGBPage() {
           Allgemeine Geschäftsbedingungen (AGB)
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Für die Nutzung der Buchungsplattform SimplySeat
+          Für die Nutzung der Buchungsplattform SimplySeat (Betreiber als Privatperson).
           <br />
-          Stand: [Datum einfügen]
+          Stand: 19.02.2026
         </p>
 
         <section className="mt-8 space-y-8 text-foreground">

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { cancelBooking } from "@/lib/api/bookings";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { ManageCard } from "@/components/shared/manage-card";
 import { AlertTriangle } from "lucide-react";
 
 type Props = {
@@ -48,13 +48,7 @@ export function ManageBookingActions({
   if (!canCancel) return null;
 
   return (
-    <Card className="overflow-hidden">
-      <div className="border-b border-border bg-muted/30 px-6 py-3">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Stornierung
-        </h2>
-      </div>
-      <div className="p-6">
+    <ManageCard title="Stornierung">
         {!showCancelConfirm ? (
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">
@@ -123,7 +117,6 @@ export function ManageBookingActions({
             </div>
           </div>
         )}
-      </div>
-    </Card>
+    </ManageCard>
   );
 }

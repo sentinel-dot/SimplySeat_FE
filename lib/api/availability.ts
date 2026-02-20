@@ -37,3 +37,65 @@ export async function getAvailableSlots(
   }
   return result.data;
 }
+
+/**
+ * Lädt Verfügbarkeit für 7 Tage ab startDate (für Anzeige nur der Tage mit freien Slots).
+ * Backend: GET /availability/week?venueId=&serviceId=&startDate=&staffMemberId=&partySize=
+ */
+export async function getWeekAvailability(
+  venueId: number,
+  serviceId: number,
+  startDate: string,
+  options?: { staffMemberId?: number; partySize?: number }
+): Promise<DayAvailability[]> {
+  const params = new URLSearchParams({
+    venueId: venueId.toString(),
+    serviceId: serviceId.toString(),
+    startDate,
+  });
+  if (options?.staffMemberId != null) {
+    params.append('staffMemberId', options.staffMemberId.toString());
+  }
+  if (options?.partySize != null && options.partySize >= 1) {
+    params.append('partySize', options.partySize.toString());
+  }
+  const result = await apiClient<DayAvailability[]>(
+    `/availability/week?${params.toString()}`
+  );
+  if (!result.success || result.data == null) {
+    throw new Error(result.message ?? 'Wochenverfügbarkeit konnte nicht geladen werden');
+  }
+  return result.data;
+}
+
+/**
+ * Lädt Verfügbarkeit für einen kompletten Datumsbereich in einem Aufruf (1 Request statt vielen /week).
+ * Backend: GET /availability/range?venueId=&serviceId=&startDate=&endDate=&staffMemberId=&partySize=
+ */
+export async function getAvailabilityRange(
+  venueId: number,
+  serviceId: number,
+  startDate: string,
+  endDate: string,
+  options?: { staffMemberId?: number; partySize?: number }
+): Promise<DayAvailability[]> {
+  const params = new URLSearchParams({
+    venueId: venueId.toString(),
+    serviceId: serviceId.toString(),
+    startDate,
+    endDate,
+  });
+  if (options?.staffMemberId != null) {
+    params.append('staffMemberId', options.staffMemberId.toString());
+  }
+  if (options?.partySize != null && options.partySize >= 1) {
+    params.append('partySize', options.partySize.toString());
+  }
+  const result = await apiClient<DayAvailability[]>(
+    `/availability/range?${params.toString()}`
+  );
+  if (!result.success || result.data == null) {
+    throw new Error(result.message ?? 'Verfügbarkeit konnte nicht geladen werden');
+  }
+  return result.data;
+}

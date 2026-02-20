@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateBooking } from "@/lib/api/bookings";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { ManageCard } from "@/components/shared/manage-card";
 import { Pencil, StickyNote } from "lucide-react";
 
 type Props = {
@@ -54,14 +54,7 @@ export function ManageBookingNotes({
   if (!canEdit && !specialRequests) return null;
 
   return (
-    <Card className="overflow-hidden">
-      <div className="border-b border-border bg-muted/30 px-6 py-3">
-        <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          <StickyNote className="size-4" />
-          Notizen & Wünsche
-        </h2>
-      </div>
-      <div className="p-6">
+    <ManageCard title="Notizen & Wünsche" headerRight={<StickyNote className="size-4" />}>
         {editing && canEdit ? (
           <div className="space-y-4">
             <p className="text-sm text-muted-foreground">
@@ -114,7 +107,6 @@ export function ManageBookingNotes({
             )}
           </div>
         )}
-      </div>
-    </Card>
+    </ManageCard>
   );
 }

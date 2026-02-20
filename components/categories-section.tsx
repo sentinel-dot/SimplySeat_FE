@@ -13,6 +13,7 @@ const CATEGORY_CONFIG: Record<Venue["type"], { description: string }> = {
   cafe: { description: "Kaffee, Kuchen & Frühstück" },
   bar: { description: "Cocktails & Drinks" },
   spa: { description: "Massage, Sauna & Entspannung" },
+  other: { description: "Weitere Angebote" },
 };
 
 // Unsplash images per venue type (no local /images needed)
@@ -29,6 +30,8 @@ const CATEGORY_IMAGES: Record<Venue["type"], string> = {
     "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=800",
   spa:
     "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800",
+  other:
+    "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800",
 };
 
 export function CategoriesSection() {

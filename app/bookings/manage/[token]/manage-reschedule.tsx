@@ -96,11 +96,15 @@ export function ManageRescheduleModal({
 
     setSubmitting(true);
     try {
-      const res = await updateBooking(token, {
+      const payload: Parameters<typeof updateBooking>[1] = {
         booking_date: date,
         start_time: selectedSlot.start_time,
         end_time: selectedSlot.end_time,
-      });
+      };
+      if (selectedSlot.staff_member_id != null) {
+        payload.staff_member_id = selectedSlot.staff_member_id;
+      }
+      const res = await updateBooking(token, payload);
       if (res.success) {
         toast.success("Termin wurde verschoben.");
         router.refresh();
@@ -221,10 +225,11 @@ export function ManageRescheduleModal({
                     <div className="grid max-h-64 grid-cols-3 gap-2 overflow-y-auto rounded-lg border border-border bg-muted/20 p-3 sm:grid-cols-4">
                       {slots.map((slot) => {
                         const isSelected =
-                          selectedSlot?.start_time === slot.start_time;
+                          selectedSlot?.start_time === slot.start_time &&
+                          selectedSlot?.staff_member_id === slot.staff_member_id;
                         return (
                           <button
-                            key={slot.start_time}
+                            key={`${slot.start_time}-${slot.staff_member_id ?? ""}`}
                             type="button"
                             onClick={() => setSelectedSlot(slot)}
                             className={`rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors ${

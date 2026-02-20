@@ -11,7 +11,7 @@ import {
   ManageQuickActions,
   ManageQuickLinks,
 } from "./manage-quick-actions";
-import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { Card, CardTitle } from "@/components/ui/card";
 import {
   Calendar as CalendarIcon,
@@ -89,22 +89,7 @@ export default async function ManageBookingPage({ params }: Props) {
           <Card className="mt-8 overflow-hidden border-2 shadow-md">
             <div className="border-b border-border bg-muted/30 px-6 py-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(b.status)}`}
-                >
-                  <span
-                    className={`size-2 rounded-full ${
-                      b.status === "confirmed"
-                        ? "bg-green-600"
-                        : b.status === "pending"
-                          ? "bg-yellow-600"
-                          : b.status === "cancelled"
-                            ? "bg-red-600"
-                            : "bg-muted-foreground"
-                    }`}
-                  />
-                  {getStatusLabel(b.status)}
-                </span>
+                <StatusBadge status={b.status} className="px-3 py-1" />
                 {isUpcoming && daysLeft !== null && daysLeft >= 0 && (
                   <span className="text-sm text-muted-foreground">
                     {daysLeft === 0

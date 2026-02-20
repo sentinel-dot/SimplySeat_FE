@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getBookings } from "@/lib/api/customers";
-import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
+import { StatusBadge } from "@/components/shared/status-badge";
 import type { Booking } from "@/lib/api/customers";
 
 export default function CustomerBookingsPage() {
@@ -106,11 +106,7 @@ export default function CustomerBookingsPage() {
                         {dateDisplay} · {timeDisplay}
                       </p>
                     </div>
-                    <span
-                      className={`inline-flex shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${getStatusColor(b.status)}`}
-                    >
-                      {getStatusLabel(b.status)}
-                    </span>
+                    <StatusBadge status={b.status} />
                   </div>
                 </Link>
               </li>

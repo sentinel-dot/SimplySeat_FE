@@ -13,7 +13,7 @@ export default function ImpressumPage() {
           Impressum
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Angaben gemäß § 5 Telemediengesetz (TMG)
+          Angaben gemäß § 5 Telemediengesetz (TMG). Betreiber als Privatperson (keine Firma).
         </p>
 
         <section className="mt-8 space-y-6 text-foreground">
@@ -22,11 +22,11 @@ export default function ImpressumPage() {
               Anbieter / Diensteanbieter
             </h2>
             <p className="mt-2 text-muted-foreground">
-              [Firmenname bzw. Vor- und Nachname des Betreibers]
+              Nikola Milinkovic
               <br />
-              [Straße und Hausnummer]
+              Frankfurter Straße 143
               <br />
-              [PLZ und Ort]
+              63263 Neu-Isenburg
             </p>
           </div>
 
@@ -35,9 +35,7 @@ export default function ImpressumPage() {
               Kontakt
             </h2>
             <p className="mt-2 text-muted-foreground">
-              E-Mail: [Kontakt-E-Mail-Adresse]
-              <br />
-              Telefon: [optional]
+              E-Mail: info@simplyseat.de
             </p>
           </div>
 
@@ -46,8 +44,7 @@ export default function ImpressumPage() {
               Umsatzsteuer-ID
             </h2>
             <p className="mt-2 text-muted-foreground">
-              [Falls vorhanden: Umsatzsteuer-Identifikationsnummer gemäß § 27a
-              UStG]
+              Als Privatperson nicht erforderlich. [Falls später vorhanden: Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG eintragen.]
             </p>
           </div>
 
@@ -56,7 +53,7 @@ export default function ImpressumPage() {
               Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
             </h2>
             <p className="mt-2 text-muted-foreground">
-              [Name und Anschrift]
+              Nikola Milinkovic, Frankfurter Straße 143, 63263 Neu-Isenburg
             </p>
           </div>
 

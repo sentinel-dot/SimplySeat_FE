@@ -110,10 +110,7 @@ export function HeroSection() {
                 <button
                   key={type}
                   type="button"
-                  onClick={() => {
-                    setSearchQuery(label);
-                    router.push(`/venues?type=${type}`);
-                  }}
+                  onClick={() => setSearchQuery(label)}
                   className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3 py-2 text-xs font-medium text-primary-foreground/80 backdrop-blur-sm transition-colors hover:bg-primary-foreground/20 active:bg-primary-foreground/25"
                 >
                   {label}

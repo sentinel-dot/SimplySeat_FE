@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { getBookings, updateBookingStatus, getServices, createManualBooking } from "@/lib/api/owner";
 import type { BookingWithDetails } from "@/lib/types";
 import type { Service } from "@/lib/types";
-import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { BookingDetailModal } from "@/components/admin/BookingDetailModal";
@@ -330,11 +330,7 @@ export default function OwnerBookingsPage() {
                       {formatTime(b.end_time)}
                       {b.party_size > 0 && ` · ${b.party_size} Pers.`}
                     </p>
-                    <span
-                      className={`mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusColor(b.status)}`}
-                    >
-                      {getStatusLabel(b.status)}
-                    </span>
+                    <StatusBadge status={b.status} className="mt-2" />
                   </div>
                   <div className="flex flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
                     {b.status === "pending" && (

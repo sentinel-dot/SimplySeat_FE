@@ -13,7 +13,7 @@ export default function DatenschutzPage() {
           Datenschutzerklärung
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Stand: [Datum einfügen]
+          Stand: 19.02.2026
         </p>
 
         <section className="mt-8 space-y-8 text-foreground">
@@ -22,11 +22,11 @@ export default function DatenschutzPage() {
               1. Verantwortlicher
             </h2>
             <p className="mt-2 text-muted-foreground">
-              Verantwortlich für die Datenverarbeitung auf dieser Website ist:
+              Verantwortlich für die Datenverarbeitung auf dieser Website ist (als Privatperson):
               <br />
-              [Name und Anschrift des Verantwortlichen]
+              Nikola Milinkovic, Frankfurter Straße 143, 63263 Neu-Isenburg
               <br />
-              E-Mail: [Kontakt-E-Mail]
+              E-Mail: info@simplyseat.de
             </p>
           </div>
 
@@ -102,10 +102,9 @@ export default function DatenschutzPage() {
               6. Hosting
             </h2>
             <p className="mt-2 text-muted-foreground">
-              Diese Website wird bei [Hosting-Anbieter, z. B. Vercel Inc.] gehostet.
-              Dabei können personenbezogene Daten (z. B. IP-Adresse, Zugriffszeiten)
-              an den Hoster übermittelt werden. Ein Auftragsverarbeitungsvertrag
-              wurde mit dem Hoster geschlossen.
+              Das Frontend (Website) wird bei Vercel Inc. (USA) gehostet, das Backend (API und Datenbank)
+              bei Railway. Dabei können personenbezogene Daten (z. B. IP-Adresse, Zugriffszeiten)
+              an die Hoster übermittelt werden. Auftragsverarbeitungsverträge wurden mit den Hostern geschlossen.
             </p>
           </div>
 

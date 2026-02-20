@@ -22,6 +22,7 @@ const FALLBACK_IMAGES: Record<Venue["type"], string> = {
   cafe: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800",
   bar: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=800",
   spa: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800",
+  other: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
 };
 
 export type VenueCardProps = {
@@ -39,6 +40,8 @@ export type VenueCardProps = {
   showFavoriteButton?: boolean;
   /** Wenn true: Herz sofort als „favorisiert“ anzeigen (z. B. auf der Favoriten-Seite) */
   favorited?: boolean;
+  /** Optional: An Link anhängen (z. B. "?type=restaurant&location=Berlin") */
+  linkSuffix?: string;
 };
 
 export function VenueCard({
@@ -50,16 +53,18 @@ export function VenueCard({
   popular = false,
   showFavoriteButton = true,
   favorited,
+  linkSuffix = "",
 }: VenueCardProps) {
   const imageUrl = venue.image_url || FALLBACK_IMAGES[venue.type];
   const location = [venue.city, venue.address].filter(Boolean).join(", ") || "Deutschland";
   const showRating = rating != null && reviews != null;
   const showFooter = price != null || nextSlot != null;
+  const venueHref = `/venues/${venue.id}${linkSuffix}`;
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow duration-300 hover:shadow-xl">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow duration-300 hover:shadow-xl">
       <div className="relative h-48 overflow-hidden">
-        <Link href={`/venues/${venue.id}`} className="block h-full w-full">
+        <Link href={venueHref} className="block h-full w-full">
           <Image
             src={imageUrl}
             alt={venue.name}
@@ -85,7 +90,7 @@ export function VenueCard({
         )}
       </div>
 
-      <div className="relative flex flex-1 flex-col p-5">
+      <div className="relative flex min-h-[10rem] flex-1 flex-col p-5">
         {showRating && (
           <div className="flex items-center gap-1.5">
             <Star className="h-4 w-4 fill-primary text-primary" />
@@ -94,17 +99,19 @@ export function VenueCard({
           </div>
         )}
 
-        <Link href={`/venues/${venue.id}`}>
-          <h3 className={`font-bold text-foreground hover:text-primary ${showRating ? "mt-2 text-lg" : "text-lg"}`}>
-            {venue.name}
-          </h3>
-        </Link>
-        <p className="text-sm text-muted-foreground">{getVenueTypeLabel(venue.type)}</p>
+        <div className="min-h-[2.75rem]">
+<Link href={venueHref}>
+          <h3 className={`line-clamp-2 font-bold text-foreground hover:text-primary ${showRating ? "mt-2 text-lg" : "text-lg"}`}>
+              {venue.name}
+            </h3>
+          </Link>
+        </div>
+        <p className="min-h-[1.25rem] text-sm text-muted-foreground">{getVenueTypeLabel(venue.type)}</p>
 
-        <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <MapPin className="h-3.5 w-3.5 shrink-0" />
-            {location}
+        <div className="mt-3 min-h-[2.5rem] text-xs text-muted-foreground">
+          <span className="flex items-start gap-1 line-clamp-2">
+            <MapPin className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+            <span>{location}</span>
           </span>
         </div>
 

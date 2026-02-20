@@ -74,7 +74,7 @@ export function VenueDetail({ venue, averageRating }: VenueDetailProps) {
                       </span>
                     </div>
                   ) : (
-                    <span className="text-sm text-white/70">(Platzhalter – Bewertungen folgen)</span>
+                    <span className="text-sm text-white/70">(Noch keine Bewertungen)</span>
                   )}
                   {(venue.city || addressLine) && (
                     <div className="flex items-center gap-1 text-white/80">

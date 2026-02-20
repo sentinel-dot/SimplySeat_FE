@@ -130,6 +130,7 @@ export default function AdminUsersPage() {
       } else if (modal === "edit" && editingId) {
         const res = await updateAdmin(editingId, {
           name: form.name,
+          email: form.email?.trim() || undefined,
           venue_id: form.venue_id,
           role: form.role === "owner" || form.role === "staff" ? form.role : undefined,
           is_active: form.is_active,
@@ -345,6 +346,13 @@ export default function AdminUsersPage() {
               User bearbeiten
             </h2>
             <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+              <Input
+                label="E-Mail"
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                required
+              />
               <Input
                 label="Name"
                 value={form.name}

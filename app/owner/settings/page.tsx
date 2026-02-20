@@ -17,6 +17,7 @@ export default function OwnerSettingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [venueSaving, setVenueSaving] = useState(false);
   const [venueForm, setVenueForm] = useState({
+    booking_advance_days: 30,
     booking_advance_hours: 48,
     cancellation_hours: 24,
     image_url: "",
@@ -36,6 +37,7 @@ export default function OwnerSettingsPage() {
         if (res.success && res.data) {
           setVenue(res.data);
           setVenueForm({
+            booking_advance_days: res.data.booking_advance_days ?? 30,
             booking_advance_hours: res.data.booking_advance_hours ?? 48,
             cancellation_hours: res.data.cancellation_hours ?? 24,
             image_url: res.data.image_url ?? "",
@@ -55,6 +57,7 @@ export default function OwnerSettingsPage() {
     setVenueSaving(true);
     try {
       const res = await updateVenueSettings({
+        booking_advance_days: venueForm.booking_advance_days,
         booking_advance_hours: venueForm.booking_advance_hours,
         cancellation_hours: venueForm.cancellation_hours,
         image_url: venueForm.image_url || null,
@@ -130,6 +133,21 @@ export default function OwnerSettingsPage() {
           Venue: {venue.name}
         </p>
         <form onSubmit={handleVenueSubmit} className="mt-6 space-y-4 max-w-md">
+          <Input
+            label="Termine in den nächsten … Tagen buchbar"
+            type="number"
+            min={1}
+            value={venueForm.booking_advance_days ?? ""}
+            onChange={(e) =>
+              setVenueForm((f) => ({
+                ...f,
+                booking_advance_days: parseInt(e.target.value, 10) || 1,
+              }))
+            }
+          />
+          <p className="text-xs text-muted-foreground">
+            So viele Tage in die Zukunft können Kunden bei der Terminauswahl sehen (bis max. 84 Tage, z. B. 2 Monate).
+          </p>
           <Input
             label="Buchung mindestens … Stunden im Voraus"
             type="number"

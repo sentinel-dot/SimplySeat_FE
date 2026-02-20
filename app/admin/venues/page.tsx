@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
-import {
-  listVenues,
-  createVenue,
-  updateVenue,
-} from "@/lib/api/admin";
+import { listVenues, updateVenue } from "@/lib/api/admin";
 import type { Venue } from "@/lib/types";
 import { VENUE_TYPES_ORDER, getVenueTypeLabel } from "@/lib/utils/venueType";
 import { Card } from "@/components/ui/card";
@@ -25,7 +21,7 @@ export default function AdminVenuesPage() {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [modal, setModal] = useState<"create" | "edit" | null>(null);
+  const [modal, setModal] = useState<"edit" | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState({
     name: "",
@@ -62,28 +58,6 @@ export default function AdminVenuesPage() {
     loadVenues();
   }, []);
 
-  const openCreate = () => {
-    setForm({
-      name: "",
-      type: "restaurant",
-      email: "",
-      phone: "",
-      address: "",
-      city: "",
-      postal_code: "",
-      country: "DE",
-      description: "",
-      image_url: "",
-      website_url: "",
-      booking_advance_days: 30,
-      booking_advance_hours: 48,
-      cancellation_hours: 24,
-      is_active: true,
-    });
-    setEditingId(null);
-    setModal("create");
-  };
-
   const openEdit = async (v: Venue) => {
     setEditingId(v.id);
     setForm({
@@ -108,56 +82,32 @@ export default function AdminVenuesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!editingId) return;
     setSaving(true);
     try {
-      if (modal === "create") {
-        const res = await createVenue({
-          name: form.name,
-          type: form.type,
-          email: form.email,
-          phone: form.phone || undefined,
-          address: form.address || undefined,
-          city: form.city || undefined,
-          postal_code: form.postal_code || undefined,
-          country: form.country,
-          description: form.description || undefined,
-          image_url: form.image_url || undefined,
-          website_url: form.website_url || undefined,
-          booking_advance_days: form.booking_advance_days,
-          booking_advance_hours: form.booking_advance_hours,
-          cancellation_hours: form.cancellation_hours,
-          is_active: form.is_active,
-        });
-        if (res.success) {
-          toast.success("Venue erstellt.");
-          setModal(null);
-          loadVenues();
-        } else toast.error(res.message ?? "Fehler.");
-      } else if (modal === "edit" && editingId) {
-        const res = await updateVenue(editingId, {
-          name: form.name,
-          type: form.type,
-          email: form.email,
-          phone: form.phone || undefined,
-          address: form.address || undefined,
-          city: form.city || undefined,
-          postal_code: form.postal_code || undefined,
-          country: form.country,
-          description: form.description || undefined,
-          image_url: form.image_url || undefined,
-          website_url: form.website_url || undefined,
-          booking_advance_days: form.booking_advance_days,
-          booking_advance_hours: form.booking_advance_hours,
-          cancellation_hours: form.cancellation_hours,
-          is_active: form.is_active,
-        });
-        if (res.success) {
-          toast.success("Venue aktualisiert.");
-          setModal(null);
-          setEditingId(null);
-          loadVenues();
-        } else toast.error(res.message ?? "Fehler.");
-      }
+      const res = await updateVenue(editingId, {
+        name: form.name,
+        type: form.type,
+        email: form.email,
+        phone: form.phone || undefined,
+        address: form.address || undefined,
+        city: form.city || undefined,
+        postal_code: form.postal_code || undefined,
+        country: form.country,
+        description: form.description || undefined,
+        image_url: form.image_url || undefined,
+        website_url: form.website_url || undefined,
+        booking_advance_days: form.booking_advance_days,
+        booking_advance_hours: form.booking_advance_hours,
+        cancellation_hours: form.cancellation_hours,
+        is_active: form.is_active,
+      });
+      if (res.success) {
+        toast.success("Venue aktualisiert.");
+        setModal(null);
+        setEditingId(null);
+        loadVenues();
+      } else toast.error(res.message ?? "Fehler.");
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -183,9 +133,9 @@ export default function AdminVenuesPage() {
             Alle Betriebe anlegen und bearbeiten.
           </p>
         </div>
-        <Button variant="default" onClick={openCreate}>
-          Venue anlegen
-        </Button>
+        <Link href="/admin/venue/create">
+          <Button variant="default">Venue anlegen</Button>
+        </Link>
       </div>
 
       <Card>
@@ -231,11 +181,11 @@ export default function AdminVenuesPage() {
         )}
       </Card>
 
-      {modal && (
+      {modal === "edit" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <Card className="max-h-[90vh] w-full max-w-lg overflow-y-auto p-6">
             <h2 className="font-display text-lg font-semibold text-foreground">
-              {modal === "create" ? "Venue anlegen" : "Venue bearbeiten"}
+              Venue bearbeiten
             </h2>
             <form onSubmit={handleSubmit} className="mt-4 space-y-3">
               <Input
@@ -304,7 +254,7 @@ export default function AdminVenuesPage() {
               />
               <div className="grid grid-cols-3 gap-3">
                 <Input
-                  label="Buchung Vorlauf (Tage)"
+                  label="Termine in den nächsten … Tagen buchbar"
                   type="number"
                   min={1}
                   value={form.booking_advance_days}

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { updateBookingStatus } from "@/lib/api/owner";
 import type { BookingWithDetails } from "@/lib/types";
-import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
+import { StatusBadge } from "@/components/shared/status-badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -251,14 +251,7 @@ export function BookingDetailModal({
 
               {booking.status !== status && (
                 <p className="text-sm text-muted-foreground">
-                  Aktuell:{" "}
-                  <span className={getStatusColor(booking.status)}>
-                    {getStatusLabel(booking.status)}
-                  </span>
-                  {" → "}
-                  <span className={getStatusColor(status)}>
-                    {getStatusLabel(status)}
-                  </span>
+                  Aktuell: <StatusBadge status={booking.status} /> → <StatusBadge status={status} />
                 </p>
               )}
 

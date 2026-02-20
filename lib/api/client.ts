@@ -39,6 +39,10 @@ export async function apiClient<T>(
             throw err;
         }
 
+        // Bei 200: Konsistente Form, falls Body leer oder kein gültiges JSON-Objekt
+        if (typeof data !== 'object' || data === null) {
+            return { success: false, message: 'Ungültige Server-Antwort' } as { success: boolean; data?: T; message?: string; error?: string };
+        }
         return data;
     } 
     catch (error) 

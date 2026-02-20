@@ -12,8 +12,8 @@ import {
   User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { VenueWithStaff, Service, TimeSlot } from "@/lib/types";
-import { getAvailableSlots } from "@/lib/api/availability";
+import type { VenueWithStaff, Service, TimeSlot, DayAvailability } from "@/lib/types";
+import { getAvailableSlots, getAvailabilityRange } from "@/lib/api/availability";
 import { createBooking } from "@/lib/api/bookings";
 import { useCustomerAuthOptional } from "@/contexts/CustomerAuthContext";
 import {
@@ -63,25 +63,56 @@ export function VenueBookingFlow({
   const showPartySize = venue.type === "restaurant";
   const minDate = today();
   const maxDate = addDays(today(), venue.booking_advance_days ?? 30);
-  const upcomingDays = getNextDays(
-    Math.min(14, Math.max(1, Math.floor((maxDate.getTime() - minDate.getTime()) / (24 * 60 * 60 * 1000)))),
-    minDate
-  );
+  const totalDays = Math.floor((maxDate.getTime() - minDate.getTime()) / (24 * 60 * 60 * 1000));
+  const daysToShow = Math.min(84, Math.max(1, totalDays));
+  const upcomingDays = getNextDays(daysToShow, minDate);
+  const firstDateStr = formatDateForApi(minDate);
+  const lastDateStr = formatDateForApi(addDays(minDate, daysToShow - 1));
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(
-    preselectedServiceId ? 2 : 1
-  );
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(preselectedServiceId ? 2 : 1);
   const [selectedService, setSelectedService] = useState<Service | null>(
     preselectedServiceId
       ? services.find((s) => String(s.id) === preselectedServiceId) || null
       : null
   );
-  const [selectedDate, setSelectedDate] = useState<typeof upcomingDays[0] | null>(
-    initialDate ? upcomingDays.find((d) => d.dateStr === initialDate) ?? null : null
-  );
+  const [selectedStaff, setSelectedStaff] = useState<{ id: number; name: string } | null>(null);
+  // Bei Restaurants keinen Staff-Schritt anzeigen (Service benötigt hier keinen Mitarbeiter)
+  const showStaffStep =
+    venue.type !== "restaurant" &&
+    !!selectedService?.requires_staff &&
+    (selectedService?.available_staff?.length ?? 0) > 0;
+  // Bei genau einem Mitarbeiter vorauswählen, damit User sieht, bei wem sie buchen
+  useEffect(() => {
+    if (selectedService?.requires_staff && selectedService?.available_staff?.length === 1) {
+      setSelectedStaff(selectedService.available_staff[0]);
+    } else if ((selectedService?.available_staff?.length ?? 0) > 1) {
+      setSelectedStaff(null);
+    }
+  }, [selectedService?.id, selectedService?.requires_staff, selectedService?.available_staff]);
+  // initialDate auch berücksichtigen, wenn außerhalb der ersten N Tage (z. B. ?date= in Buchungszeitraum)
+  const [selectedDate, setSelectedDate] = useState<typeof upcomingDays[0] | null>(() => {
+    if (!initialDate) return null;
+    const inList = upcomingDays.find((d) => d.dateStr === initialDate);
+    if (inList) return inList;
+    const d = new Date(initialDate + "T12:00:00");
+    if (isNaN(d.getTime())) return null;
+    const minT = minDate.getTime();
+    const maxT = maxDate.getTime();
+    const t = d.getTime();
+    if (t < minT || t > maxT) return null;
+    return {
+      date: d,
+      label: d.toLocaleDateString("de-DE", { month: "short", day: "numeric" }),
+      dayName: d.toLocaleDateString("de-DE", { weekday: "short" }),
+      dateStr: initialDate,
+    };
+  });
   const [slots, setSlots] = useState<TimeSlot[]>([]);
   const [selectedTime, setSelectedTime] = useState<TimeSlot | null>(null);
   const [loadingSlots, setLoadingSlots] = useState(false);
+  const [availableDayDates, setAvailableDayDates] = useState<string[] | null>(null);
+  const [weekAvailabilityByDate, setWeekAvailabilityByDate] = useState<Record<string, DayAvailability>>({});
+  const [loadingAvailableDays, setLoadingAvailableDays] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -100,6 +131,50 @@ export function VenueBookingFlow({
     }
   }, [customer]);
 
+  // Welche Tage haben mindestens einen freien Slot? (einmalig beim Wechsel zu Datum & Uhrzeit)
+  useEffect(() => {
+    if (!selectedService || (showStaffStep && !selectedStaff)) {
+      setAvailableDayDates(null);
+      setWeekAvailabilityByDate({});
+      return;
+    }
+    let cancelled = false;
+    setLoadingAvailableDays(true);
+    setAvailableDayDates(null);
+    setWeekAvailabilityByDate({});
+    const opts: { partySize?: number; staffMemberId?: number } = {};
+    if (showPartySize) opts.partySize = partySize;
+    else opts.partySize = 1;
+    if (showStaffStep && selectedStaff) opts.staffMemberId = selectedStaff.id;
+    const WEEK_LOAD_TIMEOUT_MS = 25000;
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("timeout")), WEEK_LOAD_TIMEOUT_MS)
+    );
+    Promise.race([
+      getAvailabilityRange(venue.id, selectedService.id, firstDateStr, lastDateStr, opts),
+      timeoutPromise,
+    ])
+      .then((all) => {
+        if (cancelled) return;
+        const byDate: Record<string, DayAvailability> = {};
+        for (const d of all) byDate[d.date] = d;
+        setWeekAvailabilityByDate(byDate);
+        const dates = all.filter((d) => (d.time_slots ?? []).some((s) => s.available)).map((d) => d.date);
+        setAvailableDayDates(dates);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setAvailableDayDates([]);
+          setWeekAvailabilityByDate({});
+          if (err?.message === "timeout") {
+            toast.error("Verfügbarkeit konnte nicht geladen werden. Bitte Seite neu laden oder später erneut versuchen.");
+          }
+        }
+      })
+      .finally(() => { if (!cancelled) setLoadingAvailableDays(false); });
+    return () => { cancelled = true; };
+  }, [selectedService?.id, selectedStaff?.id, showStaffStep, showPartySize, partySize, venue.id, venue.booking_advance_days]);
+
   useEffect(() => {
     if (!selectedService || !selectedDate) {
       setSlots([]);
@@ -108,9 +183,10 @@ export function VenueBookingFlow({
     }
     setLoadingSlots(true);
     setSelectedTime(null);
-    const opts: { partySize?: number } = {};
+    const opts: { partySize?: number; staffMemberId?: number } = {};
     if (showPartySize) opts.partySize = partySize;
     else opts.partySize = 1;
+    if (showStaffStep && selectedStaff) opts.staffMemberId = selectedStaff.id;
     getAvailableSlots(venue.id, selectedService.id, selectedDate.dateStr, opts)
       .then((data) => {
         const available = (data.time_slots ?? []).filter((s) => s.available);
@@ -126,7 +202,7 @@ export function VenueBookingFlow({
         setSlots([]);
       })
       .finally(() => setLoadingSlots(false));
-  }, [selectedService, selectedDate, partySize, showPartySize, venue.id]);
+  }, [selectedService, selectedDate, selectedStaff, partySize, showPartySize, showStaffStep, venue.id]);
 
   const canProceedStep2 = selectedService !== null;
   const canProceedStep3 = selectedDate !== null && selectedTime !== null;
@@ -200,30 +276,39 @@ export function VenueBookingFlow({
         <p className="mt-1 text-muted-foreground">{venue.name}</p>
 
         {/* Progress Steps */}
-        <div className="mt-8 flex items-center gap-2">
-          {[1, 2, 3, 4].map((s) => (
-            <div key={s} className="flex flex-1 items-center gap-2">
-              <div
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
-                  step >= s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {step > s ? <Check className="h-4 w-4" /> : s}
+        {(() => {
+          const totalSteps = showStaffStep ? 5 : 4;
+          const stepLabels = showStaffStep
+            ? ["Dienstleistung", "Mitarbeiter", "Datum & Uhrzeit", "Angaben", "Bestätigen"]
+            : ["Dienstleistung", "Datum & Uhrzeit", "Angaben", "Bestätigen"];
+          return (
+            <>
+              <div className="mt-8 flex items-center gap-2">
+                {Array.from({ length: totalSteps }, (_, i) => i + 1).map((s) => (
+                  <div key={s} className="flex flex-1 items-center gap-2">
+                    <div
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
+                        step >= s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {step > s ? <Check className="h-4 w-4" /> : s}
+                    </div>
+                    {s < totalSteps && (
+                      <div
+                        className={`h-0.5 flex-1 rounded-full ${step > s ? "bg-primary" : "bg-muted"}`}
+                      />
+                    )}
+                  </div>
+                ))}
               </div>
-              {s < 4 && (
-                <div
-                  className={`h-0.5 flex-1 rounded-full ${step > s ? "bg-primary" : "bg-muted"}`}
-                />
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-          <span>Dienstleistung</span>
-          <span>Datum & Uhrzeit</span>
-          <span>Angaben</span>
-          <span>Bestätigen</span>
-        </div>
+              <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+                {stepLabels.map((label, i) => (
+                  <span key={label}>{label}</span>
+                ))}
+              </div>
+            </>
+          );
+        })()}
 
         {/* Step 1: Select Service */}
         {step === 1 && (
@@ -237,6 +322,7 @@ export function VenueBookingFlow({
                   key={service.id}
                   onClick={() => {
                     setSelectedService(service);
+                    setSelectedStaff(null);
                     setSelectedDate(null);
                     setSlots([]);
                     setSelectedTime(null);
@@ -271,8 +357,54 @@ export function VenueBookingFlow({
           </div>
         )}
 
-        {/* Step 2: Date & Time */}
-        {step === 2 && selectedService && (
+        {/* Step 2: Staff (nur bei requires_staff) */}
+        {step === 2 && selectedService && showStaffStep && (
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold text-foreground">
+              Mitarbeiter wählen
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Wer soll {selectedService.name} durchführen?
+            </p>
+            <div className="mt-4 flex flex-col gap-2">
+              {(selectedService.available_staff ?? []).map((staff) => (
+                <button
+                  key={staff.id}
+                  onClick={() => setSelectedStaff(staff)}
+                  className={`flex items-center rounded-xl border p-4 text-left transition-colors ${
+                    selectedStaff?.id === staff.id
+                      ? "border-primary bg-primary/5"
+                      : "border-border bg-card hover:border-primary/30"
+                  }`}
+                >
+                  <span className="font-medium text-foreground">{staff.name}</span>
+                </button>
+              ))}
+            </div>
+            <div className="mt-6 flex justify-between">
+              <Button variant="outline" onClick={() => setStep(1)}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Zurück
+              </Button>
+              <Button
+                disabled={!selectedStaff}
+                onClick={() => {
+                  setSelectedDate(null);
+                  setSlots([]);
+                  setSelectedTime(null);
+                  setStep(3);
+                }}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                Weiter
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 2 oder 3: Date & Time (2 wenn kein Staff, 3 wenn Staff) */}
+        {selectedService && (step === 2 && !showStaffStep || step === 3) && (
           <div className="mt-8">
             <h2 className="text-lg font-semibold text-foreground">
               Datum & Uhrzeit wählen
@@ -282,22 +414,46 @@ export function VenueBookingFlow({
               <p className="mb-3 text-sm font-medium text-muted-foreground">
                 Datum wählen
               </p>
-              <div className="flex gap-2 overflow-x-auto pb-2">
-                {upcomingDays.map((day) => (
-                  <button
-                    key={day.dateStr}
-                    onClick={() => setSelectedDate(day)}
-                    className={`flex shrink-0 flex-col items-center rounded-xl border px-4 py-3 transition-colors ${
-                      selectedDate?.dateStr === day.dateStr
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card text-foreground hover:border-primary/30"
-                    }`}
-                  >
-                    <span className="text-xs font-medium opacity-70">{day.dayName}</span>
-                    <span className="mt-0.5 text-sm font-semibold">{day.label}</span>
-                  </button>
-                ))}
-              </div>
+              {loadingAvailableDays ? (
+                <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-muted/30 py-10">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary" aria-hidden />
+                  <p className="mt-3 text-sm text-muted-foreground">Verfügbarkeit wird geladen…</p>
+                </div>
+              ) : (
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {upcomingDays.map((day) => {
+                    const hasSlots = availableDayDates === null || availableDayDates.includes(day.dateStr);
+                    const isDisabled = availableDayDates !== null && !hasSlots;
+                    return (
+                      <button
+                        key={day.dateStr}
+                        type="button"
+                        disabled={isDisabled}
+                        onClick={() => !isDisabled && setSelectedDate(day)}
+                        className={`flex shrink-0 flex-col items-center rounded-xl border px-4 py-3 transition-colors ${
+                          isDisabled
+                            ? "cursor-not-allowed border-border bg-muted/50 text-muted-foreground opacity-60"
+                            : selectedDate?.dateStr === day.dateStr
+                              ? "border-primary bg-primary text-primary-foreground"
+                              : "border-border bg-card text-foreground hover:border-primary/30"
+                        }`}
+                      >
+                        <span className="text-xs font-medium opacity-70">{day.dayName}</span>
+                        <span className="mt-0.5 text-sm font-semibold">{day.label}</span>
+                        {isDisabled && (
+                          <span className="mt-0.5 text-[10px] text-muted-foreground">
+                            {weekAvailabilityByDate[day.dateStr]?.is_closed
+                              ? "geschlossen"
+                              : weekAvailabilityByDate[day.dateStr]?.within_advance_hours
+                                ? `mind. ${weekAvailabilityByDate[day.dateStr]?.booking_advance_hours ?? 48}h im Voraus`
+                                : "ausgebucht"}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {selectedDate && (
@@ -326,7 +482,7 @@ export function VenueBookingFlow({
                             : "border-border bg-card text-foreground hover:border-primary/30"
                         }`}
                       >
-                        {slot.start_time.slice(0, 5)}
+                        <span className="block">{slot.start_time.slice(0, 5)}</span>
                       </button>
                     ))}
                   </div>
@@ -335,13 +491,13 @@ export function VenueBookingFlow({
             )}
 
             <div className="mt-6 flex justify-between">
-              <Button variant="outline" onClick={() => setStep(1)}>
+              <Button variant="outline" onClick={() => setStep(showStaffStep ? 2 : 1)}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Zurück
               </Button>
               <Button
                 disabled={!canProceedStep3}
-                onClick={() => setStep(3)}
+                onClick={() => setStep(showStaffStep ? 4 : 3)}
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 Weiter
@@ -351,8 +507,8 @@ export function VenueBookingFlow({
           </div>
         )}
 
-        {/* Step 3: Personal Details */}
-        {step === 3 && (
+        {/* Step 3 oder 4: Personal Details */}
+        {step === (showStaffStep ? 4 : 3) && (
           <div className="mt-8">
             <h2 className="text-lg font-semibold text-foreground">Deine Angaben</h2>
             <div className="mt-4 flex flex-col gap-4">
@@ -429,13 +585,13 @@ export function VenueBookingFlow({
               </div>
             </div>
             <div className="mt-6 flex justify-between">
-              <Button variant="outline" onClick={() => setStep(2)}>
+              <Button variant="outline" onClick={() => setStep(showStaffStep ? 3 : 2)}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Zurück
               </Button>
               <Button
                 disabled={!canProceedStep4}
-                onClick={() => setStep(4)}
+                onClick={() => setStep(showStaffStep ? 5 : 4)}
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 Buchung prüfen
@@ -445,8 +601,8 @@ export function VenueBookingFlow({
           </div>
         )}
 
-        {/* Step 4: Confirmation */}
-        {step === 4 && selectedService && selectedTime && selectedDate && (
+        {/* Step 4 oder 5: Confirmation */}
+        {step === (showStaffStep ? 5 : 4) && selectedService && selectedTime && selectedDate && (
           <div className="mt-8">
             <h2 className="text-lg font-semibold text-foreground">
               Prüfen & Bestätigen
@@ -481,6 +637,19 @@ export function VenueBookingFlow({
                     {selectedDate.dayName}, {selectedDate.label} um {selectedTime.start_time.slice(0, 5)}
                   </p>
                 </div>
+                {selectedTime.staff_member_id != null && (
+                  <>
+                    <div className="h-px bg-border" />
+                    <div>
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                        Mitarbeiter
+                      </p>
+                      <p className="mt-1 font-semibold text-foreground">
+                        {venue.staff_members?.find((s) => s.id === selectedTime.staff_member_id)?.name ?? "–"}
+                      </p>
+                    </div>
+                  </>
+                )}
                 <div className="h-px bg-border" />
                 <div>
                   <p className="text-xs uppercase tracking-wider text-muted-foreground">
@@ -505,7 +674,7 @@ export function VenueBookingFlow({
               </div>
             </div>
             <div className="mt-6 flex justify-between">
-              <Button variant="outline" onClick={() => setStep(3)}>
+              <Button variant="outline" onClick={() => setStep(showStaffStep ? 4 : 3)}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Zurück
               </Button>

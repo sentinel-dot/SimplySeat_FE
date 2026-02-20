@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, DM_Serif_Display } from "next/font/google";
 import { Toaster } from "sonner";
 import { CustomerAuthProvider } from "@/contexts/CustomerAuthContext";
 import { EarlyAccessGate } from "@/components/early-access-gate";
+import { ScrollHashSync } from "@/components/scroll-hash-sync";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -37,6 +38,7 @@ export default function RootLayout({
     <html lang="de" className={`${geist.variable} ${dmSerifDisplay.variable}`}>
       <body className="min-h-screen flex flex-col font-sans antialiased">
         <CustomerAuthProvider>
+          <ScrollHashSync />
           <EarlyAccessGate>{children}</EarlyAccessGate>
           <Toaster position="top-center" richColors closeButton />
         </CustomerAuthProvider>

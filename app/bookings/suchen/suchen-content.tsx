@@ -6,7 +6,7 @@ import Link from "next/link";
 import { apiClient } from "@/lib/api/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getStatusLabel, getStatusColor } from "@/lib/utils/bookingStatus";
+import { StatusBadge } from "@/components/shared/status-badge";
 import type { Booking } from "@/lib/types";
 
 /**
@@ -125,11 +125,7 @@ export function SuchenContent() {
                           {dateDisplay} · {timeDisplay}
                         </p>
                       </div>
-                      <span
-                        className={`inline-flex shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${getStatusColor(b.status)}`}
-                      >
-                        {getStatusLabel(b.status)}
-                      </span>
+                      <StatusBadge status={b.status} />
                     </div>
                   </Link>
                 </li>
