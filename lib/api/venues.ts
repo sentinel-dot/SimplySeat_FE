@@ -49,7 +49,9 @@ export type PublicStats = {
 };
 
 export async function getPublicStats() {
-  return apiClient<PublicStats>(`/venues/stats`);
+  return apiClient<PublicStats>(`/venues/stats`, {
+    next: { revalidate: 300 }
+  });
 }
 
 export type FeaturedVenuesParams = {
